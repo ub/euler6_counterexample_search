@@ -2,6 +2,19 @@ require 'spec_helper'
 
 describe Euler6CounterexampleSearch do
   it 'does something useful'
+
+end
+describe Euler6CounterexampleSearch::Processor1 do
+
+  it 'provides input data of pseudo 6th powers'  do
+    expect( subject.input_data.count).to eq 117649 * 2 /7
+  end
+
+  it 'works' do
+    expect{subject.process; subject.report}.not_to raise_exception
+  end
+
+
 end
 
 
