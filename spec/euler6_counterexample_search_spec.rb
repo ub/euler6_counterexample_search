@@ -4,7 +4,7 @@ describe Euler6CounterexampleSearch do
   it 'does something useful'
 
 end
-describe Euler6CounterexampleSearch::Processor1 do
+xdescribe Euler6CounterexampleSearch::Processor1 do
 
   it 'provides input data of pseudo 6th powers'  do
     expect( subject.input_data.count).to eq 117649 * 2 /7
@@ -17,6 +17,28 @@ describe Euler6CounterexampleSearch::Processor1 do
 
 end
 
+
+describe SumOf6thPowerMTermsModK do
+  describe '.new' do
+    it 'creates instance' do
+      constraint = SumOf6thPowerMTermsModK.new(13)
+      expect(constraint).to be
+    end
+  end
+
+  describe '#[]' do
+    subject(:sum_of_6th_powers_mod13) {SumOf6thPowerMTermsModK.new(13)}
+    context 'for 1 term' do
+      let( :x_pow6_mod13_valueset ){sum_of_6th_powers_mod13[1]}
+      specify {expect(x_pow6_mod13_valueset).to contain_exactly(0,1,12)}
+    end
+    context 'for 2 termы' do
+      let( :two_terms_valueset ){sum_of_6th_powers_mod13[2]}
+      specify {expect(two_terms_valueset).to contain_exactly(0,1,2,11,12)}
+    end
+
+  end
+end
 
 describe ModuloK6thRoots do
   describe '.new' do
