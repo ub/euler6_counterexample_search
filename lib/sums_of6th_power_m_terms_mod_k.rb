@@ -1,6 +1,6 @@
 require 'set'
 
-class SumOf6thPowerMTermsModK
+class SumsOf6thPowerMTermsModK
   MAX_TERMS = 4
 
   def initialize(k)
@@ -10,9 +10,29 @@ class SumOf6thPowerMTermsModK
     calculate_reachable_sums
   end
 
+
+
   def [](m)
     @v[m].dup
   end
+
+  def ~()
+    self.dup.invert
+  end
+
+  protected
+
+  def invert
+    @v = @v.dup
+    (1..MAX_TERMS).each do |i|
+      reachable = @v[i]
+      unreachable = (0...@k).to_a - reachable
+      @v[i] = unreachable
+    end
+    self
+  end
+
+
 
   private
   def caculate_residues
