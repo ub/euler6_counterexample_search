@@ -32,12 +32,21 @@ describe SumOf6thPowerMTermsModK do
       let( :x_pow6_mod13_valueset ){sum_of_6th_powers_mod13[1]}
       specify {expect(x_pow6_mod13_valueset).to contain_exactly(0,1,12)}
     end
-    context 'for 2 termы' do
+    context 'for 2 terms' do
       let( :two_terms_valueset ){sum_of_6th_powers_mod13[2]}
       specify {expect(two_terms_valueset).to contain_exactly(0,1,2,11,12)}
     end
 
+    context 'for 3 terms' do
+      let( :three_terms_valueset ){sum_of_6th_powers_mod13[3]}
+      specify {expect(three_terms_valueset).to contain_exactly(0,1,2,3,10,11,12)}
+    end
   end
+
+  describe '#~' do
+
+  end
+
 end
 
 describe ModuloK6thRoots do
