@@ -4,7 +4,7 @@ describe Euler6CounterexampleSearch do
   it 'does something useful'
 
 end
-xdescribe Euler6CounterexampleSearch::Processor1 do
+describe Euler6CounterexampleSearch::Processor1 do
 
   it 'provides input data of pseudo 6th powers' do
     expect(subject.input_data.count).to eq 117649 * 2 /7
@@ -63,6 +63,18 @@ describe SumsOf6thPowerMTermsModK do
 
 
   end
+
+  describe '#===' do
+    subject(:sums_of_6th_powers_mod13) { SumsOf6thPowerMTermsModK.new(13) }
+    it 'contains zero' do
+      expect(sums_of_6th_powers_mod13 === [0,1]).to be_truthy
+    end
+    it 'matches 14 (congruent to 1)' do
+      expect(sums_of_6th_powers_mod13 === [14,1]).to be_truthy
+    end
+
+  end
+
 
 end
 

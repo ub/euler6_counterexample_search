@@ -20,6 +20,11 @@ class SumsOf6thPowerMTermsModK
     self.dup.invert
   end
 
+  def ===(v_m)
+    v, m = * v_m
+    self[m].include?(v % @k)
+  end
+
   protected
 
   def invert
