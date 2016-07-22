@@ -1,5 +1,7 @@
 require "euler6_counterexample_search/version"
 
+require 's6p_hypothesis'
+
 module Euler6CounterexampleSearch
   class Processor1
   def initialize
@@ -21,7 +23,7 @@ module Euler6CounterexampleSearch
       @modulo117649_6th_roots_generators[rem].each do |e|
         e6=e**6
         break if e6 >= f6
-        @candidates << (f6 -e6) /117649
+        @candidates << S6pHypothesis.new((f6 - e6) /117649, 4, 117649)
       end
 
     end
@@ -38,19 +40,19 @@ module Euler6CounterexampleSearch
     p divby3[1].group_by{|x| x % 729 ==0}.map{|k,v| [k, v.size]}
     test_3⁶ = SumsOf6thPowerMTermsModK.new(729)
     filtered3⁶ = divby3[1].select do |x|
-      test_3⁶ === [x, 4]
+      test_3⁶ === x
     end.count
     puts divby3[1].size
     puts filtered3⁶
     puts "-----"
-    filter_report(@candidates,729,4)
-    filter_report(@candidates,7,4)
-    filter_report(@candidates,8,4)
-    filter_report(@candidates,9,4)
+    filter_report(@candidates,729)
+    filter_report(@candidates,7)
+    filter_report(@candidates,8)
+    filter_report(@candidates,9)
 
-    filter_report(@candidates,31,4)
-    filter_report(@candidates,64,4)
-    filter_report(@candidates,72,4)
+    filter_report(@candidates,31)
+    filter_report(@candidates,64)
+    filter_report(@candidates,72)
 
 
     puts "--------\n\n"
@@ -64,7 +66,7 @@ module Euler6CounterexampleSearch
     f7 =SumsOf6thPowerMTermsModK.new(7)
     filtered = @candidates.select(&odd_or_divisible_by_2⁶).select(&not_divisible_by_3_or_divisible_by_3⁶).
                select(&not_divisible_by_7_or_divisible_by_7⁶).select(&not_divisible_by_31_or_divisible_by_31⁶).
-               select{|x| f7 === [x,4] }
+               select{|x| f7 === x }
     puts "ANY REMAINING?"
     # (7..1024).each do |k|
     #   filter_report_interesting(filtered,k,4)
@@ -163,26 +165,26 @@ module Euler6CounterexampleSearch
 
   end
 
-  def filter_report(numbers, k, m)
+  def filter_report(numbers, k)
     filter = SumsOf6thPowerMTermsModK.new(k)
     total = numbers.size
-    filtered = "%8d" %(numbers.count {|x| filter === [x,m]})
+    filtered = "%8d" %(numbers.count {|x| filter === x})
     l = "%6d" % k
     puts "#{l}: #{filtered}/#{total}"
   end
-  def filter_report_interesting(numbers, k, m)
+  def filter_report_interesting(numbers, k)
     filter = SumsOf6thPowerMTermsModK.new(k)
     total = numbers.size
-    filtered = numbers.count { |x| filter === [x, m] }
+    filtered = numbers.count { |x| filter === x }
     filtered_string = "%8d" %(filtered)
     l = "%6d" % k
     puts "#{l}: #{filtered_string}/#{total}" if filtered != total
   end
 
-  def filter_report_2(numbers, k, m)
+  def filter_report_2(numbers, k)
     filter = SumsOf6thPowerMTermsModK.new(k)
     total = numbers.size
-    filtered = numbers.reject { |x| filter === [x, m] }
+    filtered = numbers.reject { |x| filter === x }
     filtered_string = "%8d" %(filtered)
     l = "%6d" % k
     unless filtered.empty?
@@ -193,10 +195,10 @@ module Euler6CounterexampleSearch
     end
   end
 
-  def filter_report_3(numbers, k, m)
+  def filter_report_3(numbers, k)
     filter = SumsOf6thPowerMTermsModK.new(k)
     total = numbers.size
-    filtered = numbers.reject { |x| filter === [x, m] }
+    filtered = numbers.reject { |x| filter === x }
     filtered_string = "%8d" %(filtered.size)
     l = "%6d" % k
     unless filtered.empty?

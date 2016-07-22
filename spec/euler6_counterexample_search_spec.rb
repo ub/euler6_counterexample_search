@@ -66,11 +66,14 @@ describe SumsOf6thPowerMTermsModK do
 
   describe '#===' do
     subject(:sums_of_6th_powers_mod13) { SumsOf6thPowerMTermsModK.new(13) }
+    let(:zero) {S6pHypothesis.new(0,1)}
+    let(:_14) {S6pHypothesis.new(14,1)}
+
     it 'contains zero' do
-      expect(sums_of_6th_powers_mod13 === [0,1]).to be_truthy
+      expect(sums_of_6th_powers_mod13 === zero).to be_truthy
     end
     it 'matches 14 (congruent to 1)' do
-      expect(sums_of_6th_powers_mod13 === [14,1]).to be_truthy
+      expect(sums_of_6th_powers_mod13 === _14).to be_truthy
     end
 
   end

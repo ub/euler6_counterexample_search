@@ -10,6 +10,10 @@ class SumsOf6thPowerMTermsModK
     calculate_reachable_sums
   end
 
+  def self.memoized(k)
+    @@cache ||= Hash.new
+    @@cache[k] ||= self.new(k)
+  end
 
 
   def [](m)
@@ -20,9 +24,9 @@ class SumsOf6thPowerMTermsModK
     self.dup.invert
   end
 
-  def ===(v_m)
-    v, m = * v_m
-    self[m].include?(v % @k)
+  def ===(hyp)
+    v,m = hyp.x, hyp.terms_count
+    return self[m].include?(v % @k)
   end
 
   protected
