@@ -15,7 +15,9 @@ module Euler6CounterexampleSearch
        x % 7 != 0
     end.map {|x| x ** 6}
   end
-
+  def output
+    @filtered
+  end
   def process
 
     input_data.each do |f6|
@@ -27,17 +29,22 @@ module Euler6CounterexampleSearch
       end
 
     end
+    @filtered=@candidates.select{|x|x.reduce_and_check(8,64)} .select{|x|x.reduce_and_check(9,729)}.
+      select{|x|x.reduce_and_check(7,117649)}.select{|x|x.reduce_and_check(31,887_503_681)}
 
   end
 
   def report
     puts
     puts @candidates.size
-    divby3, nondivby3 = *(@candidates.group_by{|x| x % 9}.to_a.sort)
-    p @candidates.group_by{|x| x % 3}.map{|k,v| [k, v.size]}.sort
-    group_by_mod7 = @candidates.group_by { |x| x % 7 }.map { |k, v| [k, v.size] }.sort
+    puts @filtered.size
+    print "FILT %9:"; p @filtered.group_by{|x| x % 9}.map{|k,v| [k, v.size]}.sort
+    print "FILT %8:"; p @filtered.group_by{|x| x % 8}.map{|k,v| [k, v.size]}.sort
+    group_by_mod7 = @filtered.group_by { |x| x % 7 }.map { |k, v| [k, v.size] }.sort
     p group_by_mod7
-    p divby3[1].group_by{|x| x % 729 ==0}.map{|k,v| [k, v.size]}
+    print "FILT 31:"; p @filtered.group_by { |x| x % 31 }.map { |k, v| [k, v.size] }.sort
+    # p divby3[1].group_by{|x| x % 729 ==0}.map{|k,v| [k, v.size]}
+=begin
     test_3⁶ = SumsOf6thPowerMTermsModK.new(729)
     filtered3⁶ = divby3[1].select do |x|
       test_3⁶ === x
@@ -162,6 +169,7 @@ module Euler6CounterexampleSearch
     # 9:[[1, 25], [2, 23], [4, 18], [5, 27], [7, 19], [8, 19]]
     # 8:[[1, 129], [5, 1], [7, 1]]
     #
+=end
 
   end
 
@@ -213,6 +221,46 @@ module Euler6CounterexampleSearch
 
   end
 
+  class Processor2
+    def initialize(input)
+      @input = input
+      @modulo729_6th_roots_generators = ModuloK6thRoots.new(729)
+    end
+    def input_data
+      @input
+    end
 
+    def process
+
+      groups_by_combability =    input_data.group_by{|x| x % 9 == 1}
+      combable3, noncombable = groups_by_combability[true], groups_by_combability[false]
+      process_combable3 combable3
+    end
+
+    def process_combable3( data)
+      @candidates = []
+      data.each do |q|
+        rem = q % 729
+        @modulo729_6th_roots_generators[rem].each do |d|
+          d6=d**6
+          break if q <= d6
+          hypothesis = (q - d6).reduce_and_check(9,729)
+          @candidates << hypothesis if hypothesis
+        end
+      end
+      puts "PROC2:", @candidates.size
+
+      @filtered=@candidates.select{|x|x.reduce_and_check(8,64)}
+      puts "FILT2:", @filtered.size
+      @filtered = @filtered.select{|x|x.reduce_and_check(7,117649)}
+      puts "FILT7:", @filtered.size
+
+      print "FILT 31:"; p @filtered.group_by { |x| x % 31 }.map { |k, v| [k, v.size] }.sort
+
+      @filtered =  @filtered.select{|x|x.reduce_and_check(31,887_503_681)}
+      puts "FILT31:", @filtered.size
+
+    end
+  end
 
 end

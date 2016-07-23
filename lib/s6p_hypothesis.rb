@@ -13,11 +13,20 @@ class S6pHypothesis
     S6pHypothesis.new(@x / d,@terms_count, @factor * d)
   end
 
+  def -(s)
+    S6pHypothesis.new(@x - s, @terms_count - 1, @factor)
+  end
+
+  def <= (other)
+    @x <= other
+  end
+
   def reduce_and_check(divisor, divisor6thp)
     while (r = @x % divisor) == 0
-      q6, r6 = @x.divmov(divisor6thp)
+      q6, r6 = @x.divmod(divisor6thp)
       return nil if r6 != 0
       @x = q6
+      @factor *= divisor6thp
     end
     case divisor
       when 7,8,9

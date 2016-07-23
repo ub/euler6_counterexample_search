@@ -11,7 +11,10 @@ describe Euler6CounterexampleSearch::Processor1 do
   end
 
   it 'works' do
-    expect { subject.process; subject.report }.not_to raise_exception
+    expect { subject.process; subject.report
+    p2 = Euler6CounterexampleSearch::Processor2.new    subject.output
+    p2.process
+    }.not_to raise_exception
   end
 
 
