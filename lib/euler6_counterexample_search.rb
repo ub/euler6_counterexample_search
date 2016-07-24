@@ -2,11 +2,14 @@ require "euler6_counterexample_search/version"
 
 require 's6p_hypothesis'
 
+require 'pstore'
+
 module Euler6CounterexampleSearch
   class Processor1
-  def initialize
+  def initialize(store_file_name)
     @modulo117649_6th_roots_generators = ModuloK6thRoots.new(117649)
     @candidates = []
+    @pstore = PStore.new(store_file_name)
   end
   def input_data
     (1...117649).each.lazy.select do |x|
@@ -31,6 +34,11 @@ module Euler6CounterexampleSearch
     end
     @filtered=@candidates.select{|x|x.reduce_and_check(8,64)} .select{|x|x.reduce_and_check(9,729)}.
       select{|x|x.reduce_and_check(7,117649)}.select{|x|x.reduce_and_check(31,887_503_681)}
+
+    @pstore.transaction do
+      @pstore[:candidates] = @candidates
+      @pstore[:filtered] = @filtered
+    end
 
   end
 
@@ -222,9 +230,16 @@ module Euler6CounterexampleSearch
   end
 
   class Processor2
-    def initialize(input)
-      @input = input
+    def initialize(store_file_name)
       @modulo729_6th_roots_generators = ModuloK6thRoots.new(729)
+      @modulo64_6th_roots_generators = ModuloK6thRoots.new(64)
+      @pstore = PStore.new(store_file_name)
+
+      @pstore.transaction do
+        @input = @pstore[:filtered]
+      end
+
+
     end
     def input_data
       @input
@@ -234,20 +249,25 @@ module Euler6CounterexampleSearch
 
       groups_by_combability =    input_data.group_by{|x| x % 9 == 1}
       combable3, noncombable = groups_by_combability[true], groups_by_combability[false]
-      process_combable3 combable3
+      report_3(noncombable)
+      process_residue_1_modulo9 combable3
+      # process_noncombable(noncombable)
+    end
+    
+    def report_3(data)
+      print_residues_stat(data,7)
+      print_residues_stat(data,8)
+      print_residues_stat(data,9)
+      print_residues_stat(data,13)
+      print_residues_stat(data,17)
+      print_residues_stat(data,19)
+
+      f19 = SumsOf6thPowerMTermsModK.new 19
+      filtered = data.select{|x| f19 === x}
+      puts filtered.size, data.size
     end
 
-    def process_combable3( data)
-      @candidates = []
-      data.each do |q|
-        rem = q % 729
-        @modulo729_6th_roots_generators[rem].each do |d|
-          d6=d**6
-          break if q <= d6
-          hypothesis = (q - d6).reduce_and_check(9,729)
-          @candidates << hypothesis if hypothesis
-        end
-      end
+    def report
       puts "PROC2:", @candidates.size
 
       @filtered=@candidates.select{|x|x.reduce_and_check(8,64)}
@@ -260,6 +280,54 @@ module Euler6CounterexampleSearch
       @filtered =  @filtered.select{|x|x.reduce_and_check(31,887_503_681)}
       puts "FILT31:", @filtered.size
 
+      f19 = SumsOf6thPowerMTermsModK.new 19
+      @filtered = @filtered.select{|x| f19 === x}
+      puts "FILT19:", @filtered.size
+
+      print_residues_stat(@filtered,7)
+      print_residues_stat(@filtered,8)
+      print_residues_stat(@filtered,9)
+      print_residues_stat(@filtered,13)
+      print_residues_stat(@filtered,17)
+
+
+    end
+
+    def print_residues_stat(data, m)
+      print "MODULO #{m} residues:"; p data.group_by { |x| x % m }.map { |k, v| [k, v.size] }.sort
+
+    end
+
+    def process_residue_1_modulo9(data)
+      @candidates ||= []
+      data.each do |q|
+        rem = q % 729
+        @modulo729_6th_roots_generators[rem].each do |d|
+          d6=d**6
+          break if q <= d6
+          hypothesis = (q - d6).reduce_and_check(9,729)
+          @candidates << hypothesis if hypothesis
+        end
+      end
+    end
+    def process_noncombable(data)
+      groups_by_combability =    data.group_by{|x| x % 8 == 1}
+      combable2, noncombable = groups_by_combability[true], groups_by_combability[false]
+      process_residue_1_modulo8(combable2)
+
+
+    end
+    def process_residue_1_modulo8(data)
+      @candidates ||= []
+      data.each do |q|
+        rem = q % 64
+        @modulo64_6th_roots_generators[rem].each do |d|
+          d6=d**6
+          break if q <= d6
+          hypothesis = (q - d6).reduce_and_check(8,64)
+          @candidates << hypothesis if hypothesis
+        end
+      end
     end
   end
 

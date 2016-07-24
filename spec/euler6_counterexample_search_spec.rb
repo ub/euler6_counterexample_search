@@ -4,19 +4,32 @@ describe Euler6CounterexampleSearch do
   it 'does something useful'
 
 end
-describe Euler6CounterexampleSearch::Processor1 do
+xdescribe Euler6CounterexampleSearch::Processor1 do
 
+  subject {Euler6CounterexampleSearch::Processor1.new 'euler6_hypotheses.pstore'}
   it 'provides input data of pseudo 6th powers' do
     expect(subject.input_data.count).to eq 117649 * 2 /7
   end
 
   it 'works' do
     expect { subject.process; subject.report
-    p2 = Euler6CounterexampleSearch::Processor2.new    subject.output
-    p2.process
+
     }.not_to raise_exception
   end
 
+end
+
+
+
+describe Euler6CounterexampleSearch::Processor2 do
+
+  subject {Euler6CounterexampleSearch::Processor2.new 'euler6_hypotheses.pstore'}
+
+  it 'works' do
+    expect { subject.process; subject.report
+
+    }.not_to raise_exception
+  end
 
 end
 
