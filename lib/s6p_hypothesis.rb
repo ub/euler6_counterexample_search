@@ -21,6 +21,10 @@ class S6pHypothesis
     @x <= other
   end
 
+  def < (other)
+    @x < other
+  end
+
   def reduce_and_check(divisor, divisor6thp)
     while (r = @x % divisor) == 0
       q6, r6 = @x.divmod(divisor6thp)

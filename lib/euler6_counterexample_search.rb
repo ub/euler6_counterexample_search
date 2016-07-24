@@ -5,6 +5,60 @@ require 's6p_hypothesis'
 require 'pstore'
 
 module Euler6CounterexampleSearch
+  module Strategies
+    def modulo7_res1_strategy(v)
+      @modulo117649_6th_roots_generators ||= ModuloK6thRoots.new(117649)
+      res = v % 117649
+      @modulo117649_6th_roots_generators[res].each do |u|
+        u6 = u **6
+        break if v < u6 # не годится для первого "гребня" f,e
+        hypothesis = (v - u6).reduce_and_check(7,117649)
+        @candidates << hypothesis if hypothesis
+      end
+    end
+    def modulo8_res1_strategy(v)
+      @modulo64_6th_roots_generators ||= ModuloK6thRoots.new(64)
+      res = v % 64
+      @modulo64_6th_roots_generators[res].each do |u|
+        u6 = u **6
+        break if v < u6 # не годится для первого "гребня" f,e
+        hypothesis = (v - u6).reduce_and_check(8,64)
+        @candidates << hypothesis if hypothesis
+      end
+    end
+    def modulo9_res1_strategy(v)
+      @modulo7649_6th_roots_generators ||= ModuloK6thRoots.new(729)
+      res = v % 729
+      @modulo7649_6th_roots_generators[res].each do |u|
+        u6 = u **6
+        break if v < u6 # не годится для первого "гребня" f,e
+        hypothesis = (v - u6).reduce_and_check(9,729)
+        @candidates << hypothesis if hypothesis
+      end
+    end
+
+    def brute_force_strategy(v)
+      r7 = v % 7
+      r8 = v % 8
+      r9 = v % 9
+      not7    = r7==v.terms_count
+      oddonly = r8==v.terms_count
+      not3    = r9==v.terms_count
+      u = -1
+      loop do
+        if oddonly
+          u += 2
+        else
+          u += 1
+        end
+        next if not3 && u % 3 == 0
+        next if not7 && u % 7 == 0
+        u6 = u**6
+        break if v < u6
+        @candidates << (v - u6)
+      end
+    end
+  end
   class Processor1
   def initialize(store_file_name)
     @modulo117649_6th_roots_generators = ModuloK6thRoots.new(117649)
@@ -230,10 +284,14 @@ module Euler6CounterexampleSearch
   end
 
   class Processor2
+    include Strategies
+
     def initialize(store_file_name)
       @modulo729_6th_roots_generators = ModuloK6thRoots.new(729)
       @modulo64_6th_roots_generators = ModuloK6thRoots.new(64)
+      @candidates = []
       @pstore = PStore.new(store_file_name)
+
 
       @pstore.transaction do
         @input = @pstore[:filtered]
@@ -247,11 +305,17 @@ module Euler6CounterexampleSearch
 
     def process
 
-      groups_by_combability =    input_data.group_by{|x| x % 9 == 1}
-      combable3, noncombable = groups_by_combability[true], groups_by_combability[false]
-      report_3(noncombable)
-      process_residue_1_modulo9 combable3
-      # process_noncombable(noncombable)
+      processable_7, rest = input_data.partition {|x| x % 7 == 1}
+
+      processable_7.each {|x| modulo7_res1_strategy(x)}
+
+      processable_9, rest = rest.partition {|x| x % 9 == 1}
+      processable_9.each {|x| modulo9_res1_strategy(x)}
+      processable_8, rest = rest.partition {|x| x % 8 == 1}
+      processable_8.each {|x| modulo8_res1_strategy(x)}
+      rest.each {|x| brute_force_strategy(x)}
+
+
     end
     
     def report_3(data)
