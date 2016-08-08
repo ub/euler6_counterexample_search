@@ -59,6 +59,22 @@ module Euler6CounterexampleSearch
       end
     end
   end
+
+  module Report
+    def print_residues_stat(data, m)
+      print "MODULO #{m} residues:"; p data.group_by { |x| x % m }.map { |k, v| [k, v.size] }.sort
+
+    end
+
+    def filter_report(numbers, k)
+      filter = SumsOf6thPowerMTermsModK.new(k)
+      total = numbers.size
+      filtered = "%8d" %(numbers.count {|x| filter === x})
+      l = "%6d" % k
+      puts "#{l}: #{filtered}/#{total}"
+    end
+
+  end
   class Processor1
   def initialize(store_file_name)
     @modulo117649_6th_roots_generators = ModuloK6thRoots.new(117649)
@@ -235,13 +251,7 @@ module Euler6CounterexampleSearch
 
   end
 
-  def filter_report(numbers, k)
-    filter = SumsOf6thPowerMTermsModK.new(k)
-    total = numbers.size
-    filtered = "%8d" %(numbers.count {|x| filter === x})
-    l = "%6d" % k
-    puts "#{l}: #{filtered}/#{total}"
-  end
+
   def filter_report_interesting(numbers, k)
     filter = SumsOf6thPowerMTermsModK.new(k)
     total = numbers.size
@@ -285,6 +295,8 @@ module Euler6CounterexampleSearch
 
   class Processor2
     include Strategies
+    include Report
+
 
     def initialize(store_file_name)
       @modulo729_6th_roots_generators = ModuloK6thRoots.new(729)
@@ -316,8 +328,14 @@ module Euler6CounterexampleSearch
       rest.each {|x| brute_force_strategy(x)}
 
 
+      @pstore.transaction do
+        @pstore[:candidates3] = @candidates
+      end
+
+
+
     end
-    
+
     def report_3(data)
       print_residues_stat(data,7)
       print_residues_stat(data,8)
@@ -336,6 +354,9 @@ module Euler6CounterexampleSearch
 
       @filtered=@candidates.select{|x|x.reduce_and_check(8,64)}
       puts "FILT2:", @filtered.size
+      @filtered=@filtered.select{|x|x.reduce_and_check(9,729)}
+      puts "FILT3:", @filtered.size
+
       @filtered = @filtered.select{|x|x.reduce_and_check(7,117649)}
       puts "FILT7:", @filtered.size
 
@@ -354,45 +375,141 @@ module Euler6CounterexampleSearch
       print_residues_stat(@filtered,13)
       print_residues_stat(@filtered,17)
 
-
-    end
-
-    def print_residues_stat(data, m)
-      print "MODULO #{m} residues:"; p data.group_by { |x| x % m }.map { |k, v| [k, v.size] }.sort
-
-    end
-
-    def process_residue_1_modulo9(data)
-      @candidates ||= []
-      data.each do |q|
-        rem = q % 729
-        @modulo729_6th_roots_generators[rem].each do |d|
-          d6=d**6
-          break if q <= d6
-          hypothesis = (q - d6).reduce_and_check(9,729)
-          @candidates << hypothesis if hypothesis
-        end
+      @pstore.transaction do
+        @pstore[:filtered3] = @filtered
       end
-    end
-    def process_noncombable(data)
-      groups_by_combability =    data.group_by{|x| x % 8 == 1}
-      combable2, noncombable = groups_by_combability[true], groups_by_combability[false]
-      process_residue_1_modulo8(combable2)
-
 
     end
-    def process_residue_1_modulo8(data)
-      @candidates ||= []
-      data.each do |q|
-        rem = q % 64
-        @modulo64_6th_roots_generators[rem].each do |d|
-          d6=d**6
-          break if q <= d6
-          hypothesis = (q - d6).reduce_and_check(8,64)
-          @candidates << hypothesis if hypothesis
-        end
-      end
-    end
+
   end
 
+  class Processor3
+    include Strategies
+    include Report
+    def initialize(store_file_name)
+      @modulo729_6th_roots_generators = ModuloK6thRoots.new(729)
+      @modulo64_6th_roots_generators = ModuloK6thRoots.new(64)
+      @candidates = []
+      @pstore = PStore.new(store_file_name)
+
+
+      @pstore.transaction do
+        @input = @pstore[:filtered3]
+      end
+
+    end
+
+    def input_data
+      @input
+    end
+
+
+    def process
+      puts @input.size
+      data = @input
+
+      print_residues_stat(data,7)
+      print_residues_stat(data,8)
+      print_residues_stat(data,9)
+      print_residues_stat(data,13)
+      print_residues_stat(data,17)
+      print_residues_stat(data,19)
+
+      print "PROCESSING ---"
+
+      processable_7, rest = input_data.partition {|x| x % 7 == 1}
+
+      processable_7.each {|x| modulo7_res1_strategy(x)}
+      puts "CAND SIZE: #{@candidates.size}"
+      puts "REST SIZE: #{rest.size}"
+
+      processable_9, rest = rest.partition {|x| x % 9 == 1}
+      processable_9.each {|x| modulo9_res1_strategy(x)}
+      puts "CAND SIZE: #{@candidates.size}"
+      puts "REST SIZE: #{rest.size}"
+      processable_8, rest = rest.partition {|x| x % 8 == 1}
+      processable_8.each {|x| modulo8_res1_strategy(x)}
+      puts "CAND SIZE: #{@candidates.size}"
+      puts "REST SIZE: #{rest.size}"
+
+      rest.each {|x| brute_force_strategy(x)}
+      puts "CAND SIZE: #{@candidates.size}"
+
+
+
+      @filtered=@candidates.select{|x|x.reduce_and_check(8,64)} .select{|x|x.reduce_and_check(9,729)}.
+          select{|x|x.reduce_and_check(7,117649)}.select{|x|x.reduce_and_check(31,887_503_681)}
+
+      f13 = SumsOf6thPowerMTermsModK.new(13)
+      f37 = SumsOf6thPowerMTermsModK.new(37)
+      f43 = SumsOf6thPowerMTermsModK.new(43)
+
+      puts "FILTERED: #{@filtered.size}"
+      # Противоречие filter_report сообщает другие цифры
+      @filtered = @filtered.reject do |x|
+        case x
+          when f13,f37,f43
+            false
+          else
+            true
+        end
+
+      end
+
+      puts "FILTERED: #{@filtered.size}"
+
+      @pstore.transaction do
+        @pstore[:filtered2] = @filtered
+        @pstore[:candidates2] = @candidates
+
+      end
+
+
+    end
+
+  end
+
+  class Explorer3
+    include Report
+    def initialize(store_file_name)
+      @modulo729_6th_roots_generators = ModuloK6thRoots.new(729)
+      @modulo64_6th_roots_generators = ModuloK6thRoots.new(64)
+      @candidates = []
+      @pstore = PStore.new(store_file_name)
+
+
+      @pstore.transaction do
+        @input = @pstore[:filtered2] # 2 min to load!
+      end
+
+    end
+
+    def explore
+      filter_report(@input,729)
+      filter_report(@input,7)
+      filter_report(@input,8)
+      filter_report(@input,9)
+      filter_report(@input,11)
+      filter_report(@input,13)
+      filter_report(@input,17)
+      filter_report(@input,23)
+      filter_report(@input,29)
+
+      filter_report(@input,31)
+      filter_report(@input,37)
+      filter_report(@input,41)
+      filter_report(@input,43)
+      filter_report(@input,47)
+      filter_report(@input,64)
+      filter_report(@input,72)
+=begin
+Run options: include {:focus=>true}
+    13:  2490369/2972415
+    37:  2188717/2972415
+    43:  1896721/2972415
+
+=end
+    end
+
+  end
 end
