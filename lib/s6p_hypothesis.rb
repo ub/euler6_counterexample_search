@@ -42,6 +42,13 @@ class S6pHypothesis
     self
   end
 
+  def save(csv)
+    csv << [x, factor, terms_count]
+  end
+
+  def self.from(x, factor, terms_count)
+    self.new(x,terms_count, factor)
+  end
 
 
 end

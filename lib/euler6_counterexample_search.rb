@@ -4,6 +4,12 @@ require 's6p_hypothesis'
 
 require 'pstore'
 
+require 'benchmark'
+
+require 'csv'
+
+require 'prime'
+
 module Euler6CounterexampleSearch
   module Strategies
     def modulo7_res1_strategy(v)
@@ -440,29 +446,46 @@ module Euler6CounterexampleSearch
       @filtered=@candidates.select{|x|x.reduce_and_check(8,64)} .select{|x|x.reduce_and_check(9,729)}.
           select{|x|x.reduce_and_check(7,117649)}.select{|x|x.reduce_and_check(31,887_503_681)}
 
-      f13 = SumsOf6thPowerMTermsModK.new(13)
-      f37 = SumsOf6thPowerMTermsModK.new(37)
-      f43 = SumsOf6thPowerMTermsModK.new(43)
+      _f5 = ~ SumsOf6thPowerMTermsModK.new(5)
+      _f13 = ~ SumsOf6thPowerMTermsModK.new(13)
+      _f37 = ~ SumsOf6thPowerMTermsModK.new(37)
+      _f43 = ~ SumsOf6thPowerMTermsModK.new(43)
+      _f61 = ~ SumsOf6thPowerMTermsModK.new(61)
+      _f67 = ~ SumsOf6thPowerMTermsModK.new(67)
+      _f73 = ~ SumsOf6thPowerMTermsModK.new(73)
+      _f79 = ~ SumsOf6thPowerMTermsModK.new(79)
 
       puts "FILTERED: #{@filtered.size}"
       # Противоречие filter_report сообщает другие цифры
       @filtered = @filtered.reject do |x|
         case x
-          when f13,f37,f43
-            false
-          else
+          when _f5,_f13,_f37,_f43,_f43, _f61, _f67, _f73, _f79
             true
+          else
+            false
         end
 
       end
 
       puts "FILTERED: #{@filtered.size}"
 
+=begin
       @pstore.transaction do
         @pstore[:filtered2] = @filtered
         @pstore[:candidates2] = @candidates
 
       end
+=end
+      puts "SAVING..."
+      t = Benchmark.measure {
+      CSV.open 'filtered2.csv', 'wb' do |csv|
+        @filtered.each do |hyp|
+          hyp.save(csv)
+        end
+      end
+      }
+      puts t
+
 
 
     end
@@ -476,15 +499,19 @@ module Euler6CounterexampleSearch
       @modulo64_6th_roots_generators = ModuloK6thRoots.new(64)
       @candidates = []
       @pstore = PStore.new(store_file_name)
+      @input = []
 
-
-      @pstore.transaction do
-        @input = @pstore[:filtered2] # 2 min to load!
+      CSV.foreach('filtered2.csv', converters: :integer) do |row |
+         @input << S6pHypothesis.from(*row)
       end
+      # @pstore.transaction do
+      #   @input = @pstore[:filtered2] # 2 min to load!
+      # end
 
     end
 
     def explore
+=begin
       filter_report(@input,729)
       filter_report(@input,7)
       filter_report(@input,8)
@@ -500,8 +527,82 @@ module Euler6CounterexampleSearch
       filter_report(@input,41)
       filter_report(@input,43)
       filter_report(@input,47)
-      filter_report(@input,64)
-      filter_report(@input,72)
+
+      filter_report(@input,53)
+      filter_report(@input,59)
+
+      filter_report(@input,61)
+      filter_report(@input,67)
+      filter_report(@input,73)
+      filter_report(@input,79)
+
+      filter_report(@input,83)
+      filter_report(@input,89)
+      filter_report(@input,91)
+      filter_report(@input,97)
+      filter_report(@input,101)
+      filter_report(@input,103)
+=end
+
+      print_residues_stat(@input, 4)
+      # primes 4k+1
+
+      print_residues_stat(@input,3)
+      print_residues_stat(@input,7)
+      print_residues_stat(@input,11)
+      puts "..."
+      print_residues_stat(@input,13)
+      puts "..."
+      print_residues_stat(@input,19)
+      print_residues_stat(@input,23)
+      print_residues_stat(@input,31)
+      print_residues_stat(@input,43)
+      print_residues_stat(@input,47)
+      print_residues_stat(@input,59)
+      print_residues_stat(@input,67)
+      print_residues_stat(@input,71)
+      print_residues_stat(@input,79)
+      print_residues_stat(@input,83)
+      print_residues_stat(@input,103)
+      print_residues_stat(@input,107)
+      print_residues_stat(@input,127)
+      print_residues_stat(@input,131)
+      print_residues_stat(@input,139)
+      print_residues_stat(@input,143)
+      print_residues_stat(@input,151)
+      print_residues_stat(@input,163)
+      print_residues_stat(@input,167)
+      print_residues_stat(@input,179)
+      print_residues_stat(@input,187)
+
+      (191..3000).step(4) do |p|
+        next unless Prime.prime?(p)
+        print_residues_stat(@input,p)
+      end
+
+      print_residues_stat(@input, 4)
+
+      f13 = SumsOf6thPowerMTermsModK.new(13)
+      f37 = SumsOf6thPowerMTermsModK.new(37)
+      f43 = SumsOf6thPowerMTermsModK.new(43)
+
+
+
+
+=begin
+      filter_report(@input,43)
+      # filter_report(@input,47)
+      # filter_report(@input,64)
+      # filter_report(@input,72)
+
+      filter = SumsOf6thPowerMTermsModK.new(43)
+      @input.each  {|x|
+
+       puts x.x  unless filter === x
+
+      }
+=end
+
 =begin
 Run options: include {:focus=>true}
     13:  2490369/2972415
