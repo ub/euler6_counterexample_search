@@ -9,6 +9,7 @@ require 'benchmark'
 require 'csv'
 
 require 'prime'
+require 'prettyprint'
 
 module Euler6CounterexampleSearch
   module Strategies
@@ -17,7 +18,7 @@ module Euler6CounterexampleSearch
       res = v % 117649
       @modulo117649_6th_roots_generators[res].each do |u|
         u6 = u **6
-        break if v < u6 # не годится для первого "гребня" f,e
+        break if v < u6 # не годится для первого "гребня" f,e (f==e)
         hypothesis = (v - u6).reduce_and_check(7,117649)
         @candidates << hypothesis if hypothesis
       end
@@ -448,6 +449,7 @@ module Euler6CounterexampleSearch
 
       _f5 = ~ SumsOf6thPowerMTermsModK.new(5)
       _f13 = ~ SumsOf6thPowerMTermsModK.new(13)
+      _f19 = ~ SumsOf6thPowerMTermsModK.new(19)
       _f37 = ~ SumsOf6thPowerMTermsModK.new(37)
       _f43 = ~ SumsOf6thPowerMTermsModK.new(43)
       _f61 = ~ SumsOf6thPowerMTermsModK.new(61)
@@ -459,7 +461,7 @@ module Euler6CounterexampleSearch
       # Противоречие filter_report сообщает другие цифры
       @filtered = @filtered.reject do |x|
         case x
-          when _f5,_f13,_f37,_f43,_f43, _f61, _f67, _f73, _f79
+          when _f5,_f13,_f19,_f37,_f43, _f61, _f67, _f73, _f79, _f97
             true
           else
             false
@@ -613,4 +615,150 @@ Run options: include {:focus=>true}
     end
 
   end
+
+  class Explorer2
+    include Report
+    include Strategies
+    def initialize(csv_file_name = 'filtered2.csv')
+      @input = []
+
+      CSV.foreach(csv_file_name, converters: :integer) do |row |
+        @input << S6pHypothesis.from(*row)
+      end
+    end
+
+    def input_data
+      @input
+    end
+
+    def explore_1mod7
+      @modulo117649_6th_roots_generators ||= ModuloK6thRoots.new(117649)
+      print_residues_stat(input_data,7)
+
+      tm = Benchmark.measure {
+        @candidates = []
+        input_data.each do | h |
+          next unless h % 7 == 1
+          modulo7_res1_strategy(h)
+        end
+      }
+
+      puts "COMBING: #{tm}"
+
+      puts "candidates7 size: #{ @candidates.size}"
+
+      tm1 = Benchmark.measure {
+        @candidates.each do |h|
+          ok=@candidates.any?{|h|sixth_root = ⁶√(h); sixth_root == sixth_root.to_i}
+          puts( "EUREKA!!! " * 6 ) if ok
+        end
+      }
+
+      puts "checking: #{tm1}"
+=begin
+MODULO 7 residues:[[1, 273214], [2, 330525]]
+COMBING:   1.020000   0.000000   1.020000 (  1.022982)
+candidates7 size: 4063
+checking:  13.580000   0.000000  13.580000 ( 13.601904)
+=end
+
+
+    end
+
+    def explore
+=begin
+      sample = input_data[0...50]
+      tm = Benchmark.measure {
+
+        sample.each do |h|
+
+          Prime.prime_division(h.x)
+        end
+
+
+      }
+
+      puts tm #=> 285.530000   0.000000 285.530000 (285.929285)
+=end
+      sample = input_data[0...10]
+      print_residues_stat(input_data,7)
+      print_residues_stat(input_data,8)
+      print_residues_stat(input_data,9)
+      print_residues_stat(input_data,11)
+      print_residues_stat(input_data,5)
+      print_residues_stat(input_data,31)
+      print_residues_stat(input_data,13)
+      print_residues_stat(input_data,23)
+      print_residues_stat(input_data,19)
+
+      @modulo117649_6th_roots_generators ||= ModuloK6thRoots.new(117649)
+      tm = Benchmark.measure {
+
+        sample.each do |h|
+          good = nil
+          tm1 = Benchmark.measure {
+          good, count = possible_sum_of_2_cubic_squares?(h.x)
+          puts "#{good} @ #{count}"
+          }
+          puts tm1
+
+          if good
+            puts "FACTORIZING"
+            factors=[]
+            tm2 = Benchmark.measure {
+              factors= Prime.prime_division(h.x)
+            }
+            p factors
+            puts tm2
+
+            if h % 7 == 1
+              puts "COMBING 7"
+              tm3 = Benchmark.measure {
+              @candidates = []
+              modulo7_res1_strategy(h)
+              ok=@candidates.any?{|h|sixth_root = ⁶√(h); sixth_root == sixth_root.to_i}
+              puts "candidates.size = #{@candidates.size }"
+              puts( "EUREKA!!! " * 6 ) if ok
+              }
+              puts tm3
+
+
+            end
+
+          end
+        end
+
+
+      }
+
+      puts tm
+
+    end
+
+    def ⁶√(h)
+      Math.cbrt(Math.sqrt(h.x))
+    end
+    def possible_sum_of_2_cubic_squares?(x)
+      test_value = x
+
+      Prime.each.with_index do |p, index|
+
+        p2 = p * p
+        return true,index if p2 > test_value
+        next unless p & 3 == 3
+
+        while test_value % p == 0
+          p6 = p2**3
+          q, rem = test_value.divmod(p6)
+          return false,index if rem != 0
+          test_value = q
+        end
+
+      end
+
+
+    end
+
+  end
+
 end
