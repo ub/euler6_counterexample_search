@@ -2,6 +2,8 @@ require "euler6_counterexample_search/version"
 
 require 's6p_hypothesis'
 
+require 'sum_of_two6th_power_terms_modulo_p_discriminator'
+
 require 'pstore'
 
 require 'benchmark'
@@ -758,6 +760,49 @@ checking:  13.580000   0.000000  13.580000 ( 13.601904)
 
 
     end
+
+  end
+
+
+  class Explorer2a
+    include Report
+    include Strategies
+    def initialize(csv_file_name = 'filtered2.csv')
+      @input = []
+
+      CSV.foreach(csv_file_name, converters: :integer) do |row |
+        @input << S6pHypothesis.from(*row)
+      end
+    end
+
+    def input_data
+      @input
+    end
+
+    def explore
+
+      discriminators = [5, 13,   19,   43,   61,   97,   157,   277].map do |p|
+        SumOfTwo6thPowerTermsModuloP_Discriminator.new(p)
+      end
+
+      discriminators.each do |d|
+        d.print
+        fast, rest = input_data.partition {|x| d.quickly_testable?(x)}
+        puts "#{fast.size}/#{rest.size}"
+      end
+
+      puts "\nCUMULATIVE:\n\n"
+
+      tail = input_data
+      discriminators.each do |d|
+        d.print
+        fast, tail = tail.partition {|x| d.quickly_testable?(x)}
+        puts "#{fast.size}/#{tail.size}"
+      end
+
+
+    end
+
 
   end
 
