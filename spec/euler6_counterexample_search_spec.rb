@@ -4,9 +4,9 @@ describe Euler6CounterexampleSearch do
   it 'does something useful'
 
 end
-describe Euler6CounterexampleSearch::Processor1 do
+xdescribe Euler6CounterexampleSearch::Processor1 do
 
-  subject {Euler6CounterexampleSearch::Processor1.new 'euler6_hypotheses.pstore'}
+  subject { Euler6CounterexampleSearch::Processor1.new 'euler6_hypotheses.pstore' }
   it 'provides input data of pseudo 6th powers' do
     expect(subject.input_data.count).to eq 117649 * 2 /7
   end
@@ -20,10 +20,9 @@ describe Euler6CounterexampleSearch::Processor1 do
 end
 
 
+xdescribe Euler6CounterexampleSearch::Processor2 do
 
-describe Euler6CounterexampleSearch::Processor2 do
-
-  subject {Euler6CounterexampleSearch::Processor2.new 'euler6_hypotheses.pstore'}
+  subject { Euler6CounterexampleSearch::Processor2.new 'euler6_hypotheses.pstore' }
 
   it 'works' do
     expect { subject.process; subject.report
@@ -33,9 +32,9 @@ describe Euler6CounterexampleSearch::Processor2 do
 
 end
 
-describe Euler6CounterexampleSearch::Processor3 do
+xdescribe Euler6CounterexampleSearch::Processor3 do
 
-  subject {Euler6CounterexampleSearch::Processor3.new 'euler6_hypotheses.pstore'}
+  subject { Euler6CounterexampleSearch::Processor3.new 'euler6_hypotheses.pstore' }
 
   it 'works' do
     expect { subject.process; # subject.report
@@ -45,20 +44,9 @@ describe Euler6CounterexampleSearch::Processor3 do
 
 end
 
-describe Euler6CounterexampleSearch::Explorer3 do
+xdescribe Euler6CounterexampleSearch::Explorer3 do
 
-  subject {Euler6CounterexampleSearch::Explorer3.new 'euler6_hypotheses.pstore'}
-
-  it 'works' do
-    expect { subject.explore; # subject.report
-
-    }.not_to raise_exception
-  end
-
-end
-
-describe Euler6CounterexampleSearch::Explorer2 do
-
+  subject { Euler6CounterexampleSearch::Explorer3.new 'euler6_hypotheses.pstore' }
 
   it 'works' do
     expect { subject.explore; # subject.report
@@ -67,7 +55,18 @@ describe Euler6CounterexampleSearch::Explorer2 do
   end
 
 end
-fdescribe Euler6CounterexampleSearch::Explorer2a do
+
+xdescribe Euler6CounterexampleSearch::Explorer2 do
+
+
+  it 'works' do
+    expect { subject.explore; # subject.report
+
+    }.not_to raise_exception
+  end
+
+end
+xdescribe Euler6CounterexampleSearch::Explorer2a do
 
 
   it 'works' do
@@ -127,8 +126,8 @@ describe SumsOf6thPowerMTermsModK do
 
   describe '#===' do
     subject(:sums_of_6th_powers_mod13) { SumsOf6thPowerMTermsModK.new(13) }
-    let(:zero) {S6pHypothesis.new(0,1)}
-    let(:_14) {S6pHypothesis.new(14,1)}
+    let(:zero) { S6pHypothesis.new(0, 1) }
+    let(:_14) { S6pHypothesis.new(14, 1) }
 
     it 'contains zero' do
       expect(sums_of_6th_powers_mod13 === zero).to be_truthy
@@ -142,7 +141,37 @@ describe SumsOf6thPowerMTermsModK do
 
 end
 
-xdescribe ModuloK6thRoots do
+
+describe ModuloP6K6thRootsSE do
+  describe '.new' do
+    it 'creates instance' do
+      modulo117649_6th_roots_generator = ModuloP6K6thRootsSE.new(7)
+      expect(modulo117649_6th_roots_generator).to be
+    end
+  end
+
+  describe '#[]' do
+    let(:modulo117649_6th_roots_generator) { ModuloK6thRoots.new(117649) }
+    let(:modulo117649_6th_roots_generator_se) { ModuloP6K6thRootsSE.new(7) }
+    let(:modulo729_6th_roots_generator) { ModuloK6thRoots.new(729) }
+    let(:modulo729_6th_roots_generator_se) { ModuloP6K6thRootsSE.new(3) }
+    # let(:modulo4826809_6th_roots_generator) { ModuloK6thRoots.new(4826809) }
+    # let(:modulo4826809_6th_roots_generator_se) { ModuloK6RootsSE.new(13) }
+    it 'produces same results as manually calculated table for 7⁶' do
+      (1..117649).step(7) do |r|
+        expect(modulo117649_6th_roots_generator_se[r].each.take(6)).to eq(
+               modulo117649_6th_roots_generator[r].each.take(6))
+
+      end
+    end
+
+
+  end
+
+end
+
+
+describe ModuloK6thRoots do
   describe '.new' do
     it 'creates instance' do
       modulo117649_6th_roots_generator = ModuloK6thRoots.new(117649)
