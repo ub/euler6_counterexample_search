@@ -56,30 +56,29 @@ class ModuloP6K6thRootsSE
   def [](i)
    #  x ** 6 - i ≡ 0 (mod p)
     mod_p_roots = @sixth_roots_mod_p[i % @p]
-    mod_p2_roots = lift( mod_p_roots, @p, i)
-    mod_p3_roots = lift( mod_p2_roots, @p*@p, i)
-    mod_p4_roots = lift( mod_p3_roots, @p**3, i)
-    mod_p5_roots = lift( mod_p4_roots, @p**4, i)
-    mod_p6_roots = lift( mod_p5_roots, @p**5, i)
+    mod_p6_roots = calculate_mod_p6_roots(mod_p_roots, i)
 
     ModuloK6thRoots::PeriodicSequence.new(@k, mod_p6_roots.sort)
 
   end
 
   private
-  def lift(roots, m, r6)
-    #  x ** 6 - i ≡ 0 (mod p)
-    roots.map do |a|
-      lift_one(a, m, r6)
-    end.flatten
+
+  def calculate_mod_p6_roots(mod_p_roots, residue)
+    mod_p_roots.map do |a|
+      df =( 6 * a** 5) % @p
+      inv_df = @multiplicative_inverse_mod_p[df]
+      m = 1
+      b = a
+      5.times do
+        m = m * @p
+        _f_div_m = ((-b**6 + residue) / m) % @p
+        t = (inv_df * _f_div_m) % @p
+        b = b + m * t
+      end
+      b
+    end
   end
 
-  def lift_one(a, m, r6)
-    df =( 6 * a** 5) % @p
-    # puts "DF=#{df}"
-    _f_div_m =  (- (a ** 6 - r6) / m) % @p
-    inv_df = @multiplicative_inverse_mod_p[df]
-    t = (inv_df * _f_div_m) % @p
-    a + m * t
-  end
+
 end
