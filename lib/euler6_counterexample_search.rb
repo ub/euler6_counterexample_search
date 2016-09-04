@@ -46,6 +46,16 @@ module Euler6CounterexampleSearch
       end
     end
 
+    def modulo_p_6pow_divisibility_strategy(v, p, p6pow, modulo_p6pow_6th_roots_generators )
+      res = v % p6pow
+      modulo_p6pow_6th_roots_generators[res].each do |u|
+        u6 = u **6
+        break if v < u6
+        hypothesis = (v - u6).reduce_and_check(p,p6pow)
+        @candidates << hypothesis if hypothesis
+      end
+    end
+
     def brute_force_strategy(v)
       r7 = v % 7
       r8 = v % 8
@@ -86,7 +96,7 @@ module Euler6CounterexampleSearch
   end
   class Processor1
   def initialize(store_file_name)
-    @modulo117649_6th_roots_generators = ModuloK6thRoots.new(117649)
+    modulo_p6pow_6th_roots_generators = ModuloK6thRoots.new(117649)
     @candidates = []
     @pstore = PStore.new(store_file_name)
   end
@@ -104,7 +114,7 @@ module Euler6CounterexampleSearch
 
     input_data.each do |f6|
       rem = f6 % 117649
-      @modulo117649_6th_roots_generators[rem].each do |e|
+      modulo_p6pow_6th_roots_generators[rem].each do |e|
         e6=e**6
         break if e6 >= f6
         @candidates << S6pHypothesis.new((f6 - e6) /117649, 4, 117649)
@@ -634,7 +644,7 @@ Run options: include {:focus=>true}
     end
 
     def explore_1mod7
-      @modulo117649_6th_roots_generators ||= ModuloK6thRoots.new(117649)
+      modulo_p6pow_6th_roots_generators ||= ModuloK6thRoots.new(117649)
       print_residues_stat(input_data,7)
 
       tm = Benchmark.measure {
@@ -693,7 +703,7 @@ checking:  13.580000   0.000000  13.580000 ( 13.601904)
       print_residues_stat(input_data,23)
       print_residues_stat(input_data,19)
 
-      @modulo117649_6th_roots_generators ||= ModuloK6thRoots.new(117649)
+      modulo_p6pow_6th_roots_generators ||= ModuloK6thRoots.new(117649)
       tm = Benchmark.measure {
 
         sample.each do |h|
@@ -806,4 +816,111 @@ checking:  13.580000   0.000000  13.580000 ( 13.601904)
 
   end
 
-end
+  class Processor4
+    include Strategies
+    include Report
+
+    def initialize(csv_file_name = 'filtered2.csv')
+
+      @input = []
+      @candidates = []
+      @discriminators = {}
+      [5, 13,   19,   43,   61,   97,   157,   277].each do |p|
+        @discriminators[p] = SumOfTwo6thPowerTermsModuloP_Discriminator.new p
+      end
+
+      @modulo_6th_roots_generators = { }
+
+      [13,   19,   43,   61,   97,   157,   277].reverse_each do |p|
+        @modulo_6th_roots_generators[p] = ModuloP6K6thRootsSE.new(p)
+      end
+
+      @modulo_6th_roots_generators[5] = ModuloK6thRoots.new(15625)
+
+      CSV.foreach(csv_file_name, converters: :integer) do |row |
+        @input << S6pHypothesis.from(*row)
+      end
+    end
+
+    def input_data
+      @input
+    end
+
+    def process
+
+      rest = input_data
+
+      puts "starting ..."
+
+        processable_7, rest = rest.partition {|x| x % 7 == 1}
+        processable_7.each  {|x| modulo7_res1_strategy(x) }
+
+
+
+      @discriminators.each_pair do |p, d|
+
+        fast, rest = rest.partition {|x| d.quickly_testable?(x)}
+        p6pow = p**6
+
+        fast.each do |h|
+          modulo_p_6pow_divisibility_strategy(h,p,p6pow,@modulo_6th_roots_generators[p])
+        end
+      end
+
+
+
+=begin
+     Когда закомментирована обработка по 9 и 8
+      candidates 6pow: 7308
+      unprocessed: 38422
+
+    + обработка по 9
+     candidates 6pow: 37895
+     unprocessed: 21104
+
+    + обработка по 8
+
+      candidates 6pow: 162417
+      unprocessed: 13139
+
+    Все равно тест на шестую занимает всего 0.17 секунд
+
+
+=end
+      processable_9, rest = rest.partition {|x| x % 9 == 1}
+      processable_9.each {|x| modulo9_res1_strategy(x)}
+# =begin
+
+      processable_8, rest = rest.partition {|x| x % 8 == 1}
+      processable_8.each {|x| modulo8_res1_strategy(x)}
+# =end
+
+
+      @unprocessed = rest
+
+      puts "Testing 6th power"
+      t =Benchmark.measure {
+      @candidates.each do |h|
+        puts "EUREKA" if is_sixth_power?(h)
+      end
+      }
+      puts t
+    end
+
+    def report
+      puts "INPUT: #{input_data.size}"
+      puts "candidates 6pow: #{@candidates.size}"
+      puts "unprocessed: #{@unprocessed.size}"
+    end
+
+
+    def is_sixth_power?(h)
+      sixth_root=Math.cbrt(Math.sqrt(h.x))
+      sixth_root.round ** 6 == h.x
+    end
+
+
+    end
+
+
+  end

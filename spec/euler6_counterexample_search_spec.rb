@@ -78,6 +78,21 @@ xdescribe Euler6CounterexampleSearch::Explorer2a do
 end
 
 
+
+fdescribe Euler6CounterexampleSearch::Processor4 do
+
+  # subject { Euler6CounterexampleSearch::Processor4.new  }
+
+  it 'works' do
+    expect { subject.process;  subject.report
+
+    }.not_to raise_exception
+  end
+
+end
+
+
+
 describe SumsOf6thPowerMTermsModK do
   describe '.new' do
     it 'creates instance' do
@@ -180,19 +195,19 @@ describe ModuloK6thRoots do
   end
 
   describe '#[]' do
-    subject(:modulo117649_6th_roots_generators) { ModuloK6thRoots.new(117649) }
+    subject(:modulo_p6pow_6th_roots_generators) { ModuloK6thRoots.new(117649) }
     context '#[1]' do
-      subject { modulo117649_6th_roots_generators[1].each }
+      subject { modulo_p6pow_6th_roots_generators[1].each }
       it { is_expected.to include(1) }
       it { is_expected.to include(117648) }
       it { is_expected.to include(117650) }
     end
     context '#[64]' do
-      subject { modulo117649_6th_roots_generators[64].each }
+      subject { modulo_p6pow_6th_roots_generators[64].each }
       it { is_expected.to include(2) }
     end
     context '#[729]' do
-      subject { modulo117649_6th_roots_generators[729].each }
+      subject { modulo_p6pow_6th_roots_generators[729].each }
       it { is_expected.to include(3) }
     end
   end
