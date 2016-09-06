@@ -91,6 +91,17 @@ fdescribe Euler6CounterexampleSearch::Processor4 do
 
 end
 
+describe Euler6CounterexampleSearch::Explorer2u do
+
+  it 'works' do
+    expect { subject.explore;  subject.report
+
+    }.not_to raise_exception
+  end
+
+end
+
+
 
 
 describe SumsOf6thPowerMTermsModK do

@@ -905,7 +905,7 @@ checking:  13.580000   0.000000  13.580000 ( 13.601904)
         puts "EUREKA" if is_sixth_power?(h)
       end
 
-      sum_of_two_cubic_squares_check = SumOf2CubicSquaresFastChecker.new(12195263)
+      sum_of_two_cubic_squares_check = SumOf2CubicSquaresFastChecker.new(2750171)
 
       puts "Quick-testing sum of two sixth powers"
       t = Benchmark.measure {
@@ -913,6 +913,7 @@ checking:  13.580000   0.000000  13.580000 ( 13.601904)
       }
       puts t
 
+      # erroneously
       # MAX_PRIME = 913247: 13139 => 5742 367 sec
       # MAX_PRIME = 224743 ; => 6051 122 sec
       # MAX_PRIME = 17393 ; => 6814 12 sec
@@ -942,7 +943,48 @@ checking:  13.580000   0.000000  13.580000 ( 13.601904)
     end
 
 
+  end
+
+
+  class Explorer2u
+    include Report
+    include Strategies
+    def initialize(csv_file_name = 'unprocessed2.csv')
+      @input = []
+
+      CSV.foreach(csv_file_name, converters: :integer) do |row |
+        @input << S6pHypothesis.from(*row)
+      end
     end
+
+    def input_data
+      @input
+    end
+
+    def explore
+      print_residues_stat(input_data,5)
+      print_residues_stat(input_data,7)
+      print_residues_stat(input_data,8)
+      print_residues_stat(input_data,9)
+      print_residues_stat(input_data,11)
+      print_residues_stat(input_data,13)
+      print_residues_stat(input_data,19)
+      print_residues_stat(input_data,23)
+      print_residues_stat(input_data,31)
+      print_residues_stat(input_data,43)
+      print_residues_stat(input_data,61)
+      print_residues_stat(input_data,97)
+      print_residues_stat(input_data,157)
+      print_residues_stat(input_data,277)
+
+    end
+
+    def report
+
+    end
+
+  end
+
 
 
   end
