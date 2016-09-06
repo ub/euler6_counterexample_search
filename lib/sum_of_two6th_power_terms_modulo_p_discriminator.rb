@@ -28,7 +28,7 @@ class SumOfTwo6thPowerTermsModuloP_Discriminator
     res = x % @p
     # if x modulo p is 6th power residue then for x = a**6 + b**6
     # a  % p == 0
-    @rs[1...@p].include?( res)
+    @rs[0...@p].include?( res)
   end
 end
 
