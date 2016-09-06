@@ -56,7 +56,7 @@ xdescribe Euler6CounterexampleSearch::Explorer3 do
 
 end
 
-xdescribe Euler6CounterexampleSearch::Explorer2 do
+describe Euler6CounterexampleSearch::Explorer2 do
 
 
   it 'works' do
@@ -252,3 +252,54 @@ describe ModuloK6thRoots::PeriodicSequence do
     end
   end
 end
+
+
+describe SumOf2CubicSquaresFastChecker do
+  describe 'could?' do
+    let(:too_large_factor) { 913259 ** 2 }
+
+    it 'accepts numbers with prime factors like 4k+1' do
+      expect(subject.could_be?(5)).to be_truthy
+      expect(subject.could_be?(25)).to be_truthy
+      expect(subject.could_be?(13)).to be_truthy
+      expect(subject.could_be?(65)).to be_truthy
+    end
+
+    it 'rejects numbers with prime factors like 4k+3 of 1st power' do
+      expect(subject.could_be?(913247)).to be_falsey
+      expect(subject.could_be?(7)).to be_falsey
+    end
+
+    it 'rejects numbers with prime factors like 4k+3 squared ' do
+      expect(subject.could_be?(49)).to be_falsey
+      expect(subject.could_be?(19**2)).to be_falsey
+      expect(subject.could_be?(19*49)).to be_falsey
+    end
+
+    it 'accepts numbers with prime factors like 4k+3 raised to sixth power ' do
+      expect(subject.could_be?(7**6)).to be_truthy
+      expect(subject.could_be?(19**6)).to be_truthy
+      expect(subject.could_be?(19**6 * 7**6)).to be_truthy
+    end
+
+    it 'accepts numbers with prime factors like 4k+3 raised to twelveth power ' do
+      expect(subject.could_be?(7**12)).to be_truthy
+    end
+
+    it 'rejects numbers with prime factors like 4k+3 raised to 7th power ' do
+      expect(subject.could_be?(7**7)).to be_falsey
+    end
+
+
+
+
+
+
+    it 'does not check too large prime  and returns false positive' do
+      expect(subject.could_be?(too_large_factor)).to be_truthy
+    end
+
+  end
+end
+
+

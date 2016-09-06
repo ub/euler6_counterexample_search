@@ -13,6 +13,9 @@ require 'csv'
 require 'prime'
 require 'prettyprint'
 
+
+require 'sum_of2_cubic_squares_fast_checker'
+
 module Euler6CounterexampleSearch
   module Strategies
     def modulo7_res1_strategy(v)
@@ -898,13 +901,32 @@ checking:  13.580000   0.000000  13.580000 ( 13.601904)
 
       @unprocessed = rest
 
-      puts "Testing 6th power"
-      t =Benchmark.measure {
       @candidates.each do |h|
         puts "EUREKA" if is_sixth_power?(h)
       end
+
+      sum_of_two_cubic_squares_check = SumOf2CubicSquaresFastChecker.new(12195263)
+
+      puts "Quick-testing sum of two sixth powers"
+      t = Benchmark.measure {
+      @unprocessed = rest.select{|h| sum_of_two_cubic_squares_check.could_be? h.x}
       }
       puts t
+
+      # MAX_PRIME = 913247: 13139 => 5742 367 sec
+      # MAX_PRIME = 224743 ; => 6051 122 sec
+      # MAX_PRIME = 17393 ; => 6814 12 sec
+      # MAX_PRIME = 2750171       => 5522 948 sec
+      # MAX_PRIME = 12195263  => 5269  3520 sec
+
+
+      CSV.open 'unprocessed2.csv', 'wb' do |csv|
+        @unprocessed.each do |hyp|
+          hyp.save(csv)
+        end
+      end
+
+
     end
 
     def report
