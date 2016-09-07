@@ -79,7 +79,7 @@ end
 
 
 
-fdescribe Euler6CounterexampleSearch::Processor4 do
+describe Euler6CounterexampleSearch::Processor4 do
 
   # subject { Euler6CounterexampleSearch::Processor4.new  }
 
@@ -91,7 +91,7 @@ fdescribe Euler6CounterexampleSearch::Processor4 do
 
 end
 
-describe Euler6CounterexampleSearch::Explorer2u do
+fdescribe Euler6CounterexampleSearch::Explorer2u do
 
   it 'works' do
     expect { subject.explore;  subject.report
