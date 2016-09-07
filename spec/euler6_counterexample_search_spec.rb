@@ -91,7 +91,7 @@ describe Euler6CounterexampleSearch::Processor4 do
 
 end
 
-fdescribe Euler6CounterexampleSearch::Explorer2u do
+describe Euler6CounterexampleSearch::Explorer2u do
 
   it 'works' do
     expect { subject.explore;  subject.report
@@ -101,6 +101,17 @@ fdescribe Euler6CounterexampleSearch::Explorer2u do
 
 end
 
+
+fdescribe Euler6CounterexampleSearch::Processor5 do
+
+
+  it 'works' do
+    expect { subject.process;  subject.report
+
+    }.not_to raise_exception
+  end
+
+end
 
 
 
