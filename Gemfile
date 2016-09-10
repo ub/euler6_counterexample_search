@@ -1,4 +1,7 @@
 source 'https://rubygems.org'
 
-# Specify your gem's dependencies in euler6_counterexample_search.gemspec
-gemspec
+# gemspec
+gem 'rake'
+gem 'rspec'
+gem 'active_record_migrations'
+gem 'sqlite3' # or 'pg', 'mysql2', .
