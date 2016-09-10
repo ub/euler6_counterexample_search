@@ -7,6 +7,7 @@ class Hypothesis < ActiveRecord::Base
   has_one :refutation
 
   scope :unrefuted, -> {left_outer_joins(:refutation ).where('refutations.id'=> nil)}
+  scope :unreduced, -> {left_outer_joins(:subgoals).where( "subgoals_hypotheses.id" => nil)}
   scope :for_terms, ->(n){where(terms_count: n)}
   def value=(v)
     super(v)
