@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160909205011) do
+ActiveRecord::Schema.define(version: 20160910120843) do
 
   create_table "hypotheses", force: :cascade do |t|
     t.string  "value",       limit: 40
@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(version: 20160909205011) do
     t.string  "factor",      limit: 40
     t.integer "parent_id"
     t.index ["parent_id"], name: "index_hypotheses_on_parent_id"
+    t.index ["terms_count"], name: "index_hypotheses_on_terms_count"
   end
 
   create_table "refutations", force: :cascade do |t|

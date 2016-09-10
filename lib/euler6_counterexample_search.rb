@@ -101,7 +101,7 @@ module Euler6CounterexampleSearch
   end
   class Processor1
     def initialize(store_file_name)
-      modulo_p6pow_6th_roots_generators = ModuloK6thRoots.new(117649)
+      @modulo_p6pow_6th_roots_generators = ModuloK6thRoots.new(117649)
       @candidates = []
       @pstore = PStore.new(store_file_name)
     end
@@ -122,7 +122,7 @@ module Euler6CounterexampleSearch
 
       input_data.each do |f6|
         rem = f6 % 117649
-        modulo_p6pow_6th_roots_generators[rem].each do |e|
+        @modulo_p6pow_6th_roots_generators[rem].each do |e|
           e6=e**6
           break if e6 >= f6
           @candidates << S6pHypothesis.new((f6 - e6) /117649, 4, 117649)
@@ -651,7 +651,7 @@ Run options: include {:focus=>true}
     end
 
     def explore_1mod7
-      modulo_p6pow_6th_roots_generators ||= ModuloK6thRoots.new(117649)
+      @modulo_p6pow_6th_roots_generators ||= ModuloK6thRoots.new(117649)
       print_residues_stat(input_data, 7)
 
       tm = Benchmark.measure {
@@ -710,7 +710,7 @@ checking:  13.580000   0.000000  13.580000 ( 13.601904)
       print_residues_stat(input_data, 23)
       print_residues_stat(input_data, 19)
 
-      modulo_p6pow_6th_roots_generators ||= ModuloK6thRoots.new(117649)
+      @modulo_p6pow_6th_roots_generators ||= ModuloK6thRoots.new(117649)
       tm = Benchmark.measure {
 
         sample.each do |h|
