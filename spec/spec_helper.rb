@@ -3,6 +3,7 @@ $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
 
 require 'active_record'
 require 'sqlite3'
+require 'database_cleaner'
 require 'yaml'
 
 configuration = YAML::load(IO.read('db/config.yml'))
@@ -23,4 +24,15 @@ require 'sum_of2_cubic_squares_fast_checker'
 RSpec.configure do |c|
   c.filter_run focus: true
   c.run_all_when_everything_filtered = true
+
+  c.before(:suite) do
+    DatabaseCleaner.strategy = :transaction
+    DatabaseCleaner.clean_with(:truncation)
+  end
+
+  c.around(:each) do |example|
+    DatabaseCleaner.cleaning do
+      example.run
+    end
+  end
 end
