@@ -143,6 +143,11 @@ module Euler6CounterexampleSearch
       puts
       puts @candidates.size
       puts @filtered.size
+      File.open('oldhyps4-filtered.csv', 'w') do |f|
+        @filtered.each do |flt|
+          f.puts(flt.x)
+        end
+      end
       print "FILT %9:"; p @filtered.group_by { |x| x % 9 }.map { |k, v| [k, v.size] }.sort
       print "FILT %8:"; p @filtered.group_by { |x| x % 8 }.map { |k, v| [k, v.size] }.sort
       group_by_mod7 = @filtered.group_by { |x| x % 7 }.map { |k, v| [k, v.size] }.sort
