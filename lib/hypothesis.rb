@@ -38,7 +38,7 @@ class Hypothesis < ActiveRecord::Base
   end
 
   def -(s)
-    Hypothesis.new(value: x - s, terms_count: terms_count - 1, factor: factor - 1, parent_id: self.id )
+    Hypothesis.new(value: x - s, terms_count: terms_count - 1, factor: 1 , parent_id: self.id )
   end
 
   def div_by!(d)

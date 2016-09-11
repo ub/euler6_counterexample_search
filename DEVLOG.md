@@ -85,3 +85,20 @@ sqlite> select count(*), reason from refutations group by reason;
  #=> 10321
  
  Что на 1 больше предыдущего варианта алгоритма!
+ 
+ 
+ Повторный запуск после очистки базы приводит к регрессии -- снова 10419 результатов, 
+ 
+ И в старом и в новом вычислении два дубликата
+ ```
+ mode csv
+ sqlite> .output data.csv
+ sqlite> SELECT customerid,
+    ...>        firstname,
+    ...>        lastname,
+    ...>        company
+    ...>   FROM customers;
+ sqlite> .quit
+ ```
+ 
+ 
