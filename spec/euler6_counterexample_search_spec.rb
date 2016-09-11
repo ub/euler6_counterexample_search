@@ -4,7 +4,7 @@ describe Euler6CounterexampleSearch do
   it 'does something useful'
 
 end
-xdescribe Euler6CounterexampleSearch::Processor1 do
+fdescribe Euler6CounterexampleSearch::Processor1 do
 
   subject { Euler6CounterexampleSearch::Processor1.new 'euler6_hypotheses.pstore' }
   it 'provides input data of pseudo 6th powers' do
@@ -102,7 +102,7 @@ describe Euler6CounterexampleSearch::Explorer2u do
 end
 
 
-fdescribe Euler6CounterexampleSearch::Processor5 do
+describe Euler6CounterexampleSearch::Processor5 do
 
 
   it 'works' do

@@ -45,6 +45,43 @@
  SELECT "hypotheses".* FROM "hypotheses" LEFT OUTER JOIN "hypotheses" "subgoals_hypotheses" ON "subgoals_hypotheses"."parent_id" = "hypotheses"."id" WHERE "hypotheses"."terms_count" = 5 AND "subgoals_hypotheses"."id" IS NULL
  ```
    
+## Тайминг   
+   bin\filter4   
+   ( 32.281798)
    
    
+   Hypothesis.for_terms(4).count
    
+   Предыдущая реализация давала
+   10320
+   
+   Нынешняя дает 51313 отфильтрованных гипотез из 84033
+```ruby
+   Hypothesis.for_terms(4).unrefuted.count
+```   
+
+Будем искать ошибку
+
+_11/09_ дополнительная ошибка  -- нельзя проверять сумму делящейся на 2 и на 3
+Только 8 и 9
+
+После исправления регрессии
+```ruby
+ Hypothesis.for_terms(4).unrefuted.count
+ ```
+ #=> 10419
+
+
+sqlite> select count(*), reason from refutations group by reason;
+5601|1
+65522|2
+8092|3
+
+Добавил проверку на представимость суммы степеней по модулю 31
+
+```ruby
+ Hypothesis.for_terms(4).unrefuted.count
+ ```
+ #=> 10321
+ 
+ Что на 1 больше предыдущего варианта алгоритма!

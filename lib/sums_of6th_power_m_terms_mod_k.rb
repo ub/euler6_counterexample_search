@@ -1,4 +1,3 @@
-require 'set'
 
 class SumsOf6thPowerMTermsModK
   MAX_TERMS = 4
@@ -45,12 +44,12 @@ class SumsOf6thPowerMTermsModK
 
   private
   def caculate_residues
-    rs = Set.new
+    rs = []
     @k.times do |x|
       r = x**6 % @k
       rs << r
     end
-    @v[1] = rs.to_a.sort
+    @v[1] = rs.sort.uniq
   end
 
   def calculate_reachable_sums
