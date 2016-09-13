@@ -4,9 +4,9 @@ require 'refutation'
 
 describe FilteringRules::DivisibilityBy_p_ImpliesDivisibilityBy_p_6 do
 
-  let (:good3_a) {Hypothesis.new(value:5 ** 6 + 7 **6 + 11**6,terms_count: 3,factor:1)}
-  let (:bad3_5) {Hypothesis.new(value:3**5,terms_count: 3,factor:1)}
-  let (:bad3_7) {Hypothesis.new(value:3**7,terms_count: 3,factor:1)}
+  let (:good3_a) {FactoryGirl.build(:hypothesis,value:5 ** 6 + 7 **6 + 11**6,terms_count: 3)}
+  let (:bad3_5) {FactoryGirl.build(:hypothesis,value:3**5,terms_count: 3)}
+  let (:bad3_7) {FactoryGirl.build(:hypothesis,value:3**7,terms_count: 3)}
   subject(:div729_checker){FilteringRules::DivisibilityBy_p_ImpliesDivisibilityBy_p_6.new(3)}
 
   it 'marks posititve sum of three 6th powers (regression)' do
