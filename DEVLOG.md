@@ -247,13 +247,46 @@ F6=100846601232737496855712890625 E6=61617958999827439062623452929
 
 
 
+Тестируем и получаем, что значение должно быть отвергнуто!
+
+```ruby
+  let(:regression2a_bad) {FactoryGirl.build(:hypothesis,value:100879995337641642321784)}
+
+  it 'refuses regression 1 example ' do
+    pending
+    expect(div64_checker.check(regression2a_bad)).to be_falsey
+    expect(regression2a_bad.refutation).to be_present
+  end
+```
+
+Вместе с тем, в базе оно присуттвует без опровержения 
+
+```
+sqlite> select * from hypotheses where value = '100879995337641642321784';
+423483|100879995337641642321784|4|7529536|362142
+
+sqlite> select count(*) from refutations where hypothesis_id = 423483;
+0
+```
 
 
+Генерируем новый набор
+bin/generate5
+bin/process5
 
 
+ 100879995337641642321784 * 64 = 6456319701609065108594176
 
+В новом наборе
+```
+sqlite>  select * from hypotheses where value = '6456319701609065108594176';
+541130|6456319701609065108594176|4|117649|479789
+```
 
-
+Очистка
+```ruby
+ActiveRecord::Base.transaction { Hypothesis.for_terms(4).each {|h| next unless h.refutation ; h.refutation.destroy!}};nil
+```
 
 
 

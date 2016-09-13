@@ -57,17 +57,17 @@ module EulerSop6ConjectureCounterexampleSearch
       @check31r = RemainderIsRepresentableAsSumOf6powResidues.new(31)
     end
 
-    def filter
+    def filter(candidates)
 
       # find_each(batch_size: 5).lazy. see https://github.com/rails/rails/issues/21874#issuecomment-145947380
       #TODO better name than check_X_6.check (?) modifies
-      Hypothesis.for_terms(4).unrefuted.unreduced.select do |h|
+      candidates.select do |h|
         @check_2_6.check(h) && @check8r.check(h)
       end.select do |h|
         @check_3_6.check(h) && @check9r.check(h)
       end.select do |h|
         @check_7_6.check(h) && @check7r.check(h)
-      end.each do |h|
+      end.select do |h|
         @check_31_6.check(h) &&
         # with four terms every number  is representable  by sum of 4 6th power residues mod 31
         # 0 is representable only as 0+0+0+0

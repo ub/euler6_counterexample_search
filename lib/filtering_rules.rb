@@ -1,4 +1,5 @@
 require 'sums_of6th_power_m_terms_mod_k'
+require 'refutation'
 
 module FilteringRules
   class DivisibilityBy_p_ImpliesDivisibilityBy_p_6
@@ -23,11 +24,11 @@ module FilteringRules
         else
           Refutation.create!(hypothesis: hypothesis, reason: :divisible_by_p_but_not_by_p_6,
           parameter: @p)
+          hypothesis.save! if hypothesis.changed?
           return false
         end
-        hypothesis.save!
-        return hypothesis
       end
+      hypothesis.save! if hypothesis.changed?
       return hypothesis
     end
   end
