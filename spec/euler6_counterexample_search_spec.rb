@@ -12,7 +12,8 @@ fdescribe Euler6CounterexampleSearch::Processor1 do
   end
 
   it 'works' do
-    expect { subject.process; subject.report
+    expect { subject.process(Hypothesis.for_terms(5).unrefuted.unreduced)
+    ; subject.report
 
     }.not_to raise_exception
   end
@@ -25,7 +26,8 @@ xdescribe Euler6CounterexampleSearch::Processor2 do
   subject { Euler6CounterexampleSearch::Processor2.new 'euler6_hypotheses.pstore' }
 
   it 'works' do
-    expect { subject.process; subject.report
+    expect { subject.process(Hypothesis.for_terms(5).unrefuted.unreduced)
+    ; subject.report
 
     }.not_to raise_exception
   end
@@ -37,7 +39,8 @@ xdescribe Euler6CounterexampleSearch::Processor3 do
   subject { Euler6CounterexampleSearch::Processor3.new 'euler6_hypotheses.pstore' }
 
   it 'works' do
-    expect { subject.process; # subject.report
+    expect { subject.process(Hypothesis.for_terms(5).unrefuted.unreduced)
+    ; # subject.report
 
     }.not_to raise_exception
   end

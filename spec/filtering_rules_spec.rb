@@ -15,7 +15,6 @@ describe FilteringRules::DivisibilityBy_p_ImpliesDivisibilityBy_p_6 do
   it 'marks posititve sum of three 6th powers (regression)' do
     expect(div729_checker.check(good3_a)).to be_truthy
     expect(good3_a.refutation).to be_blank
-    r = Refutation.first
   end
 
   it 'marks negative 3**5' do

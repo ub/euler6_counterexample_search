@@ -288,6 +288,9 @@ sqlite>  select * from hypotheses where value = '6456319701609065108594176';
 ActiveRecord::Base.transaction { Hypothesis.for_terms(4).each {|h| next unless h.refutation ; h.refutation.destroy!}};nil
 ```
 
+commit b95b1b44
+fixed regression 10320
+
 
 
 

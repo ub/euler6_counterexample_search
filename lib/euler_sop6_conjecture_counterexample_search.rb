@@ -24,8 +24,8 @@ module EulerSop6ConjectureCounterexampleSearch
       @modulo_p6pow_6th_roots_generators = ModuloK6thRoots.new(117649)
     end
 
-    def process
-      Hypothesis.for_terms(5).unrefuted.unreduced.each do |f6|
+    def process(pseudo_6th_powers)
+      pseudo_6th_powers.each do |f6|
         rem = f6 % 117649
         subgoals_count = 0
         @modulo_p6pow_6th_roots_generators[rem].each do |e|
@@ -68,16 +68,8 @@ module EulerSop6ConjectureCounterexampleSearch
       end.select do |h|
         @check_7_6.check(h) && @check7r.check(h)
       end.select do |h|
-        @check_31_6.check(h) &&
-        # with four terms every number  is representable  by sum of 4 6th power residues mod 31
-        # 0 is representable only as 0+0+0+0
-            @check31r.check(h)
+        @check_31_6.check(h) && @check31r.check(h)
       end
-=begin
-      @filtered=@candidates.select { |x| x.reduce_and_check(8, 64) }.select { |x| x.reduce_and_check(9, 729) }.
-          select { |x| x.reduce_and_check(7, 117649) }.select { |x| x.reduce_and_check(31, 887_503_681) }
-
-=end
 
     end
 
