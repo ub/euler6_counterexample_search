@@ -4,7 +4,7 @@ describe Euler6CounterexampleSearch do
   it 'does something useful'
 
 end
-fdescribe Euler6CounterexampleSearch::Processor1 do
+describe Euler6CounterexampleSearch::Processor1 do
 
   subject { Euler6CounterexampleSearch::Processor1.new 'euler6_hypotheses.pstore' }
   it 'provides input data of pseudo 6th powers' do
@@ -12,7 +12,7 @@ fdescribe Euler6CounterexampleSearch::Processor1 do
   end
 
   it 'works' do
-    expect { subject.process(Hypothesis.for_terms(5).unrefuted.unreduced)
+    expect { subject.process()
     ; subject.report
 
     }.not_to raise_exception
@@ -21,12 +21,12 @@ fdescribe Euler6CounterexampleSearch::Processor1 do
 end
 
 
-xdescribe Euler6CounterexampleSearch::Processor2 do
+fdescribe Euler6CounterexampleSearch::Processor2 do
 
   subject { Euler6CounterexampleSearch::Processor2.new 'euler6_hypotheses.pstore' }
 
   it 'works' do
-    expect { subject.process(Hypothesis.for_terms(5).unrefuted.unreduced)
+    expect { subject.process()
     ; subject.report
 
     }.not_to raise_exception
@@ -39,7 +39,7 @@ xdescribe Euler6CounterexampleSearch::Processor3 do
   subject { Euler6CounterexampleSearch::Processor3.new 'euler6_hypotheses.pstore' }
 
   it 'works' do
-    expect { subject.process(Hypothesis.for_terms(5).unrefuted.unreduced)
+    expect { subject.process()
     ; # subject.report
 
     }.not_to raise_exception
