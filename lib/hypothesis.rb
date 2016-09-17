@@ -29,12 +29,12 @@ class Hypothesis < ActiveRecord::Base
     x % d
   end
 
-  def <= (other)
-    value <= other
+  def <= (number)
+    value <= number
   end
 
-  def < (other)
-    value < other.value
+  def < (number)
+    value < number
   end
 
   def -(s)
