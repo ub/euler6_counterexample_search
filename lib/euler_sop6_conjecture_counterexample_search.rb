@@ -2,8 +2,7 @@ require 'hypothesis'
 require 'modulo_k_6th_root_generator'
 
 require 'filtering_rules'
-
-
+require 'goal_replacement'
 module EulerSop6ConjectureCounterexampleSearch
   class StartHypothesesGenerator
 
@@ -75,9 +74,37 @@ module EulerSop6ConjectureCounterexampleSearch
   end
 
   class Process4
+    include GoalReplacement
     def initialize
+      @modulo7_res1_tactic = Modulo_m_Res1_Tactic.new(7)
+      @modulo9_res1_tactic = Modulo_m_Res1_Tactic.new(9)
+      @modulo8_res1_tactic = Modulo_m_Res1_Tactic.new(8)
+      @default_tactic = BruteForceTactic.new
+      if_none do |parent_hypothesis|
+        Refutation.create!(hypothesis: parent_hypothesis, reason: :no_subgoals_generated)
+      end
     end
+    def if_none(&block)
+      @modulo7_res1_tactic.if_none_block = block
+      @modulo9_res1_tactic.if_none_block = block
+      @modulo8_res1_tactic.if_none_block = block
+      @default_tactic.if_none_block = block
+      self
+    end
+
     def process(hypotheses)
+      hypotheses.each do |h|
+        if @modulo7_res1_tactic.match? h
+          @modulo7_res1_tactic.apply(h) {|subgoal| subgoal.save!}
+        elsif @modulo9_res1_tactic.match? h
+          @modulo9_res1_tactic.apply(h) {|subgoal| subgoal.save!}
+        elsif @modulo8_res1_tactic.match? h
+          @modulo8_res1_tactic.apply(h) {|subgoal| subgoal.save!}
+        else
+          @default_tactic.apply(h) {|subgoal| subgoal.save!}
+        end
+
+      end
 
     end
 
