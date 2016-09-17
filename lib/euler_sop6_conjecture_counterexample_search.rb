@@ -46,30 +46,38 @@ module EulerSop6ConjectureCounterexampleSearch
   class Filter4
     include FilteringRules
     def initialize
-      @check_2_6 = DivisibilityBy_p_ImpliesDivisibilityBy_p_6.new(2)
-      @check_3_6 = DivisibilityBy_p_ImpliesDivisibilityBy_p_6.new(3)
-      @check_7_6 = DivisibilityBy_p_ImpliesDivisibilityBy_p_6.new(7)
-      @check_31_6 = DivisibilityBy_p_ImpliesDivisibilityBy_p_6.new(31)
+      @constraint_2_6 = DivisibilityBy_p_ImpliesDivisibilityBy_p_6.new(2)
+      @constraint_3_6 = DivisibilityBy_p_ImpliesDivisibilityBy_p_6.new(3)
+      @constraint_7_6 = DivisibilityBy_p_ImpliesDivisibilityBy_p_6.new(7)
+      @constraint_31_6 = DivisibilityBy_p_ImpliesDivisibilityBy_p_6.new(31)
 
-      @check7r = RemainderIsRepresentableAsSumOf6powResidues.new(7)
-      @check8r = RemainderIsRepresentableAsSumOf6powResidues.new(8)
-      @check9r = RemainderIsRepresentableAsSumOf6powResidues.new(9)
-      @check31r = RemainderIsRepresentableAsSumOf6powResidues.new(31)
+      @aggregated_residue_mod_7_constraint = RemainderIsRepresentableAsSumOf6powResidues.new(7)
+      @aggregated_residue_mod_8_constraint = RemainderIsRepresentableAsSumOf6powResidues.new(8)
+      @aggregated_residue_mod_9_constraint = RemainderIsRepresentableAsSumOf6powResidues.new(9)
+      @aggregated_residue_mod_31_constraint = RemainderIsRepresentableAsSumOf6powResidues.new(31)
     end
 
     def filter(candidates)
 
       # find_each(batch_size: 5).lazy. see https://github.com/rails/rails/issues/21874#issuecomment-145947380
-      #TODO better name than check_X_6.check (?) modifies
       candidates.select do |h|
-        @check_2_6.check(h) && @check8r.check(h)
+        @constraint_2_6.check(h) && @aggregated_residue_mod_8_constraint.check(h)
       end.select do |h|
-        @check_3_6.check(h) && @check9r.check(h)
+        @constraint_3_6.check(h) && @aggregated_residue_mod_9_constraint.check(h)
       end.select do |h|
-        @check_7_6.check(h) && @check7r.check(h)
+        @constraint_7_6.check(h) && @aggregated_residue_mod_7_constraint.check(h)
       end.select do |h|
-        @check_31_6.check(h) && @check31r.check(h)
+        @constraint_31_6.check(h) && @aggregated_residue_mod_31_constraint.check(h)
       end
+
+    end
+
+  end
+
+  class Process4
+    def initialize
+    end
+    def process(hypotheses)
 
     end
 
