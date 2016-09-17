@@ -673,7 +673,7 @@ Run options: include {:focus=>true}
 
       tm1 = Benchmark.measure {
         @candidates.each do |h|
-          ok=@candidates.any? { |h| sixth_root = ⁶ √ (h); sixth_root == sixth_root.to_i }
+          ok=@candidates.any? { |h| sixth_root = ⁶√(h); sixth_root == sixth_root.to_i }
           puts("EUREKA!!! " * 6) if ok
         end
       }
@@ -740,7 +740,7 @@ checking:  13.580000   0.000000  13.580000 ( 13.601904)
               tm3 = Benchmark.measure {
                 @candidates = []
                 modulo7_res1_strategy(h)
-                ok=@candidates.any? { |h| sixth_root = ⁶ √ (h); sixth_root == sixth_root.to_i }
+                ok=@candidates.any? { |h| sixth_root = ⁶√(h); sixth_root == sixth_root.to_i }
                 puts "candidates.size = #{@candidates.size }"
                 puts("EUREKA!!! " * 6) if ok
               }
