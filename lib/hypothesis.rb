@@ -44,6 +44,7 @@ class Hypothesis < ActiveRecord::Base
   def div_by!(d)
     self.factor = factor * d
     self.x = x / d
+    self
   end
 
 end
