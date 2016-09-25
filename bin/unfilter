@@ -1,0 +1,35 @@
+#!/usr/bin/env ruby
+
+require_relative('../config/environment')
+require 'benchmark'
+
+def usage
+  puts <<USAGE
+  Undo filtering step N
+  Usage:
+    #{$0} {N}
+    where N = 4|3|2 -- hypothesis terms' count to clear all refutations for
+USAGE
+end
+
+if ARGV[0].nil?
+  usage
+else
+  t=Benchmark.measure do
+    ActiveRecord::Base.transaction do
+      Hypothesis.for_terms(4).refuted.each do |h|
+        h.refutation.destroy
+      end
+    end
+  end
+  puts t
+end
+
+def usage
+  puts <<USAGE
+  Undo filtering step N
+  Usage:
+    #{$0} {N}
+    where N = 4|3|2 -- hypothesis terms' count to clear all refutations for
+USAGE
+end
