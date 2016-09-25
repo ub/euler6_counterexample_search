@@ -7,7 +7,9 @@ class Hypothesis < ActiveRecord::Base
   has_one :refutation
 
   scope :unrefuted, -> {left_outer_joins(:refutation ).where('refutations.id'=> nil)}
-  scope :refuted, -> {left_outer_joins(:refutation ).where.not('refutations.id'=> nil)}
+  # only hypothesis violating some constraint, not counting non-productive hypothesis
+  scope :filtered_out, -> {left_outer_joins(:refutation ).where.not('refutations.id'=> nil).
+                          where.not('refutations.reason' =>   Refutation.reasons[:no_subgoals_generated])}
   scope :unreduced, -> {left_outer_joins(:subgoals).where( "subgoals_hypotheses.id" => nil)}
   scope :for_terms, ->(n){where(terms_count: n)}
   def value=(v)

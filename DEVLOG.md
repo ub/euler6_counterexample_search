@@ -322,3 +322,7 @@ irb(main):011:0> h3.group_by {|h| h.x % 31}.map {|k,a| [k,a.size]}.sort
 Посмотреть суммарные невычеты для 19
 
 Формулировка n-aggregated power k residue (non-residue) modulo m.
+
+
+ bin/filter4
+ 66.230000   0.770000  67.000000 ( 69.062410)
