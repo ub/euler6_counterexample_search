@@ -7,7 +7,7 @@ class Hypothesis < ActiveRecord::Base
   has_one :refutation, dependent:  :destroy
 
   scope :unrefuted, -> {left_outer_joins(:refutation ).where('refutations.id'=> nil)}
-  # only hypothesis violating some constraint, not counting non-productive hypothesis
+  # only hypotheses violating some constraint, not counting non-productive hypotheses
   scope :filtered_out, -> {left_outer_joins(:refutation ).where.not('refutations.id'=> nil).
                           where.not('refutations.reason' =>   Refutation.reasons[:no_subgoals_generated])}
   scope :all_refuted, -> {left_outer_joins(:refutation ).where.not('refutations.id'=> nil)}
