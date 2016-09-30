@@ -481,6 +481,7 @@ module Euler6CounterexampleSearch
       _f67 = ~SumsOf6thPowerMTermsModK.new(67)
       _f73 = ~SumsOf6thPowerMTermsModK.new(73)
       _f79 = ~SumsOf6thPowerMTermsModK.new(79)
+      _f97 = ~SumsOf6thPowerMTermsModK.new(97)
 
       puts "FILTERED: #{@filtered.size}"
       # Противоречие filter_report сообщает другие цифры

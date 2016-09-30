@@ -21,7 +21,7 @@ describe Euler6CounterexampleSearch::Processor1 do
 end
 
 
-fdescribe Euler6CounterexampleSearch::Processor2 do
+describe Euler6CounterexampleSearch::Processor2 do
 
   subject { Euler6CounterexampleSearch::Processor2.new 'euler6_hypotheses.pstore' }
 
@@ -34,7 +34,7 @@ fdescribe Euler6CounterexampleSearch::Processor2 do
 
 end
 
-xdescribe Euler6CounterexampleSearch::Processor3 do
+fdescribe Euler6CounterexampleSearch::Processor3 do
 
   subject { Euler6CounterexampleSearch::Processor3.new 'euler6_hypotheses.pstore' }
 
