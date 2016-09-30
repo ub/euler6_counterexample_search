@@ -3,10 +3,18 @@
 require_relative('../config/environment')
 
 require 'benchmark'
-t=Benchmark.measure do
+
+
+calc_time=Benchmark.measure do
+  @candidates = Hypothesis.for_terms(4).unrefuted.unreduced
+  @processor= EulerSop6ConjectureCounterexampleSearch::Process4.new
+  @processor.process(@candidates)
+
+end
+puts "Calculation time: #{calc_time}"
+save_time=Benchmark.measure do
 ActiveRecord::Base.transaction do
-  candidates = Hypothesis.for_terms(4).unrefuted.unreduced
-  EulerSop6ConjectureCounterexampleSearch::Process4.new.process(candidates)
+  @processor.save_process_results
 end
 end
-puts t
+puts "Saving time: #{save_time}"

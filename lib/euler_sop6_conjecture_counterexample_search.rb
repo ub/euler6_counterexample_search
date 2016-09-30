@@ -80,8 +80,10 @@ module EulerSop6ConjectureCounterexampleSearch
       @modulo9_res1_tactic = Modulo_m_Res1_Tactic.new(9)
       @modulo8_res1_tactic = Modulo_m_Res1_Tactic.new(8)
       @default_tactic = BruteForceTactic.new
+      @refutations=[]
+      @subgoals =  []
       if_none do |parent_hypothesis|
-        Refutation.create!(hypothesis: parent_hypothesis, reason: :no_subgoals_generated)
+        @refutations << Refutation.new(hypothesis: parent_hypothesis, reason: :no_subgoals_generated)
       end
     end
     def if_none(&block)
@@ -95,17 +97,23 @@ module EulerSop6ConjectureCounterexampleSearch
     def process(hypotheses)
       hypotheses.each do |h|
         if @modulo7_res1_tactic.match? h
-          @modulo7_res1_tactic.apply(h) {|subgoal| subgoal.save!}
+          @modulo7_res1_tactic.apply(h) {|subgoal| @subgoals<< subgoal}
         elsif @modulo9_res1_tactic.match? h
-          @modulo9_res1_tactic.apply(h) {|subgoal| subgoal.save!}
+          @modulo9_res1_tactic.apply(h) {|subgoal| @subgoals<< subgoal}
         elsif @modulo8_res1_tactic.match? h
-          @modulo8_res1_tactic.apply(h) {|subgoal| subgoal.save!}
+          @modulo8_res1_tactic.apply(h) {|subgoal| @subgoals<< subgoal}
         else
-          @default_tactic.apply(h) {|subgoal| subgoal.save!}
+          @default_tactic.apply(h) {|subgoal| @subgoals<< subgoal}
         end
 
       end
 
+    end
+
+    def save_process_results
+      @refutations.each {|r| r.save!}
+      @subgoals.each{|s| s.save!}
+      @subgoals.size
     end
 
   end
