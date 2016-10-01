@@ -111,8 +111,8 @@ module EulerSop6ConjectureCounterexampleSearch
     end
 
     def save_process_results
-      @refutations.each {|r| r.save!}
-      @subgoals.each{|s| s.save!}
+      Refutation.import @refutations
+      Hypothesis.import @subgoals
       @subgoals.size
     end
 

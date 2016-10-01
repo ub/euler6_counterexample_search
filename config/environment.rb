@@ -3,6 +3,9 @@ require "bundler/setup"
 
 
 require 'active_record'
+require 'activerecord-import/base'
+require 'activerecord-import/active_record/adapters/sqlite3_adapter'
+
 require 'sqlite3'
 require 'yaml'
 
