@@ -1,8 +1,11 @@
 development:
-  adapter: sqlite3
-  database: db/my_db.sqlite3
+  adapter: postgresql
+  encoding: unicode
+  database: euler6_development
   pool: 5
-  timeout: 5000
+  username: baranov
+  password:
+
 test:
   adapter: sqlite3
   database: db/test_db.sqlite3
