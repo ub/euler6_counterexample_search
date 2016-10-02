@@ -64,23 +64,35 @@ module EulerSop6ConjectureCounterexampleSearch
       @aggregated_residue_mod_8_constraint = RemainderIsRepresentableAsSumOf6powResidues.new(8)
       @aggregated_residue_mod_9_constraint = RemainderIsRepresentableAsSumOf6powResidues.new(9)
       @aggregated_residue_mod_31_constraint = RemainderIsRepresentableAsSumOf6powResidues.new(31)
+
+      @refutations=[]
+      @modifications =  []
+      @input_size = nil
+
     end
 
     def filter(candidates)
+      @input_size = candidates.count
 
       # find_each(batch_size: 5).lazy. see https://github.com/rails/rails/issues/21874#issuecomment-145947380
       candidates.select do |h|
-        @constraint_2_6.check(h) && @aggregated_residue_mod_8_constraint.check(h)
+        @constraint_2_6.check(h, @refutations, @modifications) && @aggregated_residue_mod_8_constraint.check(h, @refutations)
       end.select do |h|
-        @constraint_3_6.check(h) && @aggregated_residue_mod_9_constraint.check(h)
+        @constraint_3_6.check(h, @refutations, @modifications) && @aggregated_residue_mod_9_constraint.check(h, @refutations)
       end.select do |h|
-        @constraint_7_6.check(h) && @aggregated_residue_mod_7_constraint.check(h)
+        @constraint_7_6.check(h, @refutations, @modifications) && @aggregated_residue_mod_7_constraint.check(h, @refutations)
       end.select do |h|
-        @constraint_31_6.check(h) && @aggregated_residue_mod_31_constraint.check(h)
+        @constraint_31_6.check(h, @refutations, @modifications) && @aggregated_residue_mod_31_constraint.check(h, @refutations)
       end
-
     end
 
+    def save_filter_results
+      Refutation.import @refutations
+      @modifications.each do |h|
+        h.save!
+      end
+      @input_size - @refutations.size
+    end
   end
 
   class Process4

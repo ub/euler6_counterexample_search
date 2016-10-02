@@ -15,20 +15,20 @@ module FilteringRules
       @p_6 = p ** 6
     end
 
-    def check(hypothesis)
+    def check(hypothesis,refutations, modifications)
       while hypothesis.x % @p == 0
         q6, r6 = hypothesis.x.divmod(@p_6)
         if r6 == 0
           hypothesis.x = q6
           hypothesis.factor = hypothesis.factor * @p_6
         else
-          Refutation.create!(hypothesis: hypothesis, reason: :divisible_by_p_but_not_by_p_6,
+          refutations << Refutation.new(hypothesis: hypothesis, reason: :divisible_by_p_but_not_by_p_6,
           parameter: @p)
-          hypothesis.save! if hypothesis.changed?
+          modifications << hypothesis if hypothesis.changed?
           return false
         end
       end
-      hypothesis.save! if hypothesis.changed?
+      modifications << hypothesis if hypothesis.changed?
       return hypothesis
     end
   end
@@ -44,18 +44,18 @@ module FilteringRules
       end
     end
 
-    def check(hypothesis)
+    def check(hypothesis, refutations)
       case @k
         when 7,8,9
           if hypothesis.x % @k > hypothesis.terms_count
-            Refutation.create!(hypothesis: hypothesis, reason:
+            refutations << Refutation.new(hypothesis: hypothesis, reason:
                 :remainder_not_representable_as_sum_of_6th_power_residues,
                 parameter: @k)
             return false
           end
         else
           unless @checker === hypothesis
-            Refutation.create!(hypothesis: hypothesis, reason:
+            refutations << Refutation.new(hypothesis: hypothesis, reason:
                 :remainder_not_representable_as_sum_of_6th_power_residues,
                                parameter: @k)
             return false

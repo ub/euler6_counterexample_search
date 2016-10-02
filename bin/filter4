@@ -3,10 +3,20 @@
 require_relative('../config/environment')
 
 require 'benchmark'
-t=Benchmark.measure do
-ActiveRecord::Base.transaction do
-  candidates = Hypothesis.for_terms(4).unrefuted.unreduced
-  EulerSop6ConjectureCounterexampleSearch::Filter4.new.filter(candidates)
+
+calc_time=Benchmark.measure do
+  @candidates = Hypothesis.for_terms(4).unrefuted.unreduced
+  puts "Candidates(4) count: #{@candidates.count}"
+  @processor= EulerSop6ConjectureCounterexampleSearch::Process4.new
+  @filter =  EulerSop6ConjectureCounterexampleSearch::Filter4.new
+  @filter.filter(@candidates)
 end
+puts "Filtering time: #{calc_time}"
+
+save_time=Benchmark.measure do
+  ActiveRecord::Base.transaction do
+    count = @filter.save_filter_results
+    puts "Filtered(4) count: #{count}"
+  end
 end
-puts t
+puts "Writing time: #{save_time}"
