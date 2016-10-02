@@ -180,7 +180,13 @@ module EulerSop6ConjectureCounterexampleSearch
         @constraint_79_6.check(h, @refutations, @modifications) and
         @constraint_139_6.check(h, @refutations, @modifications) and
         @constraint_223_6.check(h, @refutations, @modifications) and
-        @constraint_7_6.check(h, @refutations, @modifications)
+        @constraint_7_6.check(h, @refutations, @modifications) and
+        #TODO optimize encore - only for modifications added for 7/8/9 constraints
+        @aggregated_residue_mod_8_constraint.check(h, @refutations) and      # encore
+        @aggregated_residue_mod_9_constraint.check(h, @refutations) and      # encore
+        @aggregated_residue_mod_7_constraint.check(h, @refutations)
+
+
       end
     end
 
