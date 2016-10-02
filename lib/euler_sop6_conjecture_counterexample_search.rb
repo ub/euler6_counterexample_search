@@ -21,6 +21,8 @@ module EulerSop6ConjectureCounterexampleSearch
   class Process5
     def initialize
       @modulo_p6pow_6th_roots_generators = ModuloK6thRoots.new(117649)
+      @refutations=[]
+      @subgoals =  []
     end
 
     def process(pseudo_6th_powers)
@@ -32,14 +34,22 @@ module EulerSop6ConjectureCounterexampleSearch
           break if  f6 <= e6
           subgoal = f6 - e6
           subgoal.div_by!(117649)
-          subgoal.save!
+          @subgoals << subgoal
           subgoals_count += 1
         end
         if subgoals_count == 0
-          Refutation.create!(hypothesis: f6, reason: :no_subgoals_generated)
+          @refutations << Refutation.new(hypothesis: f6, reason: :no_subgoals_generated)
         end
       end
     end
+
+    #TODO DRY (common superclass/module)
+    def save_process_results
+      Refutation.import @refutations
+      Hypothesis.import @subgoals
+      @subgoals.size
+    end
+
   end
 
   class Filter4

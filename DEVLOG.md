@@ -389,5 +389,33 @@ Saving time: 821.990000  26.800000 848.790000 (1029.675484)
 
 
 
+### возвращаемся к sqlite3  и используем activerecord-import  
 
-### возвращаемся к sqlite3  и используем activerecord-imort  
+Calculation time:  84.110000   0.850000  84.960000 ( 85.093572)
+Saving time: 153.770000   0.580000 154.350000 (155.658925)
+
+
+## Гипотезы с тремя членами
+
+```
+irb(main):006:0* hyps.count
+=> 733190
+irb(main):007:0> hyps.partition {|h| h % 31 == 0 }.map {|set| set.count}
+=> [39368, 693822]
+irb(main):008:0> hyps.partition {|h| h % 67 == 0 }.map {|set| set.count}
+=> [13337, 719853]
+irb(main):009:0> hyps.partition {|h| h % 79 == 0 }.map {|set| set.count}
+=> [9791, 723399]
+irb(main):010:0> hyps.partition {|h| h % 139 == 0 }.map {|set| set.count}
+=> [5873, 727317]
+irb(main):011:0> hyps.partition {|h| h % 223 == 0 }.map {|set| set.count}
+=> [4969, 728221]
+irb(main):012:0> hyps.partition {|h| h % 7 == 0 }.map {|set| set.count}
+=> [213, 732977]
+irb(main):013:0> hyps.partition {|h| h % 8 == 0 }.map {|set| set.count}
+=> [357236, 375954]
+irb(main):014:0> hyps.partition {|h| h % 9 == 0 }.map {|set| set.count}
+=> [81034, 652156]
+irb(main):015:0> 
+```
+
