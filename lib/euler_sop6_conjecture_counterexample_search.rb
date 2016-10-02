@@ -139,4 +139,58 @@ module EulerSop6ConjectureCounterexampleSearch
     end
 
   end
+
+  class Filter3
+    include FilteringRules
+
+    def initialize
+      @constraint_2_6 = DivisibilityBy_p_ImpliesDivisibilityBy_p_6.new(2)
+      @constraint_3_6 = DivisibilityBy_p_ImpliesDivisibilityBy_p_6.new(3)
+      @constraint_7_6 = DivisibilityBy_p_ImpliesDivisibilityBy_p_6.new(7)
+      @constraint_31_6 = DivisibilityBy_p_ImpliesDivisibilityBy_p_6.new(31)
+      @constraint_67_6 = DivisibilityBy_p_ImpliesDivisibilityBy_p_6.new(67)
+      @constraint_79_6 = DivisibilityBy_p_ImpliesDivisibilityBy_p_6.new(79)
+      @constraint_139_6 = DivisibilityBy_p_ImpliesDivisibilityBy_p_6.new(139)
+      @constraint_223_6 = DivisibilityBy_p_ImpliesDivisibilityBy_p_6.new(223)
+
+      @aggregated_residue_mod_7_constraint = RemainderIsRepresentableAsSumOf6powResidues.new(7)
+      @aggregated_residue_mod_8_constraint = RemainderIsRepresentableAsSumOf6powResidues.new(8)
+      @aggregated_residue_mod_9_constraint = RemainderIsRepresentableAsSumOf6powResidues.new(9)
+      @aggregated_residue_mod_19_constraint = RemainderIsRepresentableAsSumOf6powResidues.new(19)
+      @aggregated_residue_mod_31_constraint = RemainderIsRepresentableAsSumOf6powResidues.new(31)
+
+      @refutations=[]
+      @modifications =  []
+      @input_size = nil
+    end
+
+    def filter(candidates)
+      @input_size = candidates.count
+      candidates.each do |h|
+        @aggregated_residue_mod_9_constraint.check(h, @refutations) and
+        @aggregated_residue_mod_19_constraint.check(h, @refutations) and
+        @aggregated_residue_mod_31_constraint.check(h, @refutations) and
+        @aggregated_residue_mod_7_constraint.check(h, @refutations) and
+        @aggregated_residue_mod_8_constraint.check(h, @refutations) and
+
+        @constraint_2_6.check(h, @refutations, @modifications) and
+        @constraint_3_6.check(h, @refutations, @modifications) and
+        @constraint_31_6.check(h, @refutations, @modifications) and
+        @constraint_67_6.check(h, @refutations, @modifications) and
+        @constraint_79_6.check(h, @refutations, @modifications) and
+        @constraint_139_6.check(h, @refutations, @modifications) and
+        @constraint_223_6.check(h, @refutations, @modifications) and
+        @constraint_7_6.check(h, @refutations, @modifications)
+      end
+    end
+
+    def save_filter_results
+      Refutation.import @refutations
+      @modifications.each do |h|
+        h.save!
+      end
+      @input_size - @refutations.size
+    end
+
+  end
 end
