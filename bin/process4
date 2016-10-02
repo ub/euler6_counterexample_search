@@ -19,4 +19,4 @@ ActiveRecord::Base.transaction do
 
 end
 end
-puts "Saving time: #{save_time}"
+puts "Writing time: #{save_time}"

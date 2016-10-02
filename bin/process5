@@ -18,4 +18,4 @@ save_time=Benchmark.measure do
     puts "Subgoals(4) count: #{count}"
   end
 end
-puts "Saving time: #{save_time}"
+puts "Writing time: #{save_time}"
