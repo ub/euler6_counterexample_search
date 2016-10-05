@@ -59,6 +59,20 @@ module GoalReplacement
     end
   end
 
+  class Modulo_19_Tactic  < AllButOneTermDivisibleBy_p_Tactic
+    def initialize
+
+      @p = 19
+      super(@p, ModuloP6K6thRootsSE.new(@p))
+    end
+
+    def match?(v)
+      v.terms_count.between?(2,3) && [1,7,11].include?(v % @p)
+    end
+
+
+    end
+
   class BruteForceTactic < AbstractTactic
     def apply(v)
       r7 = v % 7

@@ -199,4 +199,54 @@ module EulerSop6ConjectureCounterexampleSearch
     end
 
   end
+
+
+  class Process3
+    include GoalReplacement
+    def initialize
+      @modulo7_res1_tactic = Modulo_m_Res1_Tactic.new(7)
+      @modulo8_res1_tactic = Modulo_m_Res1_Tactic.new(8)
+      @modulo9_res1_tactic = Modulo_m_Res1_Tactic.new(9)
+      @modulo19_tactic = Modulo_19_Tactic.new
+      @default_tactic = BruteForceTactic.new
+      @refutations=[]
+      @subgoals =  []
+      if_none do |parent_hypothesis|
+        @refutations << Refutation.new(hypothesis: parent_hypothesis, reason: :no_subgoals_generated)
+      end
+    end
+
+    def if_none(&block)
+      @modulo7_res1_tactic.if_none_block = block
+      @modulo8_res1_tactic.if_none_block = block
+      @modulo9_res1_tactic.if_none_block = block
+      @modulo19_tactic.if_none_block = block
+      @default_tactic.if_none_block = block
+      self
+    end
+
+    def process(hypotheses)
+      hypotheses.each do |h|
+        if @modulo7_res1_tactic.match? h
+          @modulo7_res1_tactic.apply(h) {|subgoal| @subgoals<< subgoal}
+        elsif @modulo9_res1_tactic.match? h
+          @modulo9_res1_tactic.apply(h) {|subgoal| @subgoals<< subgoal}
+        elsif @modulo19_tactic.match? h
+          @modulo19_tactic.apply(h) {|subgoal| @subgoals<< subgoal}
+        elsif @modulo8_res1_tactic.match? h
+          @modulo8_res1_tactic.apply(h) {|subgoal| @subgoals<< subgoal}
+        else
+          @default_tactic.apply(h) {|subgoal| @subgoals<< subgoal}
+        end
+      end
+    end
+
+    def save_process_results
+      Refutation.import @refutations
+      Hypothesis.import @subgoals
+      @subgoals.size
+    end
+
+  end
+
 end

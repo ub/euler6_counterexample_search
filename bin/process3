@@ -1,0 +1,26 @@
+#!/usr/bin/env ruby
+
+require_relative('../config/environment')
+
+require 'benchmark'
+
+count = Hypothesis.for_terms(3).unrefuted.unreduced.count
+puts "Candidates(3) count: #{count}"
+
+Hypothesis.for_terms(3).unrefuted.unreduced.find_in_batches do | batch |
+calc_time=Benchmark.measure do
+  @candidates =  batch
+  @processor= EulerSop6ConjectureCounterexampleSearch::Process3.new
+  @processor.process(@candidates)
+
+end
+puts "Calculation time: #{calc_time}"
+save_time=Benchmark.measure do
+ActiveRecord::Base.transaction do
+  count = @processor.save_process_results
+  puts "Subgoals(2) count: #{count}"
+
+end
+end
+puts "Writing time: #{save_time}"
+end

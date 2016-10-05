@@ -437,7 +437,6 @@ module Euler6CounterexampleSearch
     end
 
 
-    def process
       puts @input.size
       data = @input
 
