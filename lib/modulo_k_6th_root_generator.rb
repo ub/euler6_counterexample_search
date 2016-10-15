@@ -82,3 +82,35 @@ class ModuloP6K6thRootsSE
 
 
 end
+
+
+class ModuloK6thRootsWithLookahead
+  def initialize(k, l)
+    @m = l
+    @k = k
+    @lines = Array.new(@m){[]}
+    @m.times do |n|
+      index = n**6 % @m
+      next if index == 0
+      @lines[index] << n
+    end
+  end
+
+  def [](hyp)
+    v_mod_m = hyp.value % @m
+
+    base_sequence = []
+    hyp.terms_count.times do |i|
+      index =  v_mod_m - i*@k
+      base_sequence += @lines[index]
+    end
+    ModuloK6thRoots::PeriodicSequence.new(@m, base_sequence.sort)
+  end
+
+end
+
+class Modulo64_Roots_512_lookahead < ModuloK6thRootsWithLookahead
+  def initialize
+    super(64,512)
+  end
+end
