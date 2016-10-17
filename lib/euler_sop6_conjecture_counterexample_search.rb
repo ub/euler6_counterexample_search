@@ -205,8 +205,8 @@ module EulerSop6ConjectureCounterexampleSearch
     include GoalReplacement
     def initialize
       @modulo7_res1_tactic = Modulo_m_Res1_Tactic.new(7)
-      @modulo8_res1_tactic = Modulo_m_Res1_Tactic.new(8)
-      @modulo9_res1_tactic = Modulo_m_Res1_Tactic.new(9)
+      @modulo8_res1_tactic = Modulo64_with_lookahead_Tactic.new
+      @modulo9_res1_tactic =  Modulo729_with_lookahead_Tactic.new
       @modulo19_tactic = Modulo_19_Tactic.new
       @default_tactic = BruteForceTactic.new
       @refutations=[]

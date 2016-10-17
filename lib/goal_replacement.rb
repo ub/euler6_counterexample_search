@@ -37,7 +37,6 @@ module GoalReplacement
       end
       @if_none_block.call(v) unless once
     end
-
   end
 
   class Modulo_m_Res1_Tactic < AllButOneTermDivisibleBy_p_Tactic
@@ -58,6 +57,45 @@ module GoalReplacement
       v % @m == 1
     end
   end
+
+  class Modulo_p6_with_lookahead_Tactic < AbstractTactic
+    def initialize(m, p6, gen)
+      @m = m
+      @p6pow = p6
+      @roots_with_lookahead_gen = gen
+    end
+
+    def match?(v)
+      v % @m == 1
+    end
+
+    def apply(v)
+
+      once = false
+      @roots_with_lookahead_gen[v].each do |u|
+        u6 = u **6
+        break if v < u6
+        once = true
+        subgoal_hypothesis = (v - u6).div_by! @p6pow
+        yield subgoal_hypothesis
+      end
+      @if_none_block.call(v) unless once
+    end
+  end
+
+  class Modulo64_with_lookahead_Tactic < Modulo_p6_with_lookahead_Tactic
+    def initialize
+      super(8,64, Modulo64_Roots_512_lookahead.new)
+    end
+  end
+
+  class Modulo729_with_lookahead_Tactic < Modulo_p6_with_lookahead_Tactic
+    def initialize
+      super(9,729, Modulo729_Roots_6561_lookahead.new)
+    end
+  end
+
+
 
   class Modulo_19_Tactic  < AllButOneTermDivisibleBy_p_Tactic
     def initialize

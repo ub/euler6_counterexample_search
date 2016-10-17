@@ -9,5 +9,13 @@ describe EulerSop6ConjectureCounterexampleSearch::Filter4 do
     expect(regression2a_bad.refutation.reload.hypothesis).to eq(regression2a_bad)
   end
 
+fdescribe EulerSop6ConjectureCounterexampleSearch::Process3 do
+  let (:parent_goal) {FactoryGirl.create(:hyp3, value: 8897951778164227,factor:729)}
+  specify do
+    # just for debugging - nothing interesting
+    subject.process [parent_goal]
+  end
+
+end
 
 end

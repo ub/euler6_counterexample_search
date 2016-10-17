@@ -114,3 +114,10 @@ class Modulo64_Roots_512_lookahead < ModuloK6thRootsWithLookahead
     super(64,512)
   end
 end
+
+
+class Modulo729_Roots_6561_lookahead < ModuloK6thRootsWithLookahead
+  def initialize
+    super( 729,6561)
+  end
+end
