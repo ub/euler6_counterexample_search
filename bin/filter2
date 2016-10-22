@@ -5,10 +5,11 @@ require_relative('../config/environment')
 require 'benchmark'
 
 calc_time=Benchmark.measure do
-  @candidates = Hypothesis.for_terms(2).unrefuted.unreduced
-  puts "Candidates(2) count: #{@candidates.count}"
+  puts "Candidates(2) count: #{Hypothesis.for_terms(2).unrefuted.unreduced.count}"
   @filter =  EulerSop6ConjectureCounterexampleSearch::Filter2.new
-  @filter.filter(@candidates)
+  Hypothesis.for_terms(2).unrefuted.unreduced.in_batches(of: 10000) do |candidates|
+    @filter.filter(candidates)
+  end
 end
 puts "Filtering time: #{calc_time}"
 
