@@ -11,7 +11,7 @@ count = Hypothesis.for_terms(2).unrefuted.unreduced.count
 puts "Candidates(2) count: #{count}"
 count = 0
 
-Hypothesis.for_terms(2).unrefuted.unreduced.in_batches(of: 100_000) do |batch|
+Hypothesis.for_terms(2).unrefuted.unreduced.in_batches(of: 6000) do |batch|
   calc_time.add! do
     candidates = batch
     @filter =  EulerSop6ConjectureCounterexampleSearch::Filter2.new

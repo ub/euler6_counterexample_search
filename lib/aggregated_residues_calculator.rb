@@ -13,6 +13,11 @@ class AggregatedResiduesCalculator
     @strict_agregated_residues = [nil,nil] + @strict_agregated_residues
   end
 
+  #  power 6 residues in ordinarily sense
+  def residues
+    @rs
+  end
+
   def singularity_residues(tc)
     all_strict = []
     tc.downto(2).each do |c |

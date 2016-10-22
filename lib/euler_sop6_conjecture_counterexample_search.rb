@@ -253,8 +253,8 @@ module EulerSop6ConjectureCounterexampleSearch
     include FilteringRules
     def initialize
 
-    four_k_plus_3_primes =[3, 7, 11, 19, 23, 31, 43, 47, 59, 67, 71, 79, 83, 103, 107, 127, 131, 139, 151, 163, 167, 179, 191, 199, 211, 223, 227, 239, 251, 263, 271]
-    @prime_divisibility_constraints =  four_k_plus_3_primes.map do |p|
+    @prime_divisibility_constraints =  [2, 3, 7, 11, 19, 23, 31, 43, 47, 59, 67, 71, 79, 83, 103, 107, 127, 131, 139,
+                                        151, 163, 167, 179, 191, 199, 211, 223, 227, 239, 251, 263, 271].map do |p|
       DivisibilityBy_p_ImpliesDivisibilityBy_p_6.new(p)
     end
 
