@@ -1,0 +1,21 @@
+#!/usr/bin/env ruby
+
+require_relative('../config/environment')
+
+require 'benchmark'
+
+calc_time=Benchmark.measure do
+  @candidates = Hypothesis.for_terms(2).unrefuted.unreduced
+  puts "Candidates(2) count: #{@candidates.count}"
+  @filter =  EulerSop6ConjectureCounterexampleSearch::Filter2.new
+  @filter.filter(@candidates)
+end
+puts "Filtering time: #{calc_time}"
+
+save_time=Benchmark.measure do
+  ActiveRecord::Base.transaction do
+    count = @filter.save_filter_results
+    puts "Filtered(2) count: #{count}"
+  end
+end
+puts "Writing time: #{save_time}"

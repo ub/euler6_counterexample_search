@@ -249,4 +249,51 @@ module EulerSop6ConjectureCounterexampleSearch
 
   end
 
+  class Filter2
+    include FilteringRules
+    def initialize
+
+    four_k_plus_3_primes =[3, 7, 11, 19, 23, 31, 43, 47, 59, 67, 71, 79, 83, 103, 107, 127, 131, 139, 151, 163, 167, 179, 191, 199, 211, 223, 227, 239, 251, 263, 271]
+    @prime_divisibility_constraints =  four_k_plus_3_primes.map do |p|
+      DivisibilityBy_p_ImpliesDivisibilityBy_p_6.new(p)
+    end
+
+     @aggregated_residues_constraints =
+    [7, 8, 9, 13, 19, 31, 37, 43, 61, 67, 73, 79, 109, 139, 223].map do |k|
+      RemainderIsRepresentableAsSumOf6powResidues.new k
+    end
+
+    @refutations=[]
+    @modifications =  []
+    @input_size = nil
+    end
+
+    def filter(candidates)
+      @input_size = candidates.count
+      candidates.each do |h|
+        @aggregated_residues_constraints.all? do |ar_constraint|
+          ar_constraint.check(h, @refutations)
+        end &&
+            @prime_divisibility_constraints.all? do |constraint|
+              constraint.check(h, @refutations, @modifications)
+            end  &&
+            @aggregated_residues_constraints.take(3).all? do |encore|
+              ok = encore.check(h, @refutations)
+              puts "encore!" unless ok
+              ok
+            end
+      end
+
+      def save_filter_results
+        Refutation.import @refutations
+        @modifications.each do |h|
+          h.save!
+        end
+        @input_size - @refutations.size
+      end
+
+    end
+
+  end
+
 end

@@ -55,14 +55,14 @@ class SumsOf6thPowerMTermsModK
   def calculate_reachable_sums
     rs = self[1]
     prev_sums = rs
-    rs_sums = Set.new
+    rs_sums = []
     (2..MAX_TERMS).each do |m|
       prev_sums.each do |sum_1|
         rs.each do |r|
           rs_sums << (sum_1 + r) % @k
         end
       end
-      @v[m] = prev_sums = rs_sums.to_a.sort
+      @v[m] = prev_sums = rs_sums.uniq.sort
     end
   end
 end
