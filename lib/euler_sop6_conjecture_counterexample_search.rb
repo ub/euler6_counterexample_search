@@ -279,7 +279,9 @@ module EulerSop6ConjectureCounterexampleSearch
             end  &&
             @aggregated_residues_constraints.take(3).all? do |encore|
               ok = encore.check(h, @refutations)
-              puts "encore!" unless ok
+              unless ok
+                $stdout.print('!'); $stdout.flush
+              end
               ok
             end
       end
