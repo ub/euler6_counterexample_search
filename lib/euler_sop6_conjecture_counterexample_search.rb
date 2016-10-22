@@ -276,13 +276,6 @@ module EulerSop6ConjectureCounterexampleSearch
         end &&
             @prime_divisibility_constraints.all? do |constraint|
               constraint.check(h, @refutations, @modifications)
-            end  &&
-            @aggregated_residues_constraints.take(3).all? do |encore|
-              ok = encore.check(h, @refutations)
-              unless ok
-                $stdout.print('!'); $stdout.flush
-              end
-              ok
             end
       end
 
