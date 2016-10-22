@@ -271,12 +271,12 @@ module EulerSop6ConjectureCounterexampleSearch
     def filter(candidates)
       @input_size = candidates.count
       candidates.each do |h|
+        @prime_divisibility_constraints.all? do |constraint|
+          constraint.check(h, @refutations, @modifications)
+        end &&
         @aggregated_residues_constraints.all? do |ar_constraint|
           ar_constraint.check(h, @refutations)
-        end &&
-            @prime_divisibility_constraints.all? do |constraint|
-              constraint.check(h, @refutations, @modifications)
-            end
+        end
       end
 
       def save_filter_results
