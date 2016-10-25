@@ -298,7 +298,7 @@ module EulerSop6ConjectureCounterexampleSearch
       [19, 7, 9, 5, 8, 43, 13, 277, 61, 97, 157].map do |m|
         TwoTermsAllButOneTermDivisibleBy_p_Tactic.new m
       end
-      # @default_tactic #TODO
+      @default_tactic = BruteForceTactic.new
       @refutations=[]
       @subgoals =  []
       if_none do |parent_hypothesis|
@@ -316,11 +316,15 @@ module EulerSop6ConjectureCounterexampleSearch
           end
           matched
         end
-
+        unless processed
+          @default_tactic.apply(h) {|subgoal| @subgoals<< subgoal}
+        end
       end
     end
     def if_none(&block)
       @smart_tactics.each {|t| t.if_none_block = block}
+      @default_tactic.if_none_block = block
+
     end
 
     def save_process_results
