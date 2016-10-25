@@ -291,4 +291,44 @@ module EulerSop6ConjectureCounterexampleSearch
 
   end
 
+  class Process2
+    include GoalReplacement
+    def initialize
+      @smart_tactics =
+      [19, 7, 9, 5, 8, 43, 13, 277, 61, 97, 157].map do |m|
+        TwoTermsAllButOneTermDivisibleBy_p_Tactic.new m
+      end
+      # @default_tactic #TODO
+      @refutations=[]
+      @subgoals =  []
+      if_none do |parent_hypothesis|
+        @refutations << Refutation.new(hypothesis: parent_hypothesis, reason: :no_subgoals_generated)
+      end
+
+    end
+
+    def process(hypotheses)
+      hypotheses.each do |h|
+        processed = @smart_tactics.any? do |tactic|
+          matched = tactic.match?(h)
+          if matched
+            tactic.apply(h)  {|subgoal| @subgoals<< subgoal}
+          end
+          matched
+        end
+
+      end
+    end
+    def if_none(&block)
+      @smart_tactics.each {|t| t.if_none_block = block}
+    end
+
+    def save_process_results
+      Refutation.import @refutations
+      Hypothesis.import @subgoals
+      @subgoals.size
+    end
+
+  end
+
 end
