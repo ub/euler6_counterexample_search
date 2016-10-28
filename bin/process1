@@ -1,14 +1,29 @@
 #!/usr/bin/env ruby
 
-$LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
-require "bundler/setup"
+require_relative('../config/environment')
 
+require 'benchmark'
 
-require 'active_record'
-require 'sqlite3'
-require 'yaml'
+calc_time = Benchmark::Tms.new
+save_time = Benchmark::Tms.new
+count = Hypothesis.for_terms(1).unrefuted.unreduced.count
+puts "Candidates for sixth power count: #{count}"
+count = 0
 
-configuration = YAML::load(IO.read('db/config.yml'))
-ActiveRecord::Base.establish_connection(configuration['development'])
+Hypothesis.for_terms(1).unrefuted.unreduced.in_batches(of: 20000) do |batch|
+  calc_time.add! do
+    @candidates = batch
+    @processor= EulerSop6ConjectureCounterexampleSearch::Process1.new
+    @processor.process(@candidates)
 
-require 'hypothesis'
+  end
+  save_time.add! do
+    ActiveRecord::Base.transaction do
+      count += @processor.save_process_results
+    end
+  end
+  $stdout.print('.'); $stdout.flush
+end
+puts "\nTotal solutions found: #{count}"
+puts "Calculation time: #{calc_time}"
+puts "Writing time: #{save_time}"

@@ -14,5 +14,6 @@ ActiveRecord::Base.establish_connection(configuration['development'])
 
 require 'hypothesis'
 require 'refutation'
+require 'confirmation'
 
 require 'euler_sop6_conjecture_counterexample_search'

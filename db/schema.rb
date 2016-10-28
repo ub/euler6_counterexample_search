@@ -10,7 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160910120843) do
+ActiveRecord::Schema.define(version: 20161026184312) do
+
+  create_table "confirmations", force: :cascade do |t|
+    t.integer "hypothesis_id"
+    t.bigint  "root"
+    t.index ["hypothesis_id"], name: "index_confirmations_on_hypothesis_id"
+  end
 
   create_table "hypotheses", force: :cascade do |t|
     t.string  "value",       limit: 40

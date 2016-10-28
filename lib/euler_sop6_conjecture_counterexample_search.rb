@@ -335,4 +335,40 @@ module EulerSop6ConjectureCounterexampleSearch
 
   end
 
+
+  class Process1
+    def initialize
+      @refutations=[]
+      @confirmations =  []
+
+    end
+
+    def process(hypotheses)
+      hypotheses.each do |h|
+        if is_sixth_power? h
+          @confirmations << Confirmation.new(hypothesis: h, root: sxthrt( h))
+        else
+          @refutations << Refutation.new(hypothesis: h, reason: :term_is_not_a_6th_power)
+        end
+      end
+    end
+
+    def save_process_results
+      Refutation.import @refutations
+      Confirmation.import @confirmations
+      @confirmations.size
+    end
+
+
+    private
+    def is_sixth_power?(h)
+      sixth_root=sxthrt(h)
+      sixth_root.round ** 6 == h.x
+    end
+
+    def sxthrt(h)
+      Math.cbrt(Math.sqrt(h.x)).round
+    end
+  end
+
 end

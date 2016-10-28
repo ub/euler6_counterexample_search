@@ -737,3 +737,19 @@ c6p.any? {|h| is_sixth_power? h }
 
 
 Таблица confirmations
+
+
+
+
+```rake "db:new_migration[CreateConfirmations, hypothesis:references root:bigint ]"```
+
+
+Candidates for sixth power count: 2018886
+.....................................................................................................
+Total solutions found: 0
+Calculation time: 263.500000   0.180000   0.000000 (264.087729)
+Writing time: 285.260000   0.680000   0.000000 (297.706937)
+
+
+Накладные расходы на создание опровержений съедают заметную часть вычислений. 
+Вычисления без сохранений занимали менее минуты

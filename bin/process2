@@ -25,6 +25,6 @@ Hypothesis.for_terms(2).unrefuted.unreduced.in_batches(of: 4000) do |batch|
   $stdout.print('.'); $stdout.flush
 end
 puts "\n6th power candidate values count: #{count}"
-puts "Unprocessed hypotheses(2) left: #{Hypothesis.for_terms(2).unrefuted.unreduced.count}"
+# puts "Unprocessed hypotheses(2) left: #{Hypothesis.for_terms(2).unrefuted.unreduced.count}"
 puts "Calculation time: #{calc_time}"
 puts "Writing time: #{save_time}"
