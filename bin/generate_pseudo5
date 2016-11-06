@@ -1,0 +1,31 @@
+#!/usr/bin/env ruby
+
+require_relative('../config/environment')
+require 'hypothesis'
+
+require 'random_pseudo_6pow_generator'
+require 'benchmark'
+
+
+def generate
+  p6pg = RandomPseudo6PowerGenerator.new
+  a = p6pg.generate
+  sum = a.map { |x| x**6 }.reduce(&:+)
+  Hypothesis.create!(value: sum, terms_count: 5, factor: 1)
+  "#{a[0]}⁶ + #{a[1]}⁶ + #{a[2]}⁶ + #{a[3]}⁶ + #{a[4]}⁶ = #{sum}"
+end
+
+$f = File.new('pseudo6gen.log', 'w')
+begin
+  t=Benchmark.measure do
+    ActiveRecord::Base.transaction do
+      1000.times do
+        $f.puts generate
+      end
+    end
+  end
+
+ensure
+  $f.close
+end
+puts t
