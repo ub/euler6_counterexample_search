@@ -1,0 +1,22 @@
+#!/usr/bin/env ruby
+
+require_relative('../config/environment')
+require 'hypothesis'
+require 'confirmation'
+require 'result_presenter'
+
+solutions = Confirmation.includes(:hypothesis => {:parent =>  {:parent =>  {:parent =>  :parent}}}).joins(:hypothesis => {:parent =>  {:parent =>  {:parent =>  :parent }}})
+presenter = ResultPresenter.new
+solutions.each do |s|
+  terms = presenter.extract_terms(s)
+  sum = presenter.original(s)
+  ok = presenter.check(terms, sum)
+  if ok
+    print 'OK:  '
+  else
+    puts "ERROR: #{s.id} !"
+  end
+  puts presenter.display_s(terms, sum)
+end
+
+

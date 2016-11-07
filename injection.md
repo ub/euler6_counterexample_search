@@ -114,3 +114,7 @@ inner join  hypotheses e on d.parent_id=e.id)
  и окончательное число гипотез:
  1 1726
  
+ 
+  Confirmation.includes(:hypothesis => {:parent =>  {:parent =>  {:parent =>  :parent}}}).joins(:hypothesis => {:parent =>  {:parent =>  {:parent =>  :parent }}})
+
+
