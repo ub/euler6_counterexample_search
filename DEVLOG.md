@@ -824,3 +824,31 @@ _02.11.2016_
 
 Эксперимент с 1000 псевдошестыми степенями выдал перевыполнение плана!
 Алгоритм нашел 1726 решений
+
+
+_08.11.2016_
+
+
+Оценка потенциала оптимизации разложения на три члена
+Простые числа
+p: 2 => exclusions: 0/2; requisites: 2/2
+p: 3 => exclusions: 0/3; requisites: 2/3
+p: 5 => exclusions: 0/5; requisites: 3/5
+p: 7 => exclusions: 2/4; requisites: 4/4
+p: 13 => exclusions: 4/7; requisites: 7/7
+p: 19 => exclusions: 15/16; requisites: 12/16
+p: 31 => exclusions: 26/26; requisites: 11/26
+p: 37 => exclusions: 30/37; requisites: 24/37
+p: 43 => exclusions: 42/43; requisites: 14/43
+p: 61 => exclusions: 50/61; requisites: 1/61
+p: 67 => exclusions: 67/67; requisites: 1/67
+p: 73 => exclusions: 60/73; requisites: 0/73
+p: 79 => exclusions: 79/79; requisites: 1/79
+p: 97 => exclusions: 0/97; requisites: 1/97
+p: 109 => exclusions: 90/109; requisites: 0/109
+p: 139 => exclusions: 139/139; requisites: 1/139
+p: 157 => exclusions: 0/157; requisites: 1/157
+p: 223 => exclusions: 223/223; requisites: 1/223
+
+
+

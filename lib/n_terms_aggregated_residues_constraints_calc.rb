@@ -24,4 +24,29 @@ class N_TermsAggregatedResiduesConstraintsCalc
     end
      Hash[ e.sort_by { |key, val| key } ]
   end
+
+  def size
+    @combinations.size
+  end
+end
+
+if __FILE__ == $0
+
+  require 'prime'
+  sample = (4..400).to_a
+  sample.each do |p|
+    next if Prime::instance.prime? p
+    calc = N_TermsAggregatedResiduesConstraintsCalc.new(p,3)
+
+    e = calc.exclusions
+    r = calc.requisites
+
+    rc = r.values.count {|x| ! x.empty?}
+    ec = e.values.count {|x| ! x.empty?}
+    if rc > 0 || ec > 0
+      puts "p: #{p} => exclusions: #{ec}/#{calc.size}; requisites: #{rc}/#{calc.size}"
+    end
+
+  end
+
 end
