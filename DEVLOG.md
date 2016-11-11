@@ -852,3 +852,18 @@ p: 223 => exclusions: 223/223; requisites: 1/223
 
 
 
+p: 2 =>  zero-requisites: 1/2
+p: 3 =>  zero-requisites: 2/3
+p: 5 =>  zero-requisites: 1/5
+p: 7 =>  zero-requisites: 3/4
+p: 13 =>  zero-requisites: 3/7
+p: 19 =>  zero-requisites: 6/16
+p: 31 =>  zero-requisites: 1/26
+p: 43 =>  zero-requisites: 7/43
+p: 61 =>  zero-requisites: 1/61
+p: 67 =>  zero-requisites: 1/67
+p: 79 =>  zero-requisites: 1/79
+p: 97 =>  zero-requisites: 1/97
+p: 139 =>  zero-requisites: 1/139
+p: 157 =>  zero-requisites: 1/157
+p: 223 =>  zero-requisites: 1/223
