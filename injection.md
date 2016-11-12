@@ -118,3 +118,37 @@ inner join  hypotheses e on d.parent_id=e.id)
   Confirmation.includes(:hypothesis => {:parent =>  {:parent =>  {:parent =>  :parent}}}).joins(:hypothesis => {:parent =>  {:parent =>  {:parent =>  :parent }}})
 
 
+
+
+select count( distinct root) from confirmations;
+613
+
+
+Довольно странно, но действительно члены повторяются
+Уникальных комбинаций все равно 1000
+
+ bin/solutions | uniq | wc -l
+ 1000
+ 
+ 
+ 
+select count(y) n,x from (select c.value x, b.value y from confirmations r
+  inner join hypotheses a on r.hypothesis_id = a.id
+  inner join  hypotheses b on a.parent_id=b.id
+  inner join  hypotheses c on b.parent_id=c.id
+  inner join  hypotheses d on c.parent_id=d.id
+  inner join  hypotheses e on d.parent_id=e.id) group by x order by n desc limit 10
+  
+  
+| 6 |	205606964552531659491  |
+| 6 |	3000522735486117579    |
+| 6 |	3714403438964180091    |
+| 6 |	459904611504097006131  |
+| 6 |	9149976262334452611    |
+| 4 |	10184926827478452906   |
+| 4 |	10277989749106216994   |
+| 4 |	10434303255104966730   |
+| 4 |	110187074565977241234  |
+| 4 |	111480847072541060754  |
+
+  
