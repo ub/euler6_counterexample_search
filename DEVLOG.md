@@ -867,3 +867,16 @@ p: 97 =>  zero-requisites: 1/97
 p: 139 =>  zero-requisites: 1/139
 p: 157 =>  zero-requisites: 1/157
 p: 223 =>  zero-requisites: 1/223
+
+
+Врезка баг в gzip !
+
+baranov@deep42:~/work/.activities/Euler/euler6_counterexample_search/db > gunzip -lv pseudo6pdb.sqlite3.gz
+method  crc     date  time           compressed        uncompressed  ratio uncompressed_name
+defla ec9f0b14 Nov  3 21:47          1948250702          1736258560 -12.2% pseudo6pdb.sqlite3
+baranov@deep42:~/work/.activities/Euler/euler6_counterexample_search/db > gunzip -k !$
+gunzip -k pseudo6pdb.sqlite3.gz
+baranov@deep42:~/work/.activities/Euler/euler6_counterexample_search/db > ll *pseud*
+-rw-r--r-- 1 baranov baranov 6031225856 Nov  3 21:47 pseudo6pdb.sqlite3
+-rw-r--r-- 1 baranov baranov 1948250702 Nov  3 21:47 pseudo6pdb.sqlite3.gz
+baranov@deep42:~/work/.activities/Euler/euler6_counterexample_search/db > 
