@@ -4,6 +4,7 @@ module GoalReplacement
     def initialize
       @if_none_block = Proc.new { |ignore|}
     end
+
     attr_accessor :if_none_block
 
     def if_none(&block)
@@ -16,7 +17,6 @@ module GoalReplacement
     end
 
   end
-
 
 
   class AllButOneTermDivisibleBy_p_Tactic < AbstractTactic
@@ -44,12 +44,12 @@ module GoalReplacement
     def initialize(m)
       @m = m
       p = case m
-             when 8
-               2
-             when 9
-               3
-             else
-               m
+            when 8
+              2
+            when 9
+              3
+            else
+              m
           end
       super(p, ModuloK6thRoots.new(p**6))
     end
@@ -67,10 +67,9 @@ module GoalReplacement
 
     def match?(v)
       r = v % @m
-     ( r == 1 || r == 4) && v.terms_count == 2
+      (r == 1 || r == 4) && v.terms_count == 2
     end
   end
-
 
 
   class Modulo_p6_with_lookahead_Tactic < AbstractTactic
@@ -100,19 +99,18 @@ module GoalReplacement
 
   class Modulo64_with_lookahead_Tactic < Modulo_p6_with_lookahead_Tactic
     def initialize
-      super(8,64, Modulo64_Roots_512_lookahead.new)
+      super(8, 64, Modulo64_Roots_512_lookahead.new)
     end
   end
 
   class Modulo729_with_lookahead_Tactic < Modulo_p6_with_lookahead_Tactic
     def initialize
-      super(9,729, Modulo729_Roots_6561_lookahead.new)
+      super(9, 729, Modulo729_Roots_6561_lookahead.new)
     end
   end
 
 
-
-  class Modulo_19_Tactic  < AllButOneTermDivisibleBy_p_Tactic
+  class Modulo_19_Tactic < AllButOneTermDivisibleBy_p_Tactic
     def initialize
 
       @p = 19
@@ -120,65 +118,39 @@ module GoalReplacement
     end
 
     def match?(v)
-      v.terms_count.between?(2,3) && [1,7,11].include?(v % @p)
+      v.terms_count.between?(2, 3) && [1, 7, 11].include?(v % @p)
     end
 
   end
 
 
-  module Pow6ResiduesCalculator
-    def calculate_pow6_residues(p)
-      (1...p).map { |x| x ** 6 % p }.to_a.sort.uniq
-    end
-  end
-
-  class TwoTermsAllButOneTermDivisibleBy_p_Tactic < AllButOneTermDivisibleBy_p_Tactic
-    include Pow6ResiduesCalculator
-    def self.new(p)
-      case p
-        when 5
-          return Modulo_5_Tactic.new
-        when 7,8,9
-          return Modulo_m_Res1_Tactic.new(p)
-        when 19
-          return Modulo_19_Tactic.new
-        else
-          super
-      end
-    end
-
-    def initialize(p)
+  class ZeroRequisiteTactic < AbstractTactic
+    def initialize(p, n_terms)
       @p = p
-      @rs = calculate_pow6_residues(p)
-      super(@p, ModuloP6K6thRootsSE.new(@p))
+      @n_terms = n_terms
+      aggr_calc = N_TermsAggregatedResiduesConstraintsCalc.new(p, n_terms)
+      @zrrs = aggr_calc.zero_req_residues
     end
 
     def match?(v)
-      @rs.include?( v % @p)  && v.terms_count == 2
+      v.terms_count == @n_terms && @zrrs.include?(v % @p)
     end
 
-  end
-
-
-
-  class BruteForceTactic < AbstractTactic
     def apply(v)
+
+      #TODO universal in-tactic filters
       r7 = v % 7
       r8 = v % 8
       r9 = v % 9
       not7 = r7==v.terms_count
       oddonly = r8==v.terms_count
       not3 = r9==v.terms_count
-      u = -1
+
+      u = 0
       once = false
       loop do
-        if oddonly
-          u += 2
-        else
-          u += 1
-        end
-        #TODO
-        #next if u == 0
+        u += @p
+        next if oddonly && u.even?
         next if not3 && u % 3 == 0
         next if not7 && u % 7 == 0
         u6 = u**6
@@ -189,10 +161,75 @@ module GoalReplacement
       @if_none_block.call(v) unless once
     end
 
-    def match?(_)
-      true
-    end
-
   end
+
+
+module Pow6ResiduesCalculator
+  def calculate_pow6_residues(p)
+    (1...p).map { |x| x ** 6 % p }.to_a.sort.uniq
+  end
+end
+
+class TwoTermsAllButOneTermDivisibleBy_p_Tactic < AllButOneTermDivisibleBy_p_Tactic
+  include Pow6ResiduesCalculator
+
+  def self.new(p)
+    case p
+      when 5
+        return Modulo_5_Tactic.new
+      when 7, 8, 9
+        return Modulo_m_Res1_Tactic.new(p)
+      when 19
+        return Modulo_19_Tactic.new
+      else
+        super
+    end
+  end
+
+  def initialize(p)
+    @p = p
+    @rs = calculate_pow6_residues(p)
+    super(@p, ModuloP6K6thRootsSE.new(@p))
+  end
+
+  def match?(v)
+    @rs.include?(v % @p) && v.terms_count == 2
+  end
+
+end
+
+
+class BruteForceTactic < AbstractTactic
+  def apply(v)
+    r7 = v % 7
+    r8 = v % 8
+    r9 = v % 9
+    not7 = r7==v.terms_count
+    oddonly = r8==v.terms_count
+    not3 = r9==v.terms_count
+    u = -1
+    once = false
+    loop do
+      if oddonly
+        u += 2
+      else
+        u += 1
+      end
+      next if u == 0
+      next if not3 && u % 3 == 0
+      next if not7 && u % 7 == 0
+      u6 = u**6
+      break if v < u6
+      once = true
+      yield (v - u6)
+    end
+    @if_none_block.call(v) unless once
+  end
+
+  def match?(_)
+    true
+  end
+
+end
 
 end

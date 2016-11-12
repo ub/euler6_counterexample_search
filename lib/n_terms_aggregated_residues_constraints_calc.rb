@@ -25,6 +25,18 @@ class N_TermsAggregatedResiduesConstraintsCalc
      Hash[ e.sort_by { |key, val| key } ]
   end
 
+  def zero_req_residues
+    rqs = requisites
+    rqs.select {|k,v| v.include? 0}.keys.sort
+  end
+
+  def req_residues
+    rqs = requisites
+    rqs.select {|k,v| ! v.empty?}.keys.sort
+  end
+
+
+
   def size
     @combinations.size
   end

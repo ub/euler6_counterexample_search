@@ -1,0 +1,29 @@
+#!/usr/bin/env ruby
+
+require_relative('../config/environment')
+
+require 'benchmark'
+
+calc_time = Benchmark::Tms.new
+save_time = Benchmark::Tms.new
+count = Hypothesis.for_terms(3).unrefuted.unreduced.count
+puts " [ZR opt] Candidates(3)  count: #{count}"
+count = 0
+
+Hypothesis.for_terms(3).unrefuted.unreduced.in_batches(of: 4000) do |batch|
+  calc_time.add! do
+    @candidates = batch
+    @processor= EulerSop6ConjectureCounterexampleSearch::Process3_ZR_Opt.new
+    @processor.process(@candidates)
+
+  end
+  save_time.add! do
+    ActiveRecord::Base.transaction do
+      count += @processor.save_process_results
+    end
+  end
+  $stdout.print('.'); $stdout.flush
+end
+puts "\n [ZR opt] Subgoals(2) count: #{count}"
+puts " [ZR opt] Calculation time: #{calc_time}"
+puts " [ZR opt] Writing time: #{save_time}"
