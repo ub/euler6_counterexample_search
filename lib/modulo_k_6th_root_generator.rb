@@ -4,7 +4,6 @@ class ModuloK6thRoots
     lines = Array.new(k){[]}
     @k.times do |n|
       index = n**6 % @k
-      next if index == 0
       lines[index] << n
     end
     @rows = lines.map {|base| PeriodicSequence.new(k, base)}

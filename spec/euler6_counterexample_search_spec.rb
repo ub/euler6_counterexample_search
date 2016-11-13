@@ -211,7 +211,7 @@ describe ModuloP6K6thRootsSE do
 end
 
 
-fdescribe ModuloK6thRoots do
+describe ModuloK6thRoots do
   describe '.new' do
     it 'creates instance' do
       modulo117649_6th_roots_generator = ModuloK6thRoots.new(117649)
@@ -237,7 +237,7 @@ fdescribe ModuloK6thRoots do
     end
   end
 
-  describe '#is_root?' do
+  fdescribe '#is_root?' do
     subject(:mod7rootgen) {ModuloK6thRoots.new 7}
     it ' non-divisible by 7 numbers are roots of 1' do
       expect(mod7rootgen.is_root?(1,1)).to be_truthy
@@ -264,6 +264,13 @@ fdescribe ModuloK6thRoots do
       expect(mod7rootgen.is_root?(5,2)).to be_falsey
       expect(mod7rootgen.is_root?(6,2)).to be_falsey
     end
+
+    it ' divisible  7 numbers are  roots of 0' do
+      expect(mod7rootgen.is_root?(0,0)).to  be_truthy
+      expect(mod7rootgen.is_root?(14,0)).to be_truthy
+      expect(mod7rootgen.is_root?(7,0)).to  be_truthy
+    end
+
 
   end
 
