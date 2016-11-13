@@ -259,10 +259,10 @@ module EulerSop6ConjectureCounterexampleSearch
     include GoalReplacement
 
     def initialize
-      @tactic43 = ZeroRequisiteTactic.new 43, 3
-      @tactic19 = ZeroRequisiteTactic.new 19, 3
-      @tactic13 = ZeroRequisiteTactic.new 13, 3
-      @tactic7 = ZeroRequisiteTactic.new 7, 3
+      @tactic43_zero = ZeroRequisiteTactic.new 43, 3
+      @tactic19_zero = ZeroRequisiteTactic.new 19, 3
+      @tactic13_zero = ZeroRequisiteTactic.new 13, 3
+      @tactic7_zero = ZeroRequisiteTactic.new 7, 3
 
       @refutations=[]
       @subgoals = []
@@ -273,23 +273,23 @@ module EulerSop6ConjectureCounterexampleSearch
     end
 
     def if_none(&block)
-      @tactic43.if_none_block = block
-      @tactic19.if_none_block = block
-      @tactic13.if_none_block = block
-      @tactic7.if_none_block = block
+      @tactic43_zero.if_none_block = block
+      @tactic19_zero.if_none_block = block
+      @tactic13_zero.if_none_block = block
+      @tactic7_zero.if_none_block = block
       self
     end
 
     def process(hypotheses)
       hypotheses.each do |h|
-       if @tactic43.match? h
-         @tactic43.apply(h) { |subgoal| @subgoals<< subgoal }
-       elsif @tactic19.match? h
-         @tactic19.apply(h) { |subgoal| @subgoals<< subgoal }
-       elsif @tactic13.match? h
-         @tactic13.apply(h) { |subgoal| @subgoals<< subgoal }
-       elsif @tactic7.match? h
-         @tactic7.apply(h) { |subgoal| @subgoals<< subgoal }
+       if @tactic43_zero.match? h
+         @tactic43_zero.apply(h) { |subgoal| @subgoals<< subgoal }
+       elsif @tactic19_zero.match? h
+         @tactic19_zero.apply(h) { |subgoal| @subgoals<< subgoal }
+       elsif @tactic13_zero.match? h
+         @tactic13_zero.apply(h) { |subgoal| @subgoals<< subgoal }
+       elsif @tactic7_zero.match? h
+         @tactic7_zero.apply(h) { |subgoal| @subgoals<< subgoal }
        else
          ; #TODO nop for now
        end
@@ -309,11 +309,11 @@ module EulerSop6ConjectureCounterexampleSearch
     include GoalReplacement
 
     def initialize
-      @tactic43 = NonZeroRequisiteTactic.new 43, 3
+      @tactic43_zero = NonZeroRequisiteTactic.new 43, 3
       @tactic37 = NonZeroRequisiteTactic.new 37, 3
       @tactic31 = NonZeroRequisiteTactic.new 31, 3
-      @tactic19 = NonZeroRequisiteTactic.new 19, 3
-      @tactic13 = NonZeroRequisiteTactic.new 13, 3
+      @tactic19_zero = NonZeroRequisiteTactic.new 19, 3
+      @tactic13_zero = NonZeroRequisiteTactic.new 13, 3
 
       @refutations=[]
       @subgoals = []
@@ -324,26 +324,26 @@ module EulerSop6ConjectureCounterexampleSearch
     end
 
     def if_none(&block)
-      @tactic43.if_none_block = block
+      @tactic43_zero.if_none_block = block
       @tactic37.if_none_block = block
       @tactic31.if_none_block = block
-      @tactic19.if_none_block = block
-      @tactic13.if_none_block = block
+      @tactic19_zero.if_none_block = block
+      @tactic13_zero.if_none_block = block
       self
     end
 
     def process(hypotheses)
       hypotheses.each do |h|
-       if @tactic43.match? h
-         @tactic43.apply(h) { |subgoal| @subgoals<< subgoal }
+       if @tactic43_zero.match? h
+         @tactic43_zero.apply(h) { |subgoal| @subgoals<< subgoal }
        elsif @tactic37.match? h
          @tactic37.apply(h) { |subgoal| @subgoals<< subgoal }
        elsif @tactic31.match? h
          @tactic31.apply(h) { |subgoal| @subgoals<< subgoal }
-       elsif @tactic19.match? h
-         @tactic19.apply(h) { |subgoal| @subgoals<< subgoal }
-       elsif @tactic13.match? h
-         @tactic13.apply(h) { |subgoal| @subgoals<< subgoal }
+       elsif @tactic19_zero.match? h
+         @tactic19_zero.apply(h) { |subgoal| @subgoals<< subgoal }
+       elsif @tactic13_zero.match? h
+         @tactic13_zero.apply(h) { |subgoal| @subgoals<< subgoal }
        else
          # never should get here -- 13 covers all!
          @default_tactic.apply(h) { |subgoal| @subgoals<< subgoal }
