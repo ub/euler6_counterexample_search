@@ -26,11 +26,17 @@ module GoalReplacement
       super()
     end
 
-    def apply(v)
+    def apply(v, filter = nil)
+      if filter
+        filter.set_minuend(v)
+      end
+
       res = v % @p6pow
       once = false
       @mod_p6pow_6th_roots[res].each do |u|
+        next if filter && filter.rejects?(u)
         u6 = u **6
+
         break if v < u6
         once = true
         subgoal_hypothesis = (v - u6).div_by! @p6pow
@@ -83,10 +89,14 @@ module GoalReplacement
       v % @m == 1
     end
 
-    def apply(v)
+    def apply(v, filter = nil)
+      if filter
+        filter.set_minuend(v)
+      end
 
       once = false
       @roots_with_lookahead_gen[v].each do |u|
+        next if filter && filter.rejects?(u)
         u6 = u **6
         break if v < u6
         once = true
@@ -136,7 +146,10 @@ module GoalReplacement
       v.terms_count == @n_terms && @zrrs.include?(v % @p)
     end
 
-    def apply(v)
+    def apply(v, filter = nil)
+      if filter
+        filter.set_minuend(v)
+      end
 
       #TODO universal in-tactic filters
       r7 = v % 7
@@ -153,6 +166,8 @@ module GoalReplacement
         next if oddonly && u.even?
         next if not3 && u % 3 == 0
         next if not7 && u % 7 == 0
+        next if filter && filter.rejects?(u)
+
         u6 = u**6
         break if v < u6
         once = true
@@ -180,8 +195,11 @@ module GoalReplacement
       !requisites.empty? && !requisites.include?(0) && v.terms_count == @n_terms
     end
 
-    def apply(v)
+    def apply(v, filter = nil)
 
+      if filter
+        filter.set_minuend(v)
+      end
       #TODO universal in-tactic filters
       r7 = v % 7
       r8 = v % 8
@@ -196,6 +214,7 @@ module GoalReplacement
         next if oddonly && u.even?
         next if not3 && u % 3 == 0
         next if not7 && u % 7 == 0
+        next if filter && filter.rejects?(u)
         u6 = u**6
         break if v < u6
         once = true
@@ -246,7 +265,11 @@ end
 
 
 class BruteForceTactic < AbstractTactic
-  def apply(v)
+  def apply(v, filter= nil)
+    if filter
+      filter.set_minuend(v)
+    end
+
     r7 = v % 7
     r8 = v % 8
     r9 = v % 9
@@ -264,6 +287,7 @@ class BruteForceTactic < AbstractTactic
       next if u == 0
       next if not3 && u % 3 == 0
       next if not7 && u % 7 == 0
+      next if filter && filter.rejects?(u)
       u6 = u**6
       break if v < u6
       once = true

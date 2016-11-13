@@ -3,7 +3,9 @@ require 'modulo_k_6th_root_generator'
 require 'n_terms_aggregated_residues_constraints_calc'
 
 require 'filtering_rules'
+require 'pregeneration_filters'
 require 'goal_replacement'
+
 module EulerSop6ConjectureCounterexampleSearch
   class StartHypothesesGenerator
 
@@ -209,6 +211,9 @@ module EulerSop6ConjectureCounterexampleSearch
     include GoalReplacement
 
     def initialize
+      @filter = PregenerationFilters::MultiModuloResidueExclusions.new(3,
+                       223, 139, 79, 67, 31, 43, 19, 109, 73, 61, 37, 13)
+
       @modulo7_res1_tactic = Modulo_m_Res1_Tactic.new(7)
       @modulo8_res1_tactic = Modulo64_with_lookahead_Tactic.new
       @modulo9_res1_tactic = Modulo729_with_lookahead_Tactic.new
@@ -268,36 +273,36 @@ module EulerSop6ConjectureCounterexampleSearch
     def process(hypotheses)
       hypotheses.each do |h|
         if @modulo7_res1_tactic.match? h
-          @modulo7_res1_tactic.apply(h) { |subgoal| @subgoals<< subgoal }
+          @modulo7_res1_tactic.apply(h,@filter) { |subgoal| @subgoals<< subgoal }
         elsif @modulo9_res1_tactic.match? h
-          @modulo9_res1_tactic.apply(h) { |subgoal| @subgoals<< subgoal }
+          @modulo9_res1_tactic.apply(h,@filter) { |subgoal| @subgoals<< subgoal }
         elsif @modulo19_tactic.match? h
-          @modulo19_tactic.apply(h) { |subgoal| @subgoals<< subgoal }
+          @modulo19_tactic.apply(h,@filter) { |subgoal| @subgoals<< subgoal }
         elsif @modulo8_res1_tactic.match? h
-          @modulo8_res1_tactic.apply(h) { |subgoal| @subgoals<< subgoal }
+          @modulo8_res1_tactic.apply(h,@filter) { |subgoal| @subgoals<< subgoal }
 
         elsif @tactic43_zero.match? h
-          @tactic43_zero.apply(h) { |subgoal| @subgoals<< subgoal }
+          @tactic43_zero.apply(h,@filter) { |subgoal| @subgoals<< subgoal }
         elsif @tactic19_zero.match? h
-          @tactic19_zero.apply(h) { |subgoal| @subgoals<< subgoal }
+          @tactic19_zero.apply(h,@filter) { |subgoal| @subgoals<< subgoal }
         elsif @tactic13_zero.match? h
-          @tactic13_zero.apply(h) { |subgoal| @subgoals<< subgoal }
+          @tactic13_zero.apply(h,@filter) { |subgoal| @subgoals<< subgoal }
         elsif @tactic7_zero.match? h
-          @tactic7_zero.apply(h) { |subgoal| @subgoals<< subgoal }
+          @tactic7_zero.apply(h,@filter) { |subgoal| @subgoals<< subgoal }
 
         elsif @tactic43_non_zero.match? h
-          @tactic43_non_zero.apply(h) { |subgoal| @subgoals<< subgoal }
+          @tactic43_non_zero.apply(h,@filter) { |subgoal| @subgoals<< subgoal }
         elsif @tactic37_non_zero.match? h
-          @tactic37_non_zero.apply(h) { |subgoal| @subgoals<< subgoal }
+          @tactic37_non_zero.apply(h,@filter) { |subgoal| @subgoals<< subgoal }
         elsif @tactic31_non_zero.match? h
-          @tactic31_non_zero.apply(h) { |subgoal| @subgoals<< subgoal }
+          @tactic31_non_zero.apply(h,@filter) { |subgoal| @subgoals<< subgoal }
         elsif @tactic19_non_zero.match? h
-          @tactic19_non_zero.apply(h) { |subgoal| @subgoals<< subgoal }
+          @tactic19_non_zero.apply(h,@filter) { |subgoal| @subgoals<< subgoal }
         elsif @tactic13_non_zero.match? h
-          @tactic13_non_zero.apply(h) { |subgoal| @subgoals<< subgoal }
+          @tactic13_non_zero.apply(h,@filter) { |subgoal| @subgoals<< subgoal }
         else
             # never should get here -- 13 non-zero covers all!
-          @default_tactic.apply(h) { |subgoal| @subgoals<< subgoal }
+          @default_tactic.apply(h,@filter) { |subgoal| @subgoals<< subgoal }
         end
       end
     end
