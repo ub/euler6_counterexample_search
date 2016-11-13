@@ -14,6 +14,10 @@ class ModuloK6thRoots
     @rows[i]
   end
 
+  def is_root?(x, radicand)
+    @rows[radicand].base_include?( x % @k)
+  end
+
   private
 
 
@@ -22,6 +26,10 @@ class ModuloK6thRoots
       @period, @base_sequence =
       period, base_sequence
 
+    end
+
+    def base_include?( r)
+      @base_sequence.include? r
     end
 
     def each

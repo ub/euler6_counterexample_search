@@ -34,7 +34,7 @@ describe Euler6CounterexampleSearch::Processor2 do
 
 end
 
-fdescribe Euler6CounterexampleSearch::Processor3 do
+describe Euler6CounterexampleSearch::Processor3 do
 
   subject { Euler6CounterexampleSearch::Processor3.new 'euler6_hypotheses.pstore' }
 
@@ -47,7 +47,7 @@ fdescribe Euler6CounterexampleSearch::Processor3 do
 
 end
 
-xdescribe Euler6CounterexampleSearch::Explorer3 do
+describe Euler6CounterexampleSearch::Explorer3 do
 
   subject { Euler6CounterexampleSearch::Explorer3.new 'euler6_hypotheses.pstore' }
 
@@ -211,7 +211,7 @@ describe ModuloP6K6thRootsSE do
 end
 
 
-describe ModuloK6thRoots do
+fdescribe ModuloK6thRoots do
   describe '.new' do
     it 'creates instance' do
       modulo117649_6th_roots_generator = ModuloK6thRoots.new(117649)
@@ -235,6 +235,36 @@ describe ModuloK6thRoots do
       subject { modulo_p6pow_6th_roots_generators[729].each }
       it { is_expected.to include(3) }
     end
+  end
+
+  describe '#is_root?' do
+    subject(:mod7rootgen) {ModuloK6thRoots.new 7}
+    it ' non-divisible by 7 numbers are roots of 1' do
+      expect(mod7rootgen.is_root?(1,1)).to be_truthy
+      expect(mod7rootgen.is_root?(9,1)).to be_truthy
+      expect(mod7rootgen.is_root?(2,1)).to be_truthy
+      expect(mod7rootgen.is_root?(3,1)).to be_truthy
+      expect(mod7rootgen.is_root?(4,1)).to be_truthy
+      expect(mod7rootgen.is_root?(5,1)).to be_truthy
+      expect(mod7rootgen.is_root?(13,1)).to be_truthy
+    end
+
+    it ' divisible  7 numbers are not roots of 1' do
+      expect(mod7rootgen.is_root?(0,1)).to  be_falsey
+      expect(mod7rootgen.is_root?(14,1)).to be_falsey
+      expect(mod7rootgen.is_root?(7,1)).to  be_falsey
+    end
+
+    it 'there are no roots of 2' do
+      expect(mod7rootgen.is_root?(0,2)).to be_falsey
+      expect(mod7rootgen.is_root?(1,2)).to be_falsey
+      expect(mod7rootgen.is_root?(2,2)).to be_falsey
+      expect(mod7rootgen.is_root?(3,2)).to be_falsey
+      expect(mod7rootgen.is_root?(4,2)).to be_falsey
+      expect(mod7rootgen.is_root?(5,2)).to be_falsey
+      expect(mod7rootgen.is_root?(6,2)).to be_falsey
+    end
+
   end
 
 
