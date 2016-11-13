@@ -213,7 +213,25 @@ module EulerSop6ConjectureCounterexampleSearch
       @modulo8_res1_tactic = Modulo64_with_lookahead_Tactic.new
       @modulo9_res1_tactic = Modulo729_with_lookahead_Tactic.new
       @modulo19_tactic = Modulo_19_Tactic.new
+
+      @tactic43_zero = ZeroRequisiteTactic.new 43, 3
+      @tactic19_zero = ZeroRequisiteTactic.new 19, 3
+      @tactic13_zero = ZeroRequisiteTactic.new 13, 3
+      @tactic7_zero = ZeroRequisiteTactic.new 7, 3
+
+
+      @tactic43_non_zero = NonZeroRequisiteTactic.new 43, 3
+      @tactic37_non_zero = NonZeroRequisiteTactic.new 37, 3
+      @tactic31_non_zero = NonZeroRequisiteTactic.new 31, 3
+      @tactic19_non_zero = NonZeroRequisiteTactic.new 19, 3
+      @tactic13_non_zero = NonZeroRequisiteTactic.new 13, 3
+
+
+
       @default_tactic = BruteForceTactic.new
+
+
+
       @refutations=[]
       @subgoals = []
       if_none do |parent_hypothesis|
@@ -226,7 +244,24 @@ module EulerSop6ConjectureCounterexampleSearch
       @modulo8_res1_tactic.if_none_block = block
       @modulo9_res1_tactic.if_none_block = block
       @modulo19_tactic.if_none_block = block
+
+      @tactic43_zero.if_none_block = block
+      @tactic19_zero.if_none_block = block
+      @tactic13_zero.if_none_block = block
+      @tactic7_zero.if_none_block = block
+
+      @tactic43_non_zero.if_none_block = block
+      @tactic37_non_zero.if_none_block = block
+      @tactic31_non_zero.if_none_block = block
+      @tactic19_non_zero.if_none_block = block
+      @tactic13_non_zero.if_none_block = block
+
+
+
+
       @default_tactic.if_none_block = block
+
+
       self
     end
 
@@ -240,7 +275,28 @@ module EulerSop6ConjectureCounterexampleSearch
           @modulo19_tactic.apply(h) { |subgoal| @subgoals<< subgoal }
         elsif @modulo8_res1_tactic.match? h
           @modulo8_res1_tactic.apply(h) { |subgoal| @subgoals<< subgoal }
+
+        elsif @tactic43_zero.match? h
+          @tactic43_zero.apply(h) { |subgoal| @subgoals<< subgoal }
+        elsif @tactic19_zero.match? h
+          @tactic19_zero.apply(h) { |subgoal| @subgoals<< subgoal }
+        elsif @tactic13_zero.match? h
+          @tactic13_zero.apply(h) { |subgoal| @subgoals<< subgoal }
+        elsif @tactic7_zero.match? h
+          @tactic7_zero.apply(h) { |subgoal| @subgoals<< subgoal }
+
+        elsif @tactic43_non_zero.match? h
+          @tactic43_non_zero.apply(h) { |subgoal| @subgoals<< subgoal }
+        elsif @tactic37_non_zero.match? h
+          @tactic37_non_zero.apply(h) { |subgoal| @subgoals<< subgoal }
+        elsif @tactic31_non_zero.match? h
+          @tactic31_non_zero.apply(h) { |subgoal| @subgoals<< subgoal }
+        elsif @tactic19_non_zero.match? h
+          @tactic19_non_zero.apply(h) { |subgoal| @subgoals<< subgoal }
+        elsif @tactic13_non_zero.match? h
+          @tactic13_non_zero.apply(h) { |subgoal| @subgoals<< subgoal }
         else
+            # never should get here -- 13 non-zero covers all!
           @default_tactic.apply(h) { |subgoal| @subgoals<< subgoal }
         end
       end
@@ -255,110 +311,9 @@ module EulerSop6ConjectureCounterexampleSearch
   end
 
 
-  class Process3_ZR_Opt
-    include GoalReplacement
-
-    def initialize
-      @tactic43_zero = ZeroRequisiteTactic.new 43, 3
-      @tactic19_zero = ZeroRequisiteTactic.new 19, 3
-      @tactic13_zero = ZeroRequisiteTactic.new 13, 3
-      @tactic7_zero = ZeroRequisiteTactic.new 7, 3
-
-      @refutations=[]
-      @subgoals = []
-      if_none do |parent_hypothesis|
-        @refutations << Refutation.new(hypothesis: parent_hypothesis, reason: :no_subgoals_generated)
-      end
-
-    end
-
-    def if_none(&block)
-      @tactic43_zero.if_none_block = block
-      @tactic19_zero.if_none_block = block
-      @tactic13_zero.if_none_block = block
-      @tactic7_zero.if_none_block = block
-      self
-    end
-
-    def process(hypotheses)
-      hypotheses.each do |h|
-       if @tactic43_zero.match? h
-         @tactic43_zero.apply(h) { |subgoal| @subgoals<< subgoal }
-       elsif @tactic19_zero.match? h
-         @tactic19_zero.apply(h) { |subgoal| @subgoals<< subgoal }
-       elsif @tactic13_zero.match? h
-         @tactic13_zero.apply(h) { |subgoal| @subgoals<< subgoal }
-       elsif @tactic7_zero.match? h
-         @tactic7_zero.apply(h) { |subgoal| @subgoals<< subgoal }
-       else
-         ; #TODO nop for now
-       end
-      end
-    end
-
-    def save_process_results
-      Refutation.import @refutations
-      Hypothesis.import @subgoals
-      @subgoals.size
-    end
 
 
-  end
 
-  class Process3_NZR_Opt
-    include GoalReplacement
-
-    def initialize
-      @tactic43_zero = NonZeroRequisiteTactic.new 43, 3
-      @tactic37 = NonZeroRequisiteTactic.new 37, 3
-      @tactic31 = NonZeroRequisiteTactic.new 31, 3
-      @tactic19_zero = NonZeroRequisiteTactic.new 19, 3
-      @tactic13_zero = NonZeroRequisiteTactic.new 13, 3
-
-      @refutations=[]
-      @subgoals = []
-      if_none do |parent_hypothesis|
-        @refutations << Refutation.new(hypothesis: parent_hypothesis, reason: :no_subgoals_generated)
-      end
-
-    end
-
-    def if_none(&block)
-      @tactic43_zero.if_none_block = block
-      @tactic37.if_none_block = block
-      @tactic31.if_none_block = block
-      @tactic19_zero.if_none_block = block
-      @tactic13_zero.if_none_block = block
-      self
-    end
-
-    def process(hypotheses)
-      hypotheses.each do |h|
-       if @tactic43_zero.match? h
-         @tactic43_zero.apply(h) { |subgoal| @subgoals<< subgoal }
-       elsif @tactic37.match? h
-         @tactic37.apply(h) { |subgoal| @subgoals<< subgoal }
-       elsif @tactic31.match? h
-         @tactic31.apply(h) { |subgoal| @subgoals<< subgoal }
-       elsif @tactic19_zero.match? h
-         @tactic19_zero.apply(h) { |subgoal| @subgoals<< subgoal }
-       elsif @tactic13_zero.match? h
-         @tactic13_zero.apply(h) { |subgoal| @subgoals<< subgoal }
-       else
-         # never should get here -- 13 covers all!
-         @default_tactic.apply(h) { |subgoal| @subgoals<< subgoal }
-       end
-      end
-    end
-
-    def save_process_results
-      Refutation.import @refutations
-      Hypothesis.import @subgoals
-      @subgoals.size
-    end
-
-
-  end
 
 
   class Filter2
