@@ -305,6 +305,61 @@ module EulerSop6ConjectureCounterexampleSearch
 
   end
 
+  class Process3_NZR_Opt
+    include GoalReplacement
+
+    def initialize
+      @tactic43 = NonZeroRequisiteTactic.new 43, 3
+      @tactic37 = NonZeroRequisiteTactic.new 37, 3
+      @tactic31 = NonZeroRequisiteTactic.new 31, 3
+      @tactic19 = NonZeroRequisiteTactic.new 19, 3
+      @tactic13 = NonZeroRequisiteTactic.new 13, 3
+
+      @refutations=[]
+      @subgoals = []
+      if_none do |parent_hypothesis|
+        @refutations << Refutation.new(hypothesis: parent_hypothesis, reason: :no_subgoals_generated)
+      end
+
+    end
+
+    def if_none(&block)
+      @tactic43.if_none_block = block
+      @tactic37.if_none_block = block
+      @tactic31.if_none_block = block
+      @tactic19.if_none_block = block
+      @tactic13.if_none_block = block
+      self
+    end
+
+    def process(hypotheses)
+      hypotheses.each do |h|
+       if @tactic43.match? h
+         @tactic43.apply(h) { |subgoal| @subgoals<< subgoal }
+       elsif @tactic37.match? h
+         @tactic37.apply(h) { |subgoal| @subgoals<< subgoal }
+       elsif @tactic31.match? h
+         @tactic31.apply(h) { |subgoal| @subgoals<< subgoal }
+       elsif @tactic19.match? h
+         @tactic19.apply(h) { |subgoal| @subgoals<< subgoal }
+       elsif @tactic13.match? h
+         @tactic13.apply(h) { |subgoal| @subgoals<< subgoal }
+       else
+         # never should get here -- 13 covers all!
+         @default_tactic.apply(h) { |subgoal| @subgoals<< subgoal }
+       end
+      end
+    end
+
+    def save_process_results
+      Refutation.import @refutations
+      Hypothesis.import @subgoals
+      @subgoals.size
+    end
+
+
+  end
+
 
   class Filter2
     include FilteringRules

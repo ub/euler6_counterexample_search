@@ -164,7 +164,53 @@ module GoalReplacement
   end
 
 
-module Pow6ResiduesCalculator
+
+  class NonZeroRequisiteTactic < AbstractTactic
+    def initialize(p, n_terms)
+      @p = p
+      @n_terms = n_terms
+      aggr_calc = N_TermsAggregatedResiduesConstraintsCalc.new(p, n_terms)
+      @reqmap = aggr_calc.requisites
+      @root_generator=ModuloK6thRoots.new(p)
+    end
+
+    def match?(v)
+
+      requisites  = Array(@reqmap[v % @p])
+      !requisites.empty? && !requisites.include?(0) && v.terms_count == @n_terms
+    end
+
+    def apply(v)
+
+      #TODO universal in-tactic filters
+      r7 = v % 7
+      r8 = v % 8
+      r9 = v % 9
+      not7 = r7==v.terms_count
+      oddonly = r8==v.terms_count
+      not3 = r9==v.terms_count
+
+      res = @reqmap[v % @p].first
+      once = false
+      @root_generator[res].each do |u|
+        next if oddonly && u.even?
+        next if not3 && u % 3 == 0
+        next if not7 && u % 7 == 0
+        u6 = u**6
+        break if v < u6
+        once = true
+        yield (v - u6)
+
+      end
+
+      @if_none_block.call(v) unless once
+    end
+
+  end
+
+
+
+  module Pow6ResiduesCalculator
   def calculate_pow6_residues(p)
     (1...p).map { |x| x ** 6 % p }.to_a.sort.uniq
   end

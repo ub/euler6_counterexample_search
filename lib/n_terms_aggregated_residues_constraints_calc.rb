@@ -35,6 +35,11 @@ class N_TermsAggregatedResiduesConstraintsCalc
     rqs.select {|k,v| ! v.empty?}.keys.sort
   end
 
+  def nz_req_residues
+    rqs = requisites
+    rqs.select {|k,v| !v.empty? && !v.include?(0)}.keys.sort
+  end
+
 
 
   def size
