@@ -368,10 +368,34 @@ module EulerSop6ConjectureCounterexampleSearch
     include GoalReplacement
 
     def initialize
+
+=begin
+
+      @filter = PregenerationFilters::MultiModuloResidueExclusions.new(2,
+        541, 523, 521, 509, 503, 499, 491, 487, 479, 467, 463, 461, 457, 449, 443,
+       439, 433, 431, 421, 419, 409, 401, 397, 389, 383, 379, 373, 367, 359, 353,
+        349, 347, 337, 331, 317, 313, 311, 307, 293, 283, 281, 277, 271, 269, 263, 
+       257, 251, 241, 239, 233, 229, 227, 223, 211, 199, 197, 193, 191, 181, 179, 
+         173, 167, 163, 157, 151, 149, 139, 137, 131, 127, 113, 109, 107, 103, 101, 
+       97, 89, 83, 79, 73, 71, 67, 61, 59, 53, 47, 43, 41, 37, 31, 29, 23, 19, 17, 13, 11
+      )
+=end
+    @filter=nil
       @smart_tactics =
+
           [19, 7, 9, 5, 8, 43, 13, 277, 61, 97, 157].map do |m|
             TwoTermsAllButOneTermDivisibleBy_p_Tactic.new m
           end
+
+
+      @zero_req_tactics = [277, 157, 97, 61, 43, 19, 13, 7].map do |p|
+        ZeroRequisiteTactic.new p,2
+      end
+      @non_zero_req_tactics =
+      [271, 229, 199, 181, 163, 157, 151, 127, 109, 103, 97, 79, 73, 67, 61, 43, 37, 31, 19, 13, 5].map do |p|
+        NonZeroRequisiteTactic.new p,2
+      end
+
       @default_tactic = BruteForceTactic.new
       @refutations=[]
       @subgoals = []
@@ -386,18 +410,33 @@ module EulerSop6ConjectureCounterexampleSearch
         processed = @smart_tactics.any? do |tactic|
           matched = tactic.match?(h)
           if matched
-            tactic.apply(h) { |subgoal| @subgoals<< subgoal }
+            tactic.apply(h, @filter) { |subgoal| @subgoals<< subgoal }
+          end
+          matched
+        end || @zero_req_tactics.any? do |tactic|
+          matched = tactic.match?(h)
+          if matched
+            tactic.apply(h, @filter) { |subgoal| @subgoals<< subgoal }
+          end
+          matched
+        end  || @non_zero_req_tactics.any? do |tactic|
+          matched = tactic.match?(h)
+          if matched
+            tactic.apply(h, @filter) { |subgoal| @subgoals<< subgoal }
           end
           matched
         end
+
         unless processed
-          @default_tactic.apply(h) { |subgoal| @subgoals<< subgoal }
+          @default_tactic.apply(h, @filter) { |subgoal| @subgoals<< subgoal }
         end
       end
     end
 
     def if_none(&block)
       @smart_tactics.each { |t| t.if_none_block = block }
+      @zero_req_tactics.each { |t| t.if_none_block = block }
+      @non_zero_req_tactics.each { |t| t.if_none_block = block }
       @default_tactic.if_none_block = block
 
     end

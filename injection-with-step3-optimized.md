@@ -41,4 +41,5 @@ baranov@deep42:~/work/.activities/Euler/euler6_counterexample_search > bin/solut
 1000
 
 
-Теперь нужно оптимзировать process2 аналогичным образом как мы сделали со step3
+Теперь нужно оптимзировать process2 аналогичным образом 
+как мы сделали со step3

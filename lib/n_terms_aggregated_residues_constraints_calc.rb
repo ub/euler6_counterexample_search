@@ -50,18 +50,15 @@ end
 if __FILE__ == $0
 
   require 'prime'
-  sample = (4..400).to_a
+  sample = Prime.instance.each.take(100).to_a
   sample.each do |p|
-    next if Prime::instance.prime? p
-    calc = N_TermsAggregatedResiduesConstraintsCalc.new(p,3)
+    calc = N_TermsAggregatedResiduesConstraintsCalc.new(p,2)
 
-    e = calc.exclusions
-    r = calc.requisites
-
-    rc = r.values.count {|x| ! x.empty?}
-    ec = e.values.count {|x| ! x.empty?}
-    if rc > 0 || ec > 0
-      puts "p: #{p} => exclusions: #{ec}/#{calc.size}; requisites: #{rc}/#{calc.size}"
+    nzrc=calc.nz_req_residues.size
+    # rc = r.values.count {|x| ! x.empty?}
+    # ec = e.values.count {|x| ! x.empty?}
+    if  nzrc > 1
+      puts "p: #{p} => non-zero-reqs: #{nzrc}/#{calc.size}"
     end
 
   end
