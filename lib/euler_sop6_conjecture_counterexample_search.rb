@@ -369,7 +369,6 @@ module EulerSop6ConjectureCounterexampleSearch
 
     def initialize
 
-=begin
 
       @filter = PregenerationFilters::MultiModuloResidueExclusions.new(2,
         541, 523, 521, 509, 503, 499, 491, 487, 479, 467, 463, 461, 457, 449, 443,
@@ -379,8 +378,7 @@ module EulerSop6ConjectureCounterexampleSearch
          173, 167, 163, 157, 151, 149, 139, 137, 131, 127, 113, 109, 107, 103, 101, 
        97, 89, 83, 79, 73, 71, 67, 61, 59, 53, 47, 43, 41, 37, 31, 29, 23, 19, 17, 13, 11
       )
-=end
-    @filter=nil
+    # @filter=nil
       @smart_tactics =
 
           [19, 7, 9, 5, 8, 43, 13, 277, 61, 97, 157].map do |m|

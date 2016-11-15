@@ -26,6 +26,7 @@ class Hypothesis < ActiveRecord::Base
     super.to_i
   end
 
+
   alias    x= value=
   alias    x value
 
@@ -50,6 +51,12 @@ class Hypothesis < ActiveRecord::Base
     self.factor = factor * d
     self.x = x / d
     self
+  end
+
+  def ceil_6th_root
+    root = Math.cbrt(Math.sqrt x).to_i + 1
+    raise "Bad assumption" unless root ** 6 > x
+    root
   end
 
 end

@@ -31,14 +31,14 @@ module GoalReplacement
         filter.set_minuend(v)
       end
 
+      upper_limit = v.ceil_6th_root
       res = v % @p6pow
       once = false
       @mod_p6pow_6th_roots[res].each do |u|
+        break if u > upper_limit
         next if filter && filter.rejects?(u)
-        u6 = u **6
-
-        break if v < u6
         once = true
+        u6 = u **6
         subgoal_hypothesis = (v - u6).div_by! @p6pow
         yield subgoal_hypothesis
       end
@@ -93,12 +93,13 @@ module GoalReplacement
       if filter
         filter.set_minuend(v)
       end
+      upper_limit = v.ceil_6th_root
 
       once = false
       @roots_with_lookahead_gen[v].each do |u|
+        break if u > upper_limit
         next if filter && filter.rejects?(u)
         u6 = u **6
-        break if v < u6
         once = true
         subgoal_hypothesis = (v - u6).div_by! @p6pow
         yield subgoal_hypothesis
@@ -150,6 +151,7 @@ module GoalReplacement
       if filter
         filter.set_minuend(v)
       end
+      upper_limit = v.ceil_6th_root
 
       #TODO universal in-tactic filters
       r7 = v % 7
@@ -163,14 +165,14 @@ module GoalReplacement
       once = false
       loop do
         u += @p
+        break if u > upper_limit
+
         next if oddonly && u.even?
         next if not3 && u % 3 == 0
         next if not7 && u % 7 == 0
         next if filter && filter.rejects?(u)
-
-        u6 = u**6
-        break if v < u6
         once = true
+        u6 = u**6
         yield (v - u6)
       end
       @if_none_block.call(v) unless once
@@ -200,6 +202,8 @@ module GoalReplacement
       if filter
         filter.set_minuend(v)
       end
+      upper_limit = v.ceil_6th_root
+
       #TODO universal in-tactic filters
       r7 = v % 7
       r8 = v % 8
@@ -211,13 +215,13 @@ module GoalReplacement
       res = @reqmap[v % @p].first
       once = false
       @root_generator[res].each do |u|
+        break if u > upper_limit
         next if oddonly && u.even?
         next if not3 && u % 3 == 0
         next if not7 && u % 7 == 0
         next if filter && filter.rejects?(u)
-        u6 = u**6
-        break if v < u6
         once = true
+        u6 = u**6
         yield (v - u6)
 
       end
@@ -269,6 +273,7 @@ class BruteForceTactic < AbstractTactic
     if filter
       filter.set_minuend(v)
     end
+    upper_limit = v.ceil_6th_root
 
     r7 = v % 7
     r8 = v % 8
@@ -284,13 +289,13 @@ class BruteForceTactic < AbstractTactic
       else
         u += 1
       end
+      break if u > upper_limit
       next if u == 0
       next if not3 && u % 3 == 0
       next if not7 && u % 7 == 0
       next if filter && filter.rejects?(u)
-      u6 = u**6
-      break if v < u6
       once = true
+      u6 = u**6
       yield (v - u6)
     end
     @if_none_block.call(v) unless once
