@@ -37,8 +37,9 @@ module GoalReplacement
       @mod_p6pow_6th_roots[res].each do |u|
         break if u > upper_limit
         next if filter && filter.rejects?(u)
-        once = true
         u6 = u **6
+        break if v < u6
+        once = true
         subgoal_hypothesis = (v - u6).div_by! @p6pow
         yield subgoal_hypothesis
       end
@@ -100,6 +101,7 @@ module GoalReplacement
         break if u > upper_limit
         next if filter && filter.rejects?(u)
         u6 = u **6
+        break if v < u6
         once = true
         subgoal_hypothesis = (v - u6).div_by! @p6pow
         yield subgoal_hypothesis
@@ -171,8 +173,10 @@ module GoalReplacement
         next if not3 && u % 3 == 0
         next if not7 && u % 7 == 0
         next if filter && filter.rejects?(u)
-        once = true
         u6 = u**6
+        break if v < u6
+
+        once = true
         yield (v - u6)
       end
       @if_none_block.call(v) unless once
@@ -220,8 +224,10 @@ module GoalReplacement
         next if not3 && u % 3 == 0
         next if not7 && u % 7 == 0
         next if filter && filter.rejects?(u)
-        once = true
         u6 = u**6
+        break if v < u6
+        once = true
+
         yield (v - u6)
 
       end
@@ -294,8 +300,9 @@ class BruteForceTactic < AbstractTactic
       next if not3 && u % 3 == 0
       next if not7 && u % 7 == 0
       next if filter && filter.rejects?(u)
-      once = true
       u6 = u**6
+      break if v < u6
+      once = true
       yield (v - u6)
     end
     @if_none_block.call(v) unless once
