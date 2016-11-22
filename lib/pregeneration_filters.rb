@@ -30,7 +30,7 @@ module PregenerationFilters
       @ps = ps
     end
 
-    def set_minuend(v)
+    def set_parent_value(v)
       @aggregated_residues =
                 @ps.map {|p| v % p}
 

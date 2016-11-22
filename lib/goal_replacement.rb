@@ -28,7 +28,7 @@ module GoalReplacement
 
     def apply(v, filter = nil)
       if filter
-        filter.set_minuend(v)
+        filter.set_parent_value(v)
       end
 
       upper_limit = v.ceil_6th_root
@@ -92,7 +92,7 @@ module GoalReplacement
 
     def apply(v, filter = nil)
       if filter
-        filter.set_minuend(v)
+        filter.set_parent_value(v)
       end
       upper_limit = v.ceil_6th_root
 
@@ -151,7 +151,7 @@ module GoalReplacement
 
     def apply(v, filter = nil)
       if filter
-        filter.set_minuend(v)
+        filter.set_parent_value(v)
       end
       upper_limit = v.ceil_6th_root
 
@@ -204,7 +204,7 @@ module GoalReplacement
     def apply(v, filter = nil)
 
       if filter
-        filter.set_minuend(v)
+        filter.set_parent_value(v)
       end
       upper_limit = v.ceil_6th_root
 
@@ -277,7 +277,7 @@ end
 class BruteForceTactic < AbstractTactic
   def apply(v, filter= nil)
     if filter
-      filter.set_minuend(v)
+      filter.set_parent_value(v)
     end
     upper_limit = v.ceil_6th_root
 
