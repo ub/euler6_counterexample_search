@@ -881,3 +881,8 @@ baranov@deep42:~/work/.activities/Euler/euler6_counterexample_search/db > ll *ps
 -rw-r--r-- 1 baranov baranov 6031225856 Nov  3 21:47 pseudo6pdb.sqlite3
 -rw-r--r-- 1 baranov baranov 1948250702 Nov  3 21:47 pseudo6pdb.sqlite3.gz
 baranov@deep42:~/work/.activities/Euler/euler6_counterexample_search/db > 
+
+
+## Терминология
+https://en.wikipedia.org/wiki/Partition_(number_theory)
+partition/composition/summands
