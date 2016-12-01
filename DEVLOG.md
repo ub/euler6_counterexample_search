@@ -886,3 +886,15 @@ baranov@deep42:~/work/.activities/Euler/euler6_counterexample_search/db >
 ## Терминология
 https://en.wikipedia.org/wiki/Partition_(number_theory)
 partition/composition/summands
+
+
+## 1.12.2016 Переименование веток git'а
+
+master -> maindev:
+```
+git checkout master
+git branch -m maindev
+git checkout -b master
+```
+
+
