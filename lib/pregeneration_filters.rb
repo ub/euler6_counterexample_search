@@ -1,4 +1,12 @@
 module PregenerationFilters
+  class Null
+    def self.with(_)
+      yield self
+    end
+    def self.rejects?(_)
+      false
+    end
+  end
   class ResiduesExclusions
     def initialize(p,n_terms)
       @p, @n_terms = p, n_terms
@@ -25,22 +33,30 @@ module PregenerationFilters
   end
 
   class MultiModuloResidueExclusions
+    class FilterSet
+      def initialize(zipped)
+        @filters_with_aggregated_residues = zipped
+      end
+
+      def rejects?(u)
+        @filters_with_aggregated_residues.any? do | f,  ar|
+          f.rejects?(ar,u)
+        end
+      end
+
+    end
     def initialize(n_terms, *ps)
       @filters = ps.map {|p| ResiduesExclusions.new(p,n_terms)}
       @ps = ps
     end
 
-    def set_parent_value(v)
-      @aggregated_residues =
-                @ps.map {|p| v % p}
 
+
+    def with(v)
+      yield FilterSet.new(@filters.zip(@ps.map {|p| v % p}))
     end
 
-    def rejects?(u)
-      @filters.zip(@aggregated_residues).any? do | f,  ar|
-        f.rejects?(ar,u)
-      end
-    end
+
 
   end
 

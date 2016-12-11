@@ -26,24 +26,22 @@ module GoalReplacement
       super()
     end
 
-    def apply(v, filter = nil)
-      if filter
-        filter.set_parent_value(v)
+    def apply(v, filter=PregenerationFilters::Null)
+      filter.with(v) do |fs|
+        upper_limit = v.ceil_6th_root
+        res = v % @p6pow
+        once = false
+        @mod_p6pow_6th_roots[res].each do |u|
+          break if u > upper_limit
+          next if fs.rejects?(u)
+          u6 = u **6
+          break if v < u6
+          once = true
+          subgoal_hypothesis = (v - u6).div_by! @p6pow
+          yield subgoal_hypothesis
+        end
+        @if_none_block.call(v) unless once
       end
-
-      upper_limit = v.ceil_6th_root
-      res = v % @p6pow
-      once = false
-      @mod_p6pow_6th_roots[res].each do |u|
-        break if u > upper_limit
-        next if filter && filter.rejects?(u)
-        u6 = u **6
-        break if v < u6
-        once = true
-        subgoal_hypothesis = (v - u6).div_by! @p6pow
-        yield subgoal_hypothesis
-      end
-      @if_none_block.call(v) unless once
     end
   end
 
@@ -90,23 +88,21 @@ module GoalReplacement
       v % @m == 1
     end
 
-    def apply(v, filter = nil)
-      if filter
-        filter.set_parent_value(v)
+    def apply(v, filter = PregenerationFilters::Null)
+      filter.with(v) do |fs|
+        upper_limit = v.ceil_6th_root
+        once = false
+        @roots_with_lookahead_gen[v].each do |u|
+          break if u > upper_limit
+          next if fs.rejects?(u)
+          u6 = u **6
+          break if v < u6
+          once = true
+          subgoal_hypothesis = (v - u6).div_by! @p6pow
+          yield subgoal_hypothesis
+        end
+        @if_none_block.call(v) unless once
       end
-      upper_limit = v.ceil_6th_root
-
-      once = false
-      @roots_with_lookahead_gen[v].each do |u|
-        break if u > upper_limit
-        next if filter && filter.rejects?(u)
-        u6 = u **6
-        break if v < u6
-        once = true
-        subgoal_hypothesis = (v - u6).div_by! @p6pow
-        yield subgoal_hypothesis
-      end
-      @if_none_block.call(v) unless once
     end
   end
 
@@ -149,37 +145,36 @@ module GoalReplacement
       v.terms_count == @n_terms && @zrrs.include?(v % @p)
     end
 
-    def apply(v, filter = nil)
-      if filter
-        filter.set_parent_value(v)
+    def apply(v, filter = PregenerationFilters::Null)
+      filter.with(v) do |fs|
+        upper_limit = v.ceil_6th_root
+
+        #TODO universal in-tactic filters
+        r7 = v % 7
+        r8 = v % 8
+        r9 = v % 9
+        not7 = r7==v.terms_count
+        oddonly = r8==v.terms_count
+        not3 = r9==v.terms_count
+
+        u = 0
+        once = false
+        loop do
+          u += @p
+          break if u > upper_limit
+
+          next if oddonly && u.even?
+          next if not3 && u % 3 == 0
+          next if not7 && u % 7 == 0
+          next if fs.rejects?(u)
+          u6 = u**6
+          break if v < u6
+
+          once = true
+          yield (v - u6)
+        end
+        @if_none_block.call(v) unless once
       end
-      upper_limit = v.ceil_6th_root
-
-      #TODO universal in-tactic filters
-      r7 = v % 7
-      r8 = v % 8
-      r9 = v % 9
-      not7 = r7==v.terms_count
-      oddonly = r8==v.terms_count
-      not3 = r9==v.terms_count
-
-      u = 0
-      once = false
-      loop do
-        u += @p
-        break if u > upper_limit
-
-        next if oddonly && u.even?
-        next if not3 && u % 3 == 0
-        next if not7 && u % 7 == 0
-        next if filter && filter.rejects?(u)
-        u6 = u**6
-        break if v < u6
-
-        once = true
-        yield (v - u6)
-      end
-      @if_none_block.call(v) unless once
     end
 
   end
@@ -201,38 +196,38 @@ module GoalReplacement
       !requisites.empty? && !requisites.include?(0) && v.terms_count == @n_terms
     end
 
-    def apply(v, filter = nil)
+    def apply(v, filter = PregenerationFilters::Null)
 
-      if filter
-        filter.set_parent_value(v)
+      filter.with(v) do |fs|
+
+        upper_limit = v.ceil_6th_root
+
+        #TODO universal in-tactic filters
+        r7 = v % 7
+        r8 = v % 8
+        r9 = v % 9
+        not7 = r7==v.terms_count
+        oddonly = r8==v.terms_count
+        not3 = r9==v.terms_count
+
+        res = @reqmap[v % @p].first
+        once = false
+        @root_generator[res].each do |u|
+          break if u > upper_limit
+          next if oddonly && u.even?
+          next if not3 && u % 3 == 0
+          next if not7 && u % 7 == 0
+          next if fs.rejects?(u)
+          u6 = u**6
+          break if v < u6
+          once = true
+
+          yield (v - u6)
+
+        end
+
+        @if_none_block.call(v) unless once
       end
-      upper_limit = v.ceil_6th_root
-
-      #TODO universal in-tactic filters
-      r7 = v % 7
-      r8 = v % 8
-      r9 = v % 9
-      not7 = r7==v.terms_count
-      oddonly = r8==v.terms_count
-      not3 = r9==v.terms_count
-
-      res = @reqmap[v % @p].first
-      once = false
-      @root_generator[res].each do |u|
-        break if u > upper_limit
-        next if oddonly && u.even?
-        next if not3 && u % 3 == 0
-        next if not7 && u % 7 == 0
-        next if filter && filter.rejects?(u)
-        u6 = u**6
-        break if v < u6
-        once = true
-
-        yield (v - u6)
-
-      end
-
-      @if_none_block.call(v) unless once
     end
 
   end
@@ -275,37 +270,36 @@ end
 
 
 class BruteForceTactic < AbstractTactic
-  def apply(v, filter= nil)
-    if filter
-      filter.set_parent_value(v)
-    end
-    upper_limit = v.ceil_6th_root
+  def apply(v, filter= filter=PregenerationFilters::Null)
+    filter.with(v) do |fs|
+      upper_limit = v.ceil_6th_root
 
-    r7 = v % 7
-    r8 = v % 8
-    r9 = v % 9
-    not7 = r7==v.terms_count
-    oddonly = r8==v.terms_count
-    not3 = r9==v.terms_count
-    u = -1
-    once = false
-    loop do
-      if oddonly
-        u += 2
-      else
-        u += 1
+      r7 = v % 7
+      r8 = v % 8
+      r9 = v % 9
+      not7 = r7==v.terms_count
+      oddonly = r8==v.terms_count
+      not3 = r9==v.terms_count
+      u = -1
+      once = false
+      loop do
+        if oddonly
+          u += 2
+        else
+          u += 1
+        end
+        break if u > upper_limit
+        next if u == 0
+        next if not3 && u % 3 == 0
+        next if not7 && u % 7 == 0
+        next if fs.rejects?(u)
+        u6 = u**6
+        break if v < u6
+        once = true
+        yield (v - u6)
       end
-      break if u > upper_limit
-      next if u == 0
-      next if not3 && u % 3 == 0
-      next if not7 && u % 7 == 0
-      next if filter && filter.rejects?(u)
-      u6 = u**6
-      break if v < u6
-      once = true
-      yield (v - u6)
+      @if_none_block.call(v) unless once
     end
-    @if_none_block.call(v) unless once
   end
 
   def match?(_)
