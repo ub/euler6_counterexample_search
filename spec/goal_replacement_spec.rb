@@ -1,5 +1,6 @@
 require 'rspec'
 require 'spec_helper'
+require 'pregeneration_filters'
 require 'goal_replacement'
 
 describe GoalReplacement::Modulo_19_Tactic do
