@@ -1,0 +1,201 @@
+p: 3 => exclusions: 2/3
+p: 5 => exclusions: 4/5
+p: 7 => exclusions: 2/3
+p: 11 ,=> exclusions: 11/11
+p: 13 ,=> exclusions: 4/5
+p: 17 ,=> exclusions: 16/17
+p: 19 ,=> exclusions: 10/10
+p: 23 ,=> exclusions: 23/23
+p: 29 ,=> exclusions: 28/29
+p: 31 ,=> exclusions: 16/16
+p: 37 ,=> exclusions: 18/19
+p: 41 ,=> exclusions: 40/41
+p: 43 ,=> exclusions: 29/29
+p: 47 ,=> exclusions: 47/47
+p: 53 ,=> exclusions: 52/53
+p: 59 ,=> exclusions: 59/59
+p: 61 ,=> exclusions: 50/51
+p: 67 ,=> exclusions: 56/56
+p: 71 ,=> exclusions: 71/71
+p: 73 ,=> exclusions: 60/61
+p: 79 ,=> exclusions: 66/66
+p: 83 ,=> exclusions: 83/83
+p: 89 ,=> exclusions: 88/89
+p: 97 ,=> exclusions: 96/97
+p: 101, => exclusions: 100/101
+p: 103, => exclusions: 103/103
+p: 107, => exclusions: 107/107
+p: 109, => exclusions: 90/91
+p: 113, => exclusions: 112/113
+p: 127, => exclusions: 127/127
+p: 131, => exclusions: 131/131
+p: 137, => exclusions: 136/137
+p: 139, => exclusions: 116/116
+p: 149, => exclusions: 148/149
+p: 151, => exclusions: 151/151
+p: 157, => exclusions: 156/157
+p: 163, => exclusions: 163/163
+p: 167, => exclusions: 167/167
+p: 173, => exclusions: 172/173
+p: 179, => exclusions: 179/179
+p: 181, => exclusions: 180/181
+p: 191, => exclusions: 191/191
+p: 193, => exclusions: 192/193
+p: 197, => exclusions: 196/197
+p: 199, => exclusions: 199/199
+p: 211, => exclusions: 211/211
+p: 223, => exclusions: 186/186
+p: 227, => exclusions: 227/227
+p: 229, => exclusions: 228/229
+p: 233, => exclusions: 232/233
+p: 239, => exclusions: 239/239
+p: 241, => exclusions: 240/241
+p: 251, => exclusions: 251/251
+p: 257, => exclusions: 256/257
+p: 263, => exclusions: 263/263
+p: 269, => exclusions: 268/269
+p: 271, => exclusions: 271/271
+p: 277, => exclusions: 276/277
+p: 281, => exclusions: 280/281
+p: 283, => exclusions: 283/283
+p: 293, => exclusions: 292/293
+p: 307, => exclusions: 307/307
+p: 311, => exclusions: 311/311
+p: 313, => exclusions: 312/313
+p: 317, => exclusions: 316/317
+p: 331, => exclusions: 331/331
+p: 337, => exclusions: 336/337
+p: 347, => exclusions: 347/347
+p: 349, => exclusions: 348/349
+p: 353, => exclusions: 352/353
+p: 359, => exclusions: 359/359
+p: 367, => exclusions: 367/367
+p: 373, => exclusions: 372/373
+p: 379, => exclusions: 379/379
+p: 383, => exclusions: 383/383
+p: 389, => exclusions: 388/389
+p: 397, => exclusions: 396/397
+p: 401, => exclusions: 400/401
+p: 409, => exclusions: 408/409
+p: 419, => exclusions: 419/419
+p: 421, => exclusions: 420/421
+p: 431, => exclusions: 431/431
+p: 433, => exclusions: 432/433
+p: 439, => exclusions: 439/439
+p: 443, => exclusions: 443/443
+p: 449, => exclusions: 448/449
+p: 457, => exclusions: 456/457
+p: 461, => exclusions: 460/461
+p: 463, => exclusions: 463/463
+p: 467, => exclusions: 467/467
+p: 479, => exclusions: 479/479
+p: 487, => exclusions: 487/487
+p: 491, => exclusions: 491/491
+p: 499, => exclusions: 499/499
+p: 503, => exclusions: 503/503
+p: 509, => exclusions: 508/509
+p: 521, => exclusions: 520/521
+p: 523, => exclusions: 523/523
+p: 541, => exclusions: 540/541
+
+
+
+
+
+[
+11 ,
+13 ,
+17 ,
+19 ,
+23 ,
+29 ,
+31 ,
+37 ,
+41 ,
+43 ,
+47 ,
+53 ,
+59 ,
+61 ,
+67 ,
+71 ,
+73 ,
+79 ,
+83 ,
+89 ,
+97 ,
+101,
+103,
+107,
+109,
+113,
+127,
+131,
+137,
+139,
+149,
+151,
+157,
+163,
+167,
+173,
+179,
+181,
+191,
+193,
+197,
+199,
+211,
+223,
+227,
+229,
+233,
+239,
+241,
+251,
+257,
+263,
+269,
+271,
+277,
+281,
+283,
+293,
+307,
+311,
+313,
+317,
+331,
+337,
+347,
+349,
+353,
+359,
+367,
+373,
+379,
+383,
+389,
+397,
+401,
+409,
+419,
+421,
+431,
+433,
+439,
+443,
+449,
+457,
+461,
+463,
+467,
+479,
+487,
+491,
+499,
+503,
+509,
+521,
+523,
+541]
