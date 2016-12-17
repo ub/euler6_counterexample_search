@@ -8,3 +8,8 @@
 /spec/reports/
 /tmp/
 .idea/
+db/*sqlite3*
+oldstuff
+/run*sh
+!runall.sh
+
