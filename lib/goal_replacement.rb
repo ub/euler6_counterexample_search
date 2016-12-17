@@ -233,79 +233,78 @@ module GoalReplacement
   end
 
 
-
   module Pow6ResiduesCalculator
-  def calculate_pow6_residues(p)
-    (1...p).map { |x| x ** 6 % p }.to_a.sort.uniq
-  end
-end
-
-class TwoTermsAllButOneTermDivisibleBy_p_Tactic < AllButOneTermDivisibleBy_p_Tactic
-  include Pow6ResiduesCalculator
-
-  def self.new(p)
-    case p
-      when 5
-        return Modulo_5_Tactic.new
-      when 7, 8, 9
-        return Modulo_m_Res1_Tactic.new(p)
-      when 19
-        return Modulo_19_Tactic.new
-      else
-        super
+    def calculate_pow6_residues(p)
+      (1...p).map { |x| x ** 6 % p }.to_a.sort.uniq
     end
   end
 
-  def initialize(p)
-    @p = p
-    @rs = calculate_pow6_residues(p)
-    super(@p, ModuloP6K6thRootsSE.new(@p))
-  end
+  class TwoTermsAllButOneTermDivisibleBy_p_Tactic < AllButOneTermDivisibleBy_p_Tactic
+    include Pow6ResiduesCalculator
 
-  def match?(v)
-    @rs.include?(v % @p) && v.terms_count == 2
-  end
-
-end
-
-
-class BruteForceTactic < AbstractTactic
-  def apply(v, filter= filter=PregenerationFilters::Null)
-    filter.with(v) do |fs|
-      upper_limit = v.ceil_6th_root
-
-      r7 = v % 7
-      r8 = v % 8
-      r9 = v % 9
-      not7 = r7==v.terms_count
-      oddonly = r8==v.terms_count
-      not3 = r9==v.terms_count
-      u = -1
-      once = false
-      loop do
-        if oddonly
-          u += 2
+    def self.new(p)
+      case p
+        when 5
+          return Modulo_5_Tactic.new
+        when 7, 8, 9
+          return Modulo_m_Res1_Tactic.new(p)
+        when 19
+          return Modulo_19_Tactic.new
         else
-          u += 1
-        end
-        break if u > upper_limit
-        next if u == 0
-        next if not3 && u % 3 == 0
-        next if not7 && u % 7 == 0
-        next if fs.rejects?(u)
-        u6 = u**6
-        break if v < u6
-        once = true
-        yield (v - u6)
+          super
       end
-      @if_none_block.call(v) unless once
     end
+
+    def initialize(p)
+      @p = p
+      @rs = calculate_pow6_residues(p)
+      super(@p, ModuloP6K6thRootsSE.new(@p))
+    end
+
+    def match?(v)
+      @rs.include?(v % @p) && v.terms_count == 2
+    end
+
   end
 
-  def match?(_)
-    true
-  end
 
-end
+  class BruteForceTactic < AbstractTactic
+    def apply(v, filter= filter=PregenerationFilters::Null)
+      filter.with(v) do |fs|
+        upper_limit = v.ceil_6th_root
+
+        r7 = v % 7
+        r8 = v % 8
+        r9 = v % 9
+        not7 = r7==v.terms_count
+        oddonly = r8==v.terms_count
+        not3 = r9==v.terms_count
+        u = -1
+        once = false
+        loop do
+          if oddonly
+            u += 2
+          else
+            u += 1
+          end
+          break if u > upper_limit
+          next if u == 0
+          next if not3 && u % 3 == 0
+          next if not7 && u % 7 == 0
+          next if fs.rejects?(u)
+          u6 = u**6
+          break if v < u6
+          once = true
+          yield (v - u6)
+        end
+        @if_none_block.call(v) unless once
+      end
+    end
+
+    def match?(_)
+      true
+    end
+
+  end
 
 end

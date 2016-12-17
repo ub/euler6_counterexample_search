@@ -17,8 +17,6 @@ class ModuloK6thRoots
     @rows[radicand].base_include?( x % @k)
   end
 
-  private
-
 
   class PeriodicSequence
     def initialize(period, base_sequence)

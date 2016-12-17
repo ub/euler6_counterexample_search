@@ -25,11 +25,3 @@ else
   puts t
 end
 
-def usage
-  puts <<USAGE
-  Undo filtering step N
-  Usage:
-    #{$0} {N}
-    where N = 4|3|2 -- hypothesis terms' count to clear all refutations for
-USAGE
-end

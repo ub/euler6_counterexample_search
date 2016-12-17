@@ -21,7 +21,7 @@ class N_TermsAggregatedResiduesConstraintsCalc
     e = {}
      @combinations.each_pair do | ar, v |
       e[ar]=v.reduce(&:&)
-    end
+     end
      Hash[ e.sort_by { |key, val| key } ]
   end
 

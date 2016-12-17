@@ -316,11 +316,6 @@ module EulerSop6ConjectureCounterexampleSearch
   end
 
 
-
-
-
-
-
   class Filter2
     include FilteringRules
 
@@ -352,14 +347,14 @@ module EulerSop6ConjectureCounterexampleSearch
             end
       end
 
-      def save_filter_results
-        Refutation.import @refutations
-        @modifications.each do |h|
-          h.save!
-        end
-        @input_size - @refutations.size
-      end
+    end
 
+    def save_filter_results
+      Refutation.import @refutations
+      @modifications.each do |h|
+        h.save!
+      end
+      @input_size - @refutations.size
     end
 
   end

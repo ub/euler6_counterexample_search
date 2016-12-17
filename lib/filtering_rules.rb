@@ -39,6 +39,7 @@ module FilteringRules
       #TODO: make simplified check object-oriented
       case k
         when 7,8,9 #simplified check
+          # no-op
         else
           @checker = SumsOf6thPowerMTermsModK.memoized(@k)
       end
