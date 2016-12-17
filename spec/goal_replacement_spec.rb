@@ -54,11 +54,11 @@ end
 
 describe GoalReplacement::TwoTermsAllButOneTermDivisibleBy_p_Tactic do
   context 'modulo 5' do
-    let (:match1) {FactoryGirl.build(:hyp2, value: 5**6 + 1)}
-    let (:match_1) {FactoryGirl.build(:hyp2, value: 5**6 + 3 **6)}
-    let (:nomatch_0) {FactoryGirl.build(:hyp2, value: 5**6 )}
-    let (:nomatch_2) {FactoryGirl.build(:hyp2, value: 1 + 6**6 )}
-    let (:nomatch_3) {FactoryGirl.build(:hyp2, value: 2**6 + 3**6 )}
+    let(:match1) {FactoryGirl.build(:hyp2, value: 5**6 + 1)}
+    let(:match_1) {FactoryGirl.build(:hyp2, value: 5**6 + 3 **6)}
+    let(:nomatch_0) {FactoryGirl.build(:hyp2, value: 5**6 )}
+    let(:nomatch_2) {FactoryGirl.build(:hyp2, value: 1 + 6**6 )}
+    let(:nomatch_3) {FactoryGirl.build(:hyp2, value: 2**6 + 3**6 )}
 
     subject {GoalReplacement::TwoTermsAllButOneTermDivisibleBy_p_Tactic.new 5}
 
@@ -104,10 +104,10 @@ describe GoalReplacement::TwoTermsAllButOneTermDivisibleBy_p_Tactic do
   end
   context 'modulo 43' do
     #[1, 4, 11, 16, 21, 35, 41]
-    let (:match1) {FactoryGirl.build(:hyp2, value: 6**6 + 5*43**6 )}
-     let (:match41) {FactoryGirl.build(:hyp2, value:   3 **6 + 43**6)}
-    let (:nomatch_0) {FactoryGirl.build(:hyp2, value: 4*43**6 )}
-     let (:nomatch_2) {FactoryGirl.build(:hyp2, value: 7**6 + 6**6 )}
+    let(:match1) {FactoryGirl.build(:hyp2, value: 6**6 + 5*43**6 )}
+     let(:match41) {FactoryGirl.build(:hyp2, value:   3 **6 + 43**6)}
+    let(:nomatch_0) {FactoryGirl.build(:hyp2, value: 4*43**6 )}
+     let(:nomatch_2) {FactoryGirl.build(:hyp2, value: 7**6 + 6**6 )}
 
     subject {GoalReplacement::TwoTermsAllButOneTermDivisibleBy_p_Tactic.new 43}
 
