@@ -22,8 +22,9 @@ module FilteringRules
           hypothesis.x = q6
           hypothesis.factor = hypothesis.factor * @p_6
         else
-          refutations << Refutation.new(hypothesis: hypothesis, reason: :divisible_by_p_but_not_by_p_6,
-          parameter: @p)
+          refutations << Refutation.new(hypothesis: hypothesis,
+                                        reason: :divisible_by_p_but_not_by_p_6,
+                                        parameter: @p)
           modifications << hypothesis if hypothesis.changed?
           return false
         end

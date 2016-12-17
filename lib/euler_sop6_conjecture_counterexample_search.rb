@@ -20,7 +20,8 @@ module EulerSop6ConjectureCounterexampleSearch
     end
   end
 
-  # process hypotheses with 5 terms count: generate for each a number of equivalent hypotheses with 4 terms count
+  # process hypotheses with 5 terms count:
+  # generate for each a number of equivalent hypotheses with 4 terms count
   class Process5
     def initialize
       @modulo_p6pow_6th_roots_generators = ModuloK6thRoots.new(117649)
@@ -80,13 +81,17 @@ module EulerSop6ConjectureCounterexampleSearch
 
       # find_each(batch_size: 5).lazy. see https://github.com/rails/rails/issues/21874#issuecomment-145947380
       candidates.select do |h|
-        @constraint_2_6.check(h, @refutations, @modifications) && @aggregated_residue_mod_8_constraint.check(h, @refutations)
+        @constraint_2_6.check(h, @refutations, @modifications) &&
+            @aggregated_residue_mod_8_constraint.check(h, @refutations)
       end.select do |h|
-        @constraint_3_6.check(h, @refutations, @modifications) && @aggregated_residue_mod_9_constraint.check(h, @refutations)
+        @constraint_3_6.check(h, @refutations, @modifications) &&
+            @aggregated_residue_mod_9_constraint.check(h, @refutations)
       end.select do |h|
-        @constraint_7_6.check(h, @refutations, @modifications) && @aggregated_residue_mod_7_constraint.check(h, @refutations)
+        @constraint_7_6.check(h, @refutations, @modifications) &&
+            @aggregated_residue_mod_7_constraint.check(h, @refutations)
       end.select do |h|
-        @constraint_31_6.check(h, @refutations, @modifications) && @aggregated_residue_mod_31_constraint.check(h, @refutations)
+        @constraint_31_6.check(h, @refutations, @modifications) &&
+            @aggregated_residue_mod_31_constraint.check(h, @refutations)
       end
     end
 
@@ -110,7 +115,8 @@ module EulerSop6ConjectureCounterexampleSearch
       @refutations = []
       @subgoals = []
       if_none do |parent_hypothesis|
-        @refutations << Refutation.new(hypothesis: parent_hypothesis, reason: :no_subgoals_generated)
+        @refutations << Refutation.new(hypothesis: parent_hypothesis,
+                                       reason: :no_subgoals_generated)
       end
     end
 
@@ -321,10 +327,12 @@ module EulerSop6ConjectureCounterexampleSearch
 
     def initialize
 
-      @prime_divisibility_constraints = [2, 3, 7, 11, 19, 23, 31, 43, 47, 59, 67, 71, 79, 83, 103, 107, 127, 131, 139,
-                                         151, 163, 167, 179, 191, 199, 211, 223, 227, 239, 251, 263, 271].map do |p|
-        DivisibilityBy_p_ImpliesDivisibilityBy_p_6.new(p)
-      end
+      @prime_divisibility_constraints = [2, 3, 7, 11, 19, 23, 31, 43, 47, 59, 67, 71, 79,
+                                         83, 103, 107, 127, 131, 139, 151, 163, 167, 179,
+                                         191, 199, 211, 223, 227, 239, 251, 263, 271]
+                                        .map do |p|
+                                          DivisibilityBy_p_ImpliesDivisibilityBy_p_6.new(p)
+                                        end
 
       @aggregated_residues_constraints =
           [7, 8, 9, 13, 19, 31, 37, 43, 61, 67, 73, 79, 109, 139, 223].map do |k|
@@ -385,7 +393,8 @@ module EulerSop6ConjectureCounterexampleSearch
         ZeroRequisiteTactic.new p,2
       end
       @non_zero_req_tactics =
-      [271, 229, 199, 181, 163, 157, 151, 127, 109, 103, 97, 79, 73, 67, 61, 43, 37, 31, 19, 13, 5].map do |p|
+      [271, 229, 199, 181, 163, 157, 151, 127, 109, 103, 97, 79,
+       73, 67, 61, 43, 37, 31, 19, 13, 5].map do |p|
         NonZeroRequisiteTactic.new p,2
       end
 

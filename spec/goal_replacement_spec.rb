@@ -31,7 +31,8 @@ describe GoalReplacement::Modulo_19_Tactic do
     let(:good_7)   { FactoryGirl.build(:hyp3, value:19**36 + 7) }
     let(:too_small_7)   { FactoryGirl.build(:hyp3, value:7) }
 
-    # @period=47045881, @base_sequence=[8296659, 14558766, 22855425, 24190456, 32487115, 38749222]>
+    # @period=47045881,
+    # @base_sequence=[8296659, 14558766, 22855425, 24190456, 32487115, 38749222]>
     it 'generates six hypotheses for (19**6)**6+7' do
       expect{ |b|
         subject.apply(good_7, &b)

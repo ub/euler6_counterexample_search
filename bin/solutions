@@ -5,7 +5,8 @@ require 'hypothesis'
 require 'confirmation'
 require 'result_presenter'
 
-solutions = Confirmation.includes(:hypothesis => {:parent => {:parent => {:parent => :parent}}}).joins(:hypothesis => {:parent => {:parent => {:parent => :parent }}})
+solutions = Confirmation.includes(:hypothesis => {:parent => {:parent => {:parent => :parent}}})
+                        .joins(:hypothesis => {:parent => {:parent => {:parent => :parent }}})
 presenter = ResultPresenter.new
 solutions.each do |s|
   terms = presenter.extract_terms(s)
