@@ -15,7 +15,6 @@ module GoalReplacement
     def match?(v)
       raise NotImplementedError "Abstract method '#{__method__}' should be redefined in subclasses"
     end
-
   end
 
   class AllButOneTermDivisibleBy_p_Tactic < AbstractTactic
@@ -126,7 +125,6 @@ module GoalReplacement
     def match?(v)
       v.terms_count.between?(2, 3) && [1, 7, 11].include?(v % @p)
     end
-
   end
 
   class ZeroRequisiteTactic < AbstractTactic
@@ -172,7 +170,6 @@ module GoalReplacement
         @if_none_block.call(v) unless once
       end
     end
-
   end
 
   class NonZeroRequisiteTactic < AbstractTactic
@@ -221,7 +218,6 @@ module GoalReplacement
         @if_none_block.call(v) unless once
       end
     end
-
   end
 
   module Pow6ResiduesCalculator
@@ -255,7 +251,6 @@ module GoalReplacement
     def match?(v)
       @rs.include?(v % @p) && v.terms_count == 2
     end
-
   end
 
   class BruteForceTactic < AbstractTactic
@@ -294,7 +289,6 @@ module GoalReplacement
     def match?(_)
       true
     end
-
   end
 
 end

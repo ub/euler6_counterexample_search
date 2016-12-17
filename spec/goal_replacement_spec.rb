@@ -5,8 +5,8 @@ require 'goal_replacement'
 
 describe GoalReplacement::Modulo_19_Tactic do
   describe '#match?' do
-    let(:hyp4){ FactoryGirl.build(:hypothesis, value: 19**6 + 1) }
-    let(:bad_0)   { FactoryGirl.build(:hyp3, value: 19**6 ) }
+    let(:hyp4) { FactoryGirl.build(:hypothesis, value: 19**6 + 1) }
+    let(:bad_0)   { FactoryGirl.build(:hyp3, value: 19**6) }
     let(:good_1)   { FactoryGirl.build(:hyp3, value: 19**6 + 1) }
     let(:good_7)   { FactoryGirl.build(:hyp3, value: 19**6 + 7) }
     let(:good_11)  { FactoryGirl.build(:hyp3, value: 19**6 + 11) }
@@ -32,13 +32,13 @@ describe GoalReplacement::Modulo_19_Tactic do
     # @period=47045881,
     # @base_sequence=[8296659, 14558766, 22855425, 24190456, 32487115, 38749222]>
     it 'generates six hypotheses for (19**6)**6+7' do
-      expect{ |b|
+      expect { |b|
         subject.apply(good_7, &b)
       }.to yield_control.exactly(6).times
     end
 
     it 'does not generate any hypotheses for too small a value' do
-      expect{ |b|
+      expect { |b|
         subject.apply(too_small_7, &b)
       }.not_to yield_control
     end
@@ -49,9 +49,9 @@ describe GoalReplacement::TwoTermsAllButOneTermDivisibleBy_p_Tactic do
   context 'modulo 5' do
     let(:match1) { FactoryGirl.build(:hyp2, value: 5**6 + 1) }
     let(:match_1) { FactoryGirl.build(:hyp2, value: 5**6 + 3**6) }
-    let(:nomatch_0) { FactoryGirl.build(:hyp2, value: 5**6 ) }
-    let(:nomatch_2) { FactoryGirl.build(:hyp2, value: 1 + 6**6 ) }
-    let(:nomatch_3) { FactoryGirl.build(:hyp2, value: 2**6 + 3**6 ) }
+    let(:nomatch_0) { FactoryGirl.build(:hyp2, value: 5**6) }
+    let(:nomatch_2) { FactoryGirl.build(:hyp2, value: 1 + 6**6) }
+    let(:nomatch_3) { FactoryGirl.build(:hyp2, value: 2**6 + 3**6) }
 
     subject { GoalReplacement::TwoTermsAllButOneTermDivisibleBy_p_Tactic.new 5 }
 
@@ -70,21 +70,21 @@ describe GoalReplacement::TwoTermsAllButOneTermDivisibleBy_p_Tactic do
 
     describe '#apply' do
       it 'generates the only possible hypothesis for 1 residue example' do
-        expect{ |b|
+        expect { |b|
           subject.apply(match1, &b)
         }.to yield_control.once
 
-        expect{ |b|
+        expect { |b|
           subject.apply(match1, &b)
         }.to yield_with_args(an_object_having_attributes(value: 1, factor: 5**6, terms_count: 1))
       end
 
       it 'generates the only possible hypothesis for -1 residue example' do
-        expect{ |b|
+        expect { |b|
           subject.apply(match_1, &b)
         }.to yield_control.once
 
-        expect{ |b|
+        expect { |b|
           subject.apply(match1, &b)
         }.to yield_with_args(an_object_having_attributes(value: 1, factor: 5**6, terms_count: 1))
       end
@@ -92,10 +92,10 @@ describe GoalReplacement::TwoTermsAllButOneTermDivisibleBy_p_Tactic do
   end
   context 'modulo 43' do
     #[1, 4, 11, 16, 21, 35, 41]
-    let(:match1) { FactoryGirl.build(:hyp2, value: 6**6 + 5 * 43**6 ) }
+    let(:match1) { FactoryGirl.build(:hyp2, value: 6**6 + 5 * 43**6) }
      let(:match41) { FactoryGirl.build(:hyp2, value:   3**6 + 43**6) }
-    let(:nomatch_0) { FactoryGirl.build(:hyp2, value: 4 * 43**6 ) }
-     let(:nomatch_2) { FactoryGirl.build(:hyp2, value: 7**6 + 6**6 ) }
+    let(:nomatch_0) { FactoryGirl.build(:hyp2, value: 4 * 43**6) }
+     let(:nomatch_2) { FactoryGirl.build(:hyp2, value: 7**6 + 6**6) }
 
     subject { GoalReplacement::TwoTermsAllButOneTermDivisibleBy_p_Tactic.new 43 }
 
@@ -113,21 +113,21 @@ describe GoalReplacement::TwoTermsAllButOneTermDivisibleBy_p_Tactic do
 
     describe '#apply' do
       it 'generates the only possible hypothesis for 1 residue example' do
-        expect{ |b|
+        expect { |b|
           subject.apply(match1, &b)
         }.to yield_control.once
 
-        expect{ |b|
+        expect { |b|
           subject.apply(match1, &b)
         }.to yield_with_args(an_object_having_attributes(value: 5, factor: 43**6, terms_count: 1))
       end
 
       it 'generates the only possible hypothesis for 41 residue example' do
-        expect{ |b|
+        expect { |b|
           subject.apply(match41, &b)
         }.to yield_control.once
 
-        expect{ |b|
+        expect { |b|
           subject.apply(match41, &b)
         }.to yield_with_args(an_object_having_attributes(value: 1, factor: 43**6, terms_count: 1))
       end

@@ -8,7 +8,6 @@ require 'goal_replacement'
 
 module EulerSop6ConjectureCounterexampleSearch
   class StartHypothesesGenerator
-
     def generate
       (1...117649).each.lazy.select do |x|
         x % 2 != 0 &&
@@ -53,7 +52,6 @@ module EulerSop6ConjectureCounterexampleSearch
       Hypothesis.import @subgoals
       @subgoals.size
     end
-
   end
 
   class Filter4
@@ -148,7 +146,6 @@ module EulerSop6ConjectureCounterexampleSearch
       Hypothesis.import @subgoals
       @subgoals.size
     end
-
   end
 
   class Filter3
@@ -206,7 +203,6 @@ module EulerSop6ConjectureCounterexampleSearch
       end
       @input_size - @refutations.size
     end
-
   end
 
   class Process3
@@ -305,7 +301,6 @@ module EulerSop6ConjectureCounterexampleSearch
       Hypothesis.import @subgoals
       @subgoals.size
     end
-
   end
 
   class Filter2
@@ -350,7 +345,6 @@ module EulerSop6ConjectureCounterexampleSearch
       end
       @input_size - @refutations.size
     end
-
   end
 
   class Process2
@@ -432,7 +426,6 @@ module EulerSop6ConjectureCounterexampleSearch
       Hypothesis.import @subgoals
       @subgoals.size
     end
-
   end
 
   class Process1

@@ -65,6 +65,5 @@ module FilteringRules
       end
       return hypothesis
     end
-
   end
 end

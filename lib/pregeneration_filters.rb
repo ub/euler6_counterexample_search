@@ -27,7 +27,7 @@ module PregenerationFilters
       exclusions = Array(@exclusions_map[aggregated_residue])
       return false if exclusions.empty?
       exclusions.any? do |forbidden|
-        @roots_generator.is_root?(u, forbidden )
+        @roots_generator.is_root?(u, forbidden)
       end
     end
   end
@@ -43,7 +43,6 @@ module PregenerationFilters
           f.rejects?(ar, u)
         end
       end
-
     end
     def initialize(n_terms, *ps)
       @filters = ps.map { |p| ResiduesExclusions.new(p, n_terms) }
@@ -53,7 +52,6 @@ module PregenerationFilters
     def with(v)
       yield FilterSet.new(@filters.zip(@ps.map { |p| v % p }))
     end
-
   end
 
 end

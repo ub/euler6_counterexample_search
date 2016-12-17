@@ -9,8 +9,8 @@ describe FilteringRules::DivisibilityBy_p_ImpliesDivisibilityBy_p_6 do
   let(:bad3_8) { FactoryGirl.create(:hyp3, value: 3**8) }
   let(:refutations) { [] }
   let(:modifications) { [] }
-  subject(:div729_checker){ FilteringRules::DivisibilityBy_p_ImpliesDivisibilityBy_p_6.new(3) }
-  subject(:div64_checker){ FilteringRules::DivisibilityBy_p_ImpliesDivisibilityBy_p_6.new(2) }
+  subject(:div729_checker) { FilteringRules::DivisibilityBy_p_ImpliesDivisibilityBy_p_6.new(3) }
+  subject(:div64_checker) { FilteringRules::DivisibilityBy_p_ImpliesDivisibilityBy_p_6.new(2) }
 
   let(:regression2a_bad) { FactoryGirl.build(:hypothesis, value: 100879995337641642321784) }
 

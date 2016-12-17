@@ -31,7 +31,7 @@ class AggregatedResiduesCalculator
     tc.downto(2).each do |c |
       all_strict += @strict_agregated_residues[c]
     end
-    return ! all_strict.include?( 0)
+    return ! all_strict.include?(0)
   end
 
   def report

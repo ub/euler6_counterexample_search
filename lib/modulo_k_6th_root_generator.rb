@@ -1,7 +1,7 @@
 class ModuloK6thRoots
   def initialize(k)
     @k = k
-    lines = Array.new(k){ [] }
+    lines = Array.new(k) { [] }
     @k.times do |n|
       index = n**6 % @k
       lines[index] << n
@@ -14,7 +14,7 @@ class ModuloK6thRoots
   end
 
   def is_root?(x, radicand)
-    @rows[radicand].base_include?( x % @k)
+    @rows[radicand].base_include?(x % @k)
   end
 
   class PeriodicSequence
@@ -24,7 +24,7 @@ class ModuloK6thRoots
 
     end
 
-    def base_include?( r)
+    def base_include?(r)
       @base_sequence.include? r
     end
 
@@ -43,7 +43,6 @@ class ModuloK6thRoots
       end
     end
   end
-
 end
 
 # space efficient version
@@ -52,7 +51,7 @@ class ModuloP6K6thRootsSE
     @p = p
     @k = p**6
     @multiplicative_inverse_mod_p = Array.new(p)
-    @sixth_roots_mod_p = Array.new(p){ [] }
+    @sixth_roots_mod_p = Array.new(p) { [] }
     (1...@p).each { |i| @multiplicative_inverse_mod_p[i] = i**(@p - 2) % @p }
     (1...@p).each { |x| x6 = x**6 % @p; @sixth_roots_mod_p[x6] << x }
   end
@@ -70,7 +69,7 @@ class ModuloP6K6thRootsSE
 
   def calculate_mod_p6_roots(mod_p_roots, residue)
     mod_p_roots.map do |a|
-      df = ( 6 * a**5) % @p
+      df = (6 * a**5) % @p
       inv_df = @multiplicative_inverse_mod_p[df]
       m = 1
       b = a
@@ -83,14 +82,13 @@ class ModuloP6K6thRootsSE
       b
     end
   end
-
 end
 
 class ModuloK6thRootsWithLookahead
   def initialize(k, l)
     @m = l
     @k = k
-    @lines = Array.new(@m){ [] }
+    @lines = Array.new(@m) { [] }
     @m.times do |n|
       index = n**6 % @m
       next if index == 0
@@ -108,7 +106,6 @@ class ModuloK6thRootsWithLookahead
     end
     ModuloK6thRoots::PeriodicSequence.new(@m, base_sequence.sort)
   end
-
 end
 
 class Modulo64_Roots_512_lookahead < ModuloK6thRootsWithLookahead
@@ -119,6 +116,6 @@ end
 
 class Modulo729_Roots_6561_lookahead < ModuloK6thRootsWithLookahead
   def initialize
-    super( 729, 6561)
+    super(729, 6561)
   end
 end
