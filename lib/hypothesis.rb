@@ -28,10 +28,8 @@ class Hypothesis < ActiveRecord::Base
     super.to_i
   end
 
-
   alias    x= value=
   alias    x value
-
 
   def %(d)
     x % d

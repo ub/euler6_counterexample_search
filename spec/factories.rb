@@ -9,5 +9,4 @@ FactoryGirl.define do
       terms_count 2
     end
   end
-
 end

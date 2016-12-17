@@ -15,7 +15,6 @@ Hypothesis.for_terms(1).unrefuted.unreduced.in_batches(of: 20000) do |batch|
     @candidates = batch
     @processor = EulerSop6ConjectureCounterexampleSearch::Process1.new
     @processor.process(@candidates)
-
   end
   save_time.add! do
     ActiveRecord::Base.transaction do

@@ -18,7 +18,6 @@ module GoalReplacement
 
   end
 
-
   class AllButOneTermDivisibleBy_p_Tactic < AbstractTactic
     def initialize(p, mod_p6pow_6th_roots_gen)
       @p6pow = p**6
@@ -76,7 +75,6 @@ module GoalReplacement
     end
   end
 
-
   class Modulo_p6_with_lookahead_Tactic < AbstractTactic
     def initialize(m, p6, gen)
       @m = m
@@ -118,7 +116,6 @@ module GoalReplacement
     end
   end
 
-
   class Modulo_19_Tactic < AllButOneTermDivisibleBy_p_Tactic
     def initialize
 
@@ -131,7 +128,6 @@ module GoalReplacement
     end
 
   end
-
 
   class ZeroRequisiteTactic < AbstractTactic
     def initialize(p, n_terms)
@@ -179,8 +175,6 @@ module GoalReplacement
 
   end
 
-
-
   class NonZeroRequisiteTactic < AbstractTactic
     def initialize(p, n_terms)
       @p = p
@@ -199,7 +193,6 @@ module GoalReplacement
     def apply(v, filter = PregenerationFilters::Null)
 
       filter.with(v) do |fs|
-
         upper_limit = v.ceil_6th_root
 
         #TODO universal in-tactic filters
@@ -223,7 +216,6 @@ module GoalReplacement
           once = true
 
           yield (v - u6)
-
         end
 
         @if_none_block.call(v) unless once
@@ -231,7 +223,6 @@ module GoalReplacement
     end
 
   end
-
 
   module Pow6ResiduesCalculator
     def calculate_pow6_residues(p)
@@ -266,7 +257,6 @@ module GoalReplacement
     end
 
   end
-
 
   class BruteForceTactic < AbstractTactic
     def apply(v, filter= filter = PregenerationFilters::Null)

@@ -24,4 +24,3 @@ else
   end
   puts t
 end
-

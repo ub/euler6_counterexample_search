@@ -3,7 +3,6 @@
 require_relative('../config/environment')
 require 'benchmark'
 
-
 calc_time = Benchmark.measure do
   @candidates = Hypothesis.for_terms(5).unrefuted.unreduced
   @processor = EulerSop6ConjectureCounterexampleSearch::Process5.new

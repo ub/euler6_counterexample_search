@@ -19,5 +19,3 @@ solutions.each do |s|
   end
   puts presenter.display_s(terms, sum)
 end
-
-

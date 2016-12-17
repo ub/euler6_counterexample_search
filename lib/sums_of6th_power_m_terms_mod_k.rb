@@ -14,7 +14,6 @@ class SumsOf6thPowerMTermsModK
     @@cache[k] ||= self.new(k)
   end
 
-
   def [](m)
     @v[m].dup
   end
@@ -24,7 +23,7 @@ class SumsOf6thPowerMTermsModK
   end
 
   def ===(hyp)
-    v,m = hyp.x, hyp.terms_count
+    v, m = hyp.x, hyp.terms_count
     return self[m].include?(v % @k)
   end
 
@@ -39,8 +38,6 @@ class SumsOf6thPowerMTermsModK
     end
     self
   end
-
-
 
   private
   def caculate_residues

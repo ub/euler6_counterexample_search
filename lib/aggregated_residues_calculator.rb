@@ -10,7 +10,7 @@ class AggregatedResiduesCalculator
         a.inject(&:+) % @p
       end.sort.uniq
     end
-    @strict_agregated_residues = [nil,nil] + @strict_agregated_residues
+    @strict_agregated_residues = [nil, nil] + @strict_agregated_residues
   end
 
   #  power 6 residues in ordinarily sense
@@ -40,7 +40,6 @@ class AggregatedResiduesCalculator
     end
   end
 end
-
 
 =begin
 0:

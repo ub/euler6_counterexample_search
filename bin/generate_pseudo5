@@ -6,7 +6,6 @@ require 'hypothesis'
 require 'random_pseudo_6pow_generator'
 require 'benchmark'
 
-
 def generate
   p6pg = RandomPseudo6PowerGenerator.new
   a = p6pg.generate

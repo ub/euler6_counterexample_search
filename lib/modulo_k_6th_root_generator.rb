@@ -17,7 +17,6 @@ class ModuloK6thRoots
     @rows[radicand].base_include?( x % @k)
   end
 
-
   class PeriodicSequence
     def initialize(period, base_sequence)
       @period, @base_sequence =
@@ -85,9 +84,7 @@ class ModuloP6K6thRootsSE
     end
   end
 
-
 end
-
 
 class ModuloK6thRootsWithLookahead
   def initialize(k, l)
@@ -116,13 +113,12 @@ end
 
 class Modulo64_Roots_512_lookahead < ModuloK6thRootsWithLookahead
   def initialize
-    super(64,512)
+    super(64, 512)
   end
 end
 
-
 class Modulo729_Roots_6561_lookahead < ModuloK6thRootsWithLookahead
   def initialize
-    super( 729,6561)
+    super( 729, 6561)
   end
 end

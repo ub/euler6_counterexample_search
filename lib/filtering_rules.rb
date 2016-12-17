@@ -15,7 +15,7 @@ module FilteringRules
       @p_6 = p**6
     end
 
-    def check(hypothesis,refutations, modifications)
+    def check(hypothesis, refutations, modifications)
       while hypothesis.x % @p == 0
         q6, r6 = hypothesis.x.divmod(@p_6)
         if r6 == 0
@@ -39,7 +39,7 @@ module FilteringRules
       @k = k
       #TODO: make simplified check object-oriented
       case k
-        when 7,8,9 #simplified check
+        when 7, 8, 9 #simplified check
           # no-op
         else
           @checker = SumsOf6thPowerMTermsModK.memoized(@k)
@@ -48,7 +48,7 @@ module FilteringRules
 
     def check(hypothesis, refutations)
       case @k
-        when 7,8,9
+        when 7, 8, 9
           if hypothesis.x % @k > hypothesis.terms_count
             refutations << Refutation.new(hypothesis: hypothesis, reason:
                 :remainder_not_representable_as_sum_of_6th_power_residues,

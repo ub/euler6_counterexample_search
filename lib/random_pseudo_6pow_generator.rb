@@ -5,7 +5,6 @@ class RandomPseudo6PowerGenerator
     @m7, @ndb7 = @pool.partition { |x| x % 7 == 0 }
   end
 
-
   def generate
     if rand(5) == 0
 
@@ -51,4 +50,3 @@ class RandomPseudo6PowerGenerator
 
   end
 end
-

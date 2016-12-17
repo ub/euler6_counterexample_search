@@ -139,7 +139,6 @@ module EulerSop6ConjectureCounterexampleSearch
         else
           @default_tactic.apply(h) { |subgoal| @subgoals << subgoal }
         end
-
       end
 
     end
@@ -197,8 +196,6 @@ module EulerSop6ConjectureCounterexampleSearch
             @aggregated_residue_mod_8_constraint.check(h, @refutations) and # encore
             @aggregated_residue_mod_9_constraint.check(h, @refutations) and # encore
             @aggregated_residue_mod_7_constraint.check(h, @refutations)
-
-
       end
     end
 
@@ -211,7 +208,6 @@ module EulerSop6ConjectureCounterexampleSearch
     end
 
   end
-
 
   class Process3
     include GoalReplacement
@@ -230,18 +226,13 @@ module EulerSop6ConjectureCounterexampleSearch
       @tactic13_zero = ZeroRequisiteTactic.new 13, 3
       @tactic7_zero = ZeroRequisiteTactic.new 7, 3
 
-
       @tactic43_non_zero = NonZeroRequisiteTactic.new 43, 3
       @tactic37_non_zero = NonZeroRequisiteTactic.new 37, 3
       @tactic31_non_zero = NonZeroRequisiteTactic.new 31, 3
       @tactic19_non_zero = NonZeroRequisiteTactic.new 19, 3
       @tactic13_non_zero = NonZeroRequisiteTactic.new 13, 3
 
-
-
       @default_tactic = BruteForceTactic.new
-
-
 
       @refutations = []
       @subgoals = []
@@ -267,11 +258,7 @@ module EulerSop6ConjectureCounterexampleSearch
       @tactic19_non_zero.if_none_block = block
       @tactic13_non_zero.if_none_block = block
 
-
-
-
       @default_tactic.if_none_block = block
-
 
       self
     end
@@ -279,36 +266,36 @@ module EulerSop6ConjectureCounterexampleSearch
     def process(hypotheses)
       hypotheses.each do |h|
         if @modulo7_res1_tactic.match? h
-          @modulo7_res1_tactic.apply(h,@filter) { |subgoal| @subgoals << subgoal }
+          @modulo7_res1_tactic.apply(h, @filter) { |subgoal| @subgoals << subgoal }
         elsif @modulo9_res1_tactic.match? h
-          @modulo9_res1_tactic.apply(h,@filter) { |subgoal| @subgoals << subgoal }
+          @modulo9_res1_tactic.apply(h, @filter) { |subgoal| @subgoals << subgoal }
         elsif @modulo19_tactic.match? h
-          @modulo19_tactic.apply(h,@filter) { |subgoal| @subgoals << subgoal }
+          @modulo19_tactic.apply(h, @filter) { |subgoal| @subgoals << subgoal }
         elsif @modulo8_res1_tactic.match? h
-          @modulo8_res1_tactic.apply(h,@filter) { |subgoal| @subgoals << subgoal }
+          @modulo8_res1_tactic.apply(h, @filter) { |subgoal| @subgoals << subgoal }
 
         elsif @tactic43_zero.match? h
-          @tactic43_zero.apply(h,@filter) { |subgoal| @subgoals << subgoal }
+          @tactic43_zero.apply(h, @filter) { |subgoal| @subgoals << subgoal }
         elsif @tactic19_zero.match? h
-          @tactic19_zero.apply(h,@filter) { |subgoal| @subgoals << subgoal }
+          @tactic19_zero.apply(h, @filter) { |subgoal| @subgoals << subgoal }
         elsif @tactic13_zero.match? h
-          @tactic13_zero.apply(h,@filter) { |subgoal| @subgoals << subgoal }
+          @tactic13_zero.apply(h, @filter) { |subgoal| @subgoals << subgoal }
         elsif @tactic7_zero.match? h
-          @tactic7_zero.apply(h,@filter) { |subgoal| @subgoals << subgoal }
+          @tactic7_zero.apply(h, @filter) { |subgoal| @subgoals << subgoal }
 
         elsif @tactic43_non_zero.match? h
-          @tactic43_non_zero.apply(h,@filter) { |subgoal| @subgoals << subgoal }
+          @tactic43_non_zero.apply(h, @filter) { |subgoal| @subgoals << subgoal }
         elsif @tactic37_non_zero.match? h
-          @tactic37_non_zero.apply(h,@filter) { |subgoal| @subgoals << subgoal }
+          @tactic37_non_zero.apply(h, @filter) { |subgoal| @subgoals << subgoal }
         elsif @tactic31_non_zero.match? h
-          @tactic31_non_zero.apply(h,@filter) { |subgoal| @subgoals << subgoal }
+          @tactic31_non_zero.apply(h, @filter) { |subgoal| @subgoals << subgoal }
         elsif @tactic19_non_zero.match? h
-          @tactic19_non_zero.apply(h,@filter) { |subgoal| @subgoals << subgoal }
+          @tactic19_non_zero.apply(h, @filter) { |subgoal| @subgoals << subgoal }
         elsif @tactic13_non_zero.match? h
-          @tactic13_non_zero.apply(h,@filter) { |subgoal| @subgoals << subgoal }
+          @tactic13_non_zero.apply(h, @filter) { |subgoal| @subgoals << subgoal }
         else
             # never should get here -- 13 non-zero covers all!
-          @default_tactic.apply(h,@filter) { |subgoal| @subgoals << subgoal }
+          @default_tactic.apply(h, @filter) { |subgoal| @subgoals << subgoal }
         end
       end
     end
@@ -320,7 +307,6 @@ module EulerSop6ConjectureCounterexampleSearch
     end
 
   end
-
 
   class Filter2
     include FilteringRules
@@ -372,7 +358,6 @@ module EulerSop6ConjectureCounterexampleSearch
 
     def initialize
 
-
       @filter = PregenerationFilters::MultiModuloResidueExclusions.new(2,
         541, 523, 521, 509, 503, 499, 491, 487, 479, 467, 463, 461, 457, 449, 443,
        439, 433, 431, 421, 419, 409, 401, 397, 389, 383, 379, 373, 367, 359, 353,
@@ -388,14 +373,13 @@ module EulerSop6ConjectureCounterexampleSearch
             TwoTermsAllButOneTermDivisibleBy_p_Tactic.new m
           end
 
-
       @zero_req_tactics = [277, 157, 97, 61, 43, 19, 13, 7].map do |p|
-        ZeroRequisiteTactic.new p,2
+        ZeroRequisiteTactic.new p, 2
       end
       @non_zero_req_tactics =
       [271, 229, 199, 181, 163, 157, 151, 127, 109, 103, 97, 79,
        73, 67, 61, 43, 37, 31, 19, 13, 5].map do |p|
-        NonZeroRequisiteTactic.new p,2
+        NonZeroRequisiteTactic.new p, 2
       end
 
       @default_tactic = BruteForceTactic.new
@@ -451,7 +435,6 @@ module EulerSop6ConjectureCounterexampleSearch
 
   end
 
-
   class Process1
     def initialize
       @refutations = []
@@ -474,7 +457,6 @@ module EulerSop6ConjectureCounterexampleSearch
       Confirmation.import @confirmations
       @confirmations.size
     end
-
 
     private
     def is_sixth_power?(h)

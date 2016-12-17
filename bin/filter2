@@ -4,7 +4,6 @@ require_relative('../config/environment')
 
 require 'benchmark'
 
-
 calc_time = Benchmark::Tms.new
 save_time = Benchmark::Tms.new
 count = Hypothesis.for_terms(2).unrefuted.unreduced.count
@@ -23,9 +22,7 @@ Hypothesis.for_terms(2).unrefuted.unreduced.in_batches(of: 12_000) do |batch|
     end
   end
   $stdout.print('.'); $stdout.flush
-
 end
-
 
 puts "\nFiltered(2) count: #{count}"
 puts "Filtering time: #{calc_time}"
