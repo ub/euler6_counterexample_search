@@ -12,12 +12,8 @@ ActiveRecord::Base.establish_connection(configuration['test'])
 
 require 'hypothesis'
 
-
 require 'modulo_k_6th_root_generator'
 require 'sums_of6th_power_m_terms_mod_k'
-
-
-
 
 RSpec.configure do |c|
   c.filter_run focus: true

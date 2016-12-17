@@ -13,7 +13,7 @@ count = 0
 Hypothesis.for_terms(1).unrefuted.unreduced.in_batches(of: 20000) do |batch|
   calc_time.add! do
     @candidates = batch
-    @processor= EulerSop6ConjectureCounterexampleSearch::Process1.new
+    @processor = EulerSop6ConjectureCounterexampleSearch::Process1.new
     @processor.process(@candidates)
 
   end

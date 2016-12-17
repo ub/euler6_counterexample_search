@@ -3,7 +3,7 @@
 require_relative('../config/environment')
 
 require 'benchmark'
-t=Benchmark.measure do
+t = Benchmark.measure do
 ActiveRecord::Base.transaction do
   EulerSop6ConjectureCounterexampleSearch::StartHypothesesGenerator.new.generate
 end

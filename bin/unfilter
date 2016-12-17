@@ -15,7 +15,7 @@ end
 if ARGV[0].nil?
   usage
 else
-  t=Benchmark.measure do
+  t = Benchmark.measure do
     ActiveRecord::Base.transaction do
       Hypothesis.for_terms(4).filtered_out.each do |h|
         h.refutation.destroy

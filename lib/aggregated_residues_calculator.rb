@@ -2,7 +2,7 @@ class AggregatedResiduesCalculator
   def initialize(p)
     @p = p
 
-    @rs = (1...p).map { |x| x ** 6 % p }.to_a.sort.uniq
+    @rs = (1...p).map { |x| x**6 % p }.to_a.sort.uniq
 
     @strict_agregated_residues =
     (2..4).map do |tc|
@@ -36,7 +36,7 @@ class AggregatedResiduesCalculator
 
   def report
     (2..4).each do|tc|
-      puts "#{tc}: #{strict_zero_aggregated_residues?(tc) ? "0/": ""} #{singularity_residues(tc).inspect}"
+      puts "#{tc}: #{strict_zero_aggregated_residues?(tc) ? "0/" : ""} #{singularity_residues(tc).inspect}"
     end
   end
 end

@@ -4,7 +4,7 @@ class ResultPresenter
     h = s.hypothesis
     while h.parent_id
       f = sxrt h.factor
-      terms.map!{|x| x *f}
+      terms.map!{ |x| x * f }
       term6 = h.parent.x - ( h.x * h.factor)
       term = sxrt term6
       terms << term
@@ -20,11 +20,11 @@ class ResultPresenter
   end
 
   def check(terms, sum6pow)
-    terms.map {|x| x**6}.reduce(&:+) == sum6pow
+    terms.map { |x| x**6 }.reduce(&:+) == sum6pow
   end
 
   def display_s(terms, sum6pow)
-    terms.sort.map{|t| "#{t}⁶"}.join(" + ") + " = #{sum6pow}"
+    terms.sort.map{ |t| "#{t}⁶" }.join(" + ") + " = #{sum6pow}"
   end
 
   private

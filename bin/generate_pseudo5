@@ -17,7 +17,7 @@ end
 
 $f = File.new('pseudo6gen.log', 'w')
 begin
-  t=Benchmark.measure do
+  t = Benchmark.measure do
     ActiveRecord::Base.transaction do
       1000.times do
         $f.puts generate

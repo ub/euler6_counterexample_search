@@ -2,7 +2,7 @@
 module GoalReplacement
   class AbstractTactic
     def initialize
-      @if_none_block = Proc.new { |ignore|}
+      @if_none_block = Proc.new { |ignore| }
     end
 
     attr_accessor :if_none_block
@@ -21,7 +21,7 @@ module GoalReplacement
 
   class AllButOneTermDivisibleBy_p_Tactic < AbstractTactic
     def initialize(p, mod_p6pow_6th_roots_gen)
-      @p6pow = p ** 6
+      @p6pow = p**6
       @mod_p6pow_6th_roots = mod_p6pow_6th_roots_gen
       super()
     end
@@ -34,7 +34,7 @@ module GoalReplacement
         @mod_p6pow_6th_roots[res].each do |u|
           break if u > upper_limit
           next if fs.rejects?(u)
-          u6 = u **6
+          u6 = u**6
           break if v < u6
           once = true
           subgoal_hypothesis = (v - u6).div_by! @p6pow
@@ -95,7 +95,7 @@ module GoalReplacement
         @roots_with_lookahead_gen[v].each do |u|
           break if u > upper_limit
           next if fs.rejects?(u)
-          u6 = u **6
+          u6 = u**6
           break if v < u6
           once = true
           subgoal_hypothesis = (v - u6).div_by! @p6pow
@@ -153,9 +153,9 @@ module GoalReplacement
         r7 = v % 7
         r8 = v % 8
         r9 = v % 9
-        not7 = r7==v.terms_count
-        oddonly = r8==v.terms_count
-        not3 = r9==v.terms_count
+        not7 = r7 == v.terms_count
+        oddonly = r8 == v.terms_count
+        not3 = r9 == v.terms_count
 
         u = 0
         once = false
@@ -187,12 +187,12 @@ module GoalReplacement
       @n_terms = n_terms
       aggr_calc = N_TermsAggregatedResiduesConstraintsCalc.new(p, n_terms)
       @reqmap = aggr_calc.requisites
-      @root_generator=ModuloK6thRoots.new(p)
+      @root_generator = ModuloK6thRoots.new(p)
     end
 
     def match?(v)
 
-      requisites  = Array(@reqmap[v % @p])
+      requisites = Array(@reqmap[v % @p])
       !requisites.empty? && !requisites.include?(0) && v.terms_count == @n_terms
     end
 
@@ -206,9 +206,9 @@ module GoalReplacement
         r7 = v % 7
         r8 = v % 8
         r9 = v % 9
-        not7 = r7==v.terms_count
-        oddonly = r8==v.terms_count
-        not3 = r9==v.terms_count
+        not7 = r7 == v.terms_count
+        oddonly = r8 == v.terms_count
+        not3 = r9 == v.terms_count
 
         res = @reqmap[v % @p].first
         once = false
@@ -235,7 +235,7 @@ module GoalReplacement
 
   module Pow6ResiduesCalculator
     def calculate_pow6_residues(p)
-      (1...p).map { |x| x ** 6 % p }.to_a.sort.uniq
+      (1...p).map { |x| x**6 % p }.to_a.sort.uniq
     end
   end
 
@@ -269,16 +269,16 @@ module GoalReplacement
 
 
   class BruteForceTactic < AbstractTactic
-    def apply(v, filter= filter=PregenerationFilters::Null)
+    def apply(v, filter= filter = PregenerationFilters::Null)
       filter.with(v) do |fs|
         upper_limit = v.ceil_6th_root
 
         r7 = v % 7
         r8 = v % 8
         r9 = v % 9
-        not7 = r7==v.terms_count
-        oddonly = r8==v.terms_count
-        not3 = r9==v.terms_count
+        not7 = r7 == v.terms_count
+        oddonly = r8 == v.terms_count
+        not3 = r9 == v.terms_count
         u = -1
         once = false
         loop do

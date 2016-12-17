@@ -12,7 +12,7 @@ class RandomPseudo6PowerGenerator
       @m7 = @m7.select(&:even?)
       @ndb7 = @ndb7.select(&:odd?)
     else
-      @ndb7=@ndb7.select(&:even?)
+      @ndb7 = @ndb7.select(&:even?)
       odd_to_be_chosen = true
     end
 
@@ -32,7 +32,7 @@ class RandomPseudo6PowerGenerator
     if odd
       one, three = pool.partition(&:odd?)
     elsif ndb3
-      one, three = pool.partition { |x| x % 3 !=0 }
+      one, three = pool.partition { |x| x % 3 != 0 }
     else
       return pool.sample(4)
     end
@@ -43,7 +43,7 @@ class RandomPseudo6PowerGenerator
         three = three.select { |x| x % 3 == 0 }
       else
         one = one.select { |x| x % 3 == 0 }
-        one_more, two = three.partition { |x| x % 3 !=0 }
+        one_more, two = three.partition { |x| x % 3 != 0 }
         return [one.sample, one_more.sample, two.sample(2)].flatten
       end
     end

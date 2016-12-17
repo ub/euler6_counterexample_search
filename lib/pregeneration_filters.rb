@@ -12,7 +12,7 @@ module PregenerationFilters
       @p, @n_terms = p, n_terms
       aggr_calc = N_TermsAggregatedResiduesConstraintsCalc.new(p, n_terms)
       @exclusions_map = aggr_calc.exclusions
-      @roots_generator=ModuloK6thRoots.new(p)
+      @roots_generator = ModuloK6thRoots.new(p)
     end
 
     def residue(v)
@@ -46,17 +46,15 @@ module PregenerationFilters
 
     end
     def initialize(n_terms, *ps)
-      @filters = ps.map {|p| ResiduesExclusions.new(p,n_terms)}
+      @filters = ps.map { |p| ResiduesExclusions.new(p,n_terms) }
       @ps = ps
     end
 
 
 
     def with(v)
-      yield FilterSet.new(@filters.zip(@ps.map {|p| v % p}))
+      yield FilterSet.new(@filters.zip(@ps.map { |p| v % p }))
     end
-
-
 
   end
 

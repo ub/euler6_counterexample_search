@@ -3,7 +3,7 @@ class SumsOf6thPowerMTermsModK
   MAX_TERMS = 4
 
   def initialize(k)
-    @k=k
+    @k = k
     @v = Array.new(MAX_TERMS + 1) { [] } # 1 to MAX_TERMS, 0 unused
     caculate_residues
     calculate_reachable_sums

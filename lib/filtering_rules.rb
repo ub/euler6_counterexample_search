@@ -12,7 +12,7 @@ module FilteringRules
              else
                p
            end
-      @p_6 = p ** 6
+      @p_6 = p**6
     end
 
     def check(hypothesis,refutations, modifications)

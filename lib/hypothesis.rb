@@ -6,14 +6,14 @@ class Hypothesis < ActiveRecord::Base
 
   has_one :refutation, dependent:  :destroy
 
-  scope :unrefuted, -> {left_outer_joins(:refutation ).where('refutations.id'=> nil)}
+  scope :unrefuted, -> { left_outer_joins(:refutation ).where('refutations.id' => nil) }
   # only hypotheses violating some constraint, not counting non-productive hypotheses
-  scope :filtered_out, -> {left_outer_joins(:refutation ).where.not('refutations.id'=> nil).
-                          where.not('refutations.reason' =>   Refutation.reasons[:no_subgoals_generated])}
-  scope :all_refuted, -> {left_outer_joins(:refutation ).where.not('refutations.id'=> nil)}
+  scope :filtered_out, -> { left_outer_joins(:refutation ).where.not('refutations.id' => nil).
+                          where.not('refutations.reason' => Refutation.reasons[:no_subgoals_generated])}
+  scope :all_refuted, -> { left_outer_joins(:refutation ).where.not('refutations.id' => nil) }
 
-  scope :unreduced, -> {left_outer_joins(:subgoals).where( "subgoals_hypotheses.id" => nil)}
-  scope :for_terms, ->(n){where(terms_count: n)}
+  scope :unreduced, -> { left_outer_joins(:subgoals).where( "subgoals_hypotheses.id" => nil) }
+  scope :for_terms, ->(n){ where(terms_count: n) }
   def value=(v)
     super(v)
   end
@@ -55,7 +55,7 @@ class Hypothesis < ActiveRecord::Base
 
   def ceil_6th_root
     root = Math.cbrt(Math.sqrt x).to_i + 1
-    raise "Bad assumption" unless root ** 6 > x
+    raise "Bad assumption" unless root**6 > x
     root
   end
 

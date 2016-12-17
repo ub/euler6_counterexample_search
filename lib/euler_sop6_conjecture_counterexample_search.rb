@@ -24,7 +24,7 @@ module EulerSop6ConjectureCounterexampleSearch
   class Process5
     def initialize
       @modulo_p6pow_6th_roots_generators = ModuloK6thRoots.new(117649)
-      @refutations=[]
+      @refutations = []
       @subgoals = []
     end
 
@@ -33,7 +33,7 @@ module EulerSop6ConjectureCounterexampleSearch
         rem = f6 % 117649
         subgoals_count = 0
         @modulo_p6pow_6th_roots_generators[rem].each do |e|
-          e6=e**6
+          e6 = e**6
           break if f6 <= e6
           subgoal = f6 - e6
           subgoal.div_by!(117649)
@@ -69,7 +69,7 @@ module EulerSop6ConjectureCounterexampleSearch
       @aggregated_residue_mod_9_constraint = RemainderIsRepresentableAsSumOf6powResidues.new(9)
       @aggregated_residue_mod_31_constraint = RemainderIsRepresentableAsSumOf6powResidues.new(31)
 
-      @refutations=[]
+      @refutations = []
       @modifications = []
       @input_size = nil
 
@@ -107,7 +107,7 @@ module EulerSop6ConjectureCounterexampleSearch
       @modulo9_res1_tactic = Modulo_m_Res1_Tactic.new(9)
       @modulo8_res1_tactic = Modulo_m_Res1_Tactic.new(8)
       @default_tactic = BruteForceTactic.new
-      @refutations=[]
+      @refutations = []
       @subgoals = []
       if_none do |parent_hypothesis|
         @refutations << Refutation.new(hypothesis: parent_hypothesis, reason: :no_subgoals_generated)
@@ -125,13 +125,13 @@ module EulerSop6ConjectureCounterexampleSearch
     def process(hypotheses)
       hypotheses.each do |h|
         if @modulo7_res1_tactic.match? h
-          @modulo7_res1_tactic.apply(h) { |subgoal| @subgoals<< subgoal }
+          @modulo7_res1_tactic.apply(h) { |subgoal| @subgoals << subgoal }
         elsif @modulo9_res1_tactic.match? h
-          @modulo9_res1_tactic.apply(h) { |subgoal| @subgoals<< subgoal }
+          @modulo9_res1_tactic.apply(h) { |subgoal| @subgoals << subgoal }
         elsif @modulo8_res1_tactic.match? h
-          @modulo8_res1_tactic.apply(h) { |subgoal| @subgoals<< subgoal }
+          @modulo8_res1_tactic.apply(h) { |subgoal| @subgoals << subgoal }
         else
-          @default_tactic.apply(h) { |subgoal| @subgoals<< subgoal }
+          @default_tactic.apply(h) { |subgoal| @subgoals << subgoal }
         end
 
       end
@@ -165,7 +165,7 @@ module EulerSop6ConjectureCounterexampleSearch
       @aggregated_residue_mod_19_constraint = RemainderIsRepresentableAsSumOf6powResidues.new(19)
       @aggregated_residue_mod_31_constraint = RemainderIsRepresentableAsSumOf6powResidues.new(31)
 
-      @refutations=[]
+      @refutations = []
       @modifications = []
       @input_size = nil
     end
@@ -237,7 +237,7 @@ module EulerSop6ConjectureCounterexampleSearch
 
 
 
-      @refutations=[]
+      @refutations = []
       @subgoals = []
       if_none do |parent_hypothesis|
         @refutations << Refutation.new(hypothesis: parent_hypothesis, reason: :no_subgoals_generated)
@@ -273,36 +273,36 @@ module EulerSop6ConjectureCounterexampleSearch
     def process(hypotheses)
       hypotheses.each do |h|
         if @modulo7_res1_tactic.match? h
-          @modulo7_res1_tactic.apply(h,@filter) { |subgoal| @subgoals<< subgoal }
+          @modulo7_res1_tactic.apply(h,@filter) { |subgoal| @subgoals << subgoal }
         elsif @modulo9_res1_tactic.match? h
-          @modulo9_res1_tactic.apply(h,@filter) { |subgoal| @subgoals<< subgoal }
+          @modulo9_res1_tactic.apply(h,@filter) { |subgoal| @subgoals << subgoal }
         elsif @modulo19_tactic.match? h
-          @modulo19_tactic.apply(h,@filter) { |subgoal| @subgoals<< subgoal }
+          @modulo19_tactic.apply(h,@filter) { |subgoal| @subgoals << subgoal }
         elsif @modulo8_res1_tactic.match? h
-          @modulo8_res1_tactic.apply(h,@filter) { |subgoal| @subgoals<< subgoal }
+          @modulo8_res1_tactic.apply(h,@filter) { |subgoal| @subgoals << subgoal }
 
         elsif @tactic43_zero.match? h
-          @tactic43_zero.apply(h,@filter) { |subgoal| @subgoals<< subgoal }
+          @tactic43_zero.apply(h,@filter) { |subgoal| @subgoals << subgoal }
         elsif @tactic19_zero.match? h
-          @tactic19_zero.apply(h,@filter) { |subgoal| @subgoals<< subgoal }
+          @tactic19_zero.apply(h,@filter) { |subgoal| @subgoals << subgoal }
         elsif @tactic13_zero.match? h
-          @tactic13_zero.apply(h,@filter) { |subgoal| @subgoals<< subgoal }
+          @tactic13_zero.apply(h,@filter) { |subgoal| @subgoals << subgoal }
         elsif @tactic7_zero.match? h
-          @tactic7_zero.apply(h,@filter) { |subgoal| @subgoals<< subgoal }
+          @tactic7_zero.apply(h,@filter) { |subgoal| @subgoals << subgoal }
 
         elsif @tactic43_non_zero.match? h
-          @tactic43_non_zero.apply(h,@filter) { |subgoal| @subgoals<< subgoal }
+          @tactic43_non_zero.apply(h,@filter) { |subgoal| @subgoals << subgoal }
         elsif @tactic37_non_zero.match? h
-          @tactic37_non_zero.apply(h,@filter) { |subgoal| @subgoals<< subgoal }
+          @tactic37_non_zero.apply(h,@filter) { |subgoal| @subgoals << subgoal }
         elsif @tactic31_non_zero.match? h
-          @tactic31_non_zero.apply(h,@filter) { |subgoal| @subgoals<< subgoal }
+          @tactic31_non_zero.apply(h,@filter) { |subgoal| @subgoals << subgoal }
         elsif @tactic19_non_zero.match? h
-          @tactic19_non_zero.apply(h,@filter) { |subgoal| @subgoals<< subgoal }
+          @tactic19_non_zero.apply(h,@filter) { |subgoal| @subgoals << subgoal }
         elsif @tactic13_non_zero.match? h
-          @tactic13_non_zero.apply(h,@filter) { |subgoal| @subgoals<< subgoal }
+          @tactic13_non_zero.apply(h,@filter) { |subgoal| @subgoals << subgoal }
         else
             # never should get here -- 13 non-zero covers all!
-          @default_tactic.apply(h,@filter) { |subgoal| @subgoals<< subgoal }
+          @default_tactic.apply(h,@filter) { |subgoal| @subgoals << subgoal }
         end
       end
     end
@@ -331,7 +331,7 @@ module EulerSop6ConjectureCounterexampleSearch
             RemainderIsRepresentableAsSumOf6powResidues.new k
           end
 
-      @refutations=[]
+      @refutations = []
       @modifications = []
       @input_size = nil
     end
@@ -390,7 +390,7 @@ module EulerSop6ConjectureCounterexampleSearch
       end
 
       @default_tactic = BruteForceTactic.new
-      @refutations=[]
+      @refutations = []
       @subgoals = []
       if_none do |parent_hypothesis|
         @refutations << Refutation.new(hypothesis: parent_hypothesis, reason: :no_subgoals_generated)
@@ -403,25 +403,25 @@ module EulerSop6ConjectureCounterexampleSearch
         processed = @smart_tactics.any? do |tactic|
           matched = tactic.match?(h)
           if matched
-            tactic.apply(h, @filter) { |subgoal| @subgoals<< subgoal }
+            tactic.apply(h, @filter) { |subgoal| @subgoals << subgoal }
           end
           matched
         end || @zero_req_tactics.any? do |tactic|
           matched = tactic.match?(h)
           if matched
-            tactic.apply(h, @filter) { |subgoal| @subgoals<< subgoal }
+            tactic.apply(h, @filter) { |subgoal| @subgoals << subgoal }
           end
           matched
-        end  || @non_zero_req_tactics.any? do |tactic|
+        end || @non_zero_req_tactics.any? do |tactic|
           matched = tactic.match?(h)
           if matched
-            tactic.apply(h, @filter) { |subgoal| @subgoals<< subgoal }
+            tactic.apply(h, @filter) { |subgoal| @subgoals << subgoal }
           end
           matched
         end
 
         unless processed
-          @default_tactic.apply(h, @filter) { |subgoal| @subgoals<< subgoal }
+          @default_tactic.apply(h, @filter) { |subgoal| @subgoals << subgoal }
         end
       end
     end
@@ -445,7 +445,7 @@ module EulerSop6ConjectureCounterexampleSearch
 
   class Process1
     def initialize
-      @refutations=[]
+      @refutations = []
       @confirmations = []
 
     end
@@ -469,8 +469,8 @@ module EulerSop6ConjectureCounterexampleSearch
 
     private
     def is_sixth_power?(h)
-      sixth_root=sxthrt(h)
-      sixth_root.round ** 6 == h.x
+      sixth_root = sxthrt(h)
+      sixth_root.round**6 == h.x
     end
 
     def sxthrt(h)

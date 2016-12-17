@@ -4,16 +4,16 @@ require 'refutation'
 
 describe FilteringRules::DivisibilityBy_p_ImpliesDivisibilityBy_p_6 do
 
-  let(:good3_a) {FactoryGirl.create(:hyp3,value:5 ** 6 + 7 **6 + 11**6)}
-  let(:bad3_5) {FactoryGirl.create(:hyp3,value:3**5)}
-  let(:good3_7) {FactoryGirl.create(:hyp3, value:3**7)}
-  let(:bad3_8) {FactoryGirl.create(:hyp3,value:3**8)}
-  let(:refutations) {[]}
-  let(:modifications) {[]}
-  subject(:div729_checker){FilteringRules::DivisibilityBy_p_ImpliesDivisibilityBy_p_6.new(3)}
-  subject(:div64_checker){FilteringRules::DivisibilityBy_p_ImpliesDivisibilityBy_p_6.new(2)}
+  let(:good3_a) { FactoryGirl.create(:hyp3,value:5**6 + 7**6 + 11**6) }
+  let(:bad3_5) { FactoryGirl.create(:hyp3,value:3**5) }
+  let(:good3_7) { FactoryGirl.create(:hyp3, value:3**7) }
+  let(:bad3_8) { FactoryGirl.create(:hyp3,value:3**8) }
+  let(:refutations) { [] }
+  let(:modifications) { [] }
+  subject(:div729_checker){ FilteringRules::DivisibilityBy_p_ImpliesDivisibilityBy_p_6.new(3) }
+  subject(:div64_checker){ FilteringRules::DivisibilityBy_p_ImpliesDivisibilityBy_p_6.new(2) }
 
-  let(:regression2a_bad) {FactoryGirl.build(:hypothesis,value:100879995337641642321784)}
+  let(:regression2a_bad) { FactoryGirl.build(:hypothesis,value:100879995337641642321784) }
 
   it 'accepts sum of three 6th powers (regression)' do
     expect(div729_checker.check(good3_a, refutations, modifications)).to be_truthy
