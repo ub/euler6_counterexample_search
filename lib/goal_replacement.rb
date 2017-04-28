@@ -254,7 +254,7 @@ module GoalReplacement
   end
 
   class BruteForceTactic < AbstractTactic
-    def apply(v, filter= filter = PregenerationFilters::Null)
+    def apply(v,  filter = PregenerationFilters::Null)
       filter.with(v) do |fs|
         upper_limit = v.ceil_6th_root
 
