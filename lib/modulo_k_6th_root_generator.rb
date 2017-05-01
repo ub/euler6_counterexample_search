@@ -17,6 +17,11 @@ class ModuloK6thRoots
     @rows[radicand].base_include?(x % @k)
   end
 
+  # Technically not a periodic sequence in math sense, but an infinite
+  # growing sequence of numbers, congruent by modulo specified as 'period'
+  # to the given base sequence (which SHOULD be growing)
+  #
+  # TODO invent a better name
   class PeriodicSequence
     def initialize(period, base_sequence)
       @period, @base_sequence =
