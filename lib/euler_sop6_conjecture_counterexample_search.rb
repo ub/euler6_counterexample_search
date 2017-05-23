@@ -367,9 +367,6 @@ module EulerSop6ConjectureCounterexampleSearch
             TwoTermsAllButOneTermDivisibleBy_p_Tactic.new m
           end
 
-      @zero_req_tactics = [277, 157, 97, 61, 43, 19, 13, 7].map do |p|
-        ZeroRequisiteTactic.new p, 2
-      end
       @non_zero_req_tactics =
       [271, 229, 199, 181, 163, 157, 151, 127, 109, 103, 97, 79,
        73, 67, 61, 43, 37, 31, 19, 13, 5].map do |p|
@@ -393,12 +390,6 @@ module EulerSop6ConjectureCounterexampleSearch
             tactic.apply(h, @filter) { |subgoal| @subgoals << subgoal }
           end
           matched
-        end || @zero_req_tactics.any? do |tactic|
-          matched = tactic.match?(h)
-          if matched
-            tactic.apply(h, @filter) { |subgoal| @subgoals << subgoal }
-          end
-          matched
         end || @non_zero_req_tactics.any? do |tactic|
           matched = tactic.match?(h)
           if matched
@@ -415,7 +406,6 @@ module EulerSop6ConjectureCounterexampleSearch
 
     def if_none(&block)
       @smart_tactics.each { |t| t.if_none_block = block }
-      @zero_req_tactics.each { |t| t.if_none_block = block }
       @non_zero_req_tactics.each { |t| t.if_none_block = block }
       @default_tactic.if_none_block = block
 
