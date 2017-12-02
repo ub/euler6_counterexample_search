@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 gem 'rake'
 gem 'rspec'
 gem 'active_record_migrations'
-gem 'activerecord-import', '~> 0.11.0'
+gem 'activerecord-import'
 gem 'sqlite3' # or 'pg', 'mysql2', .
 gem 'database_cleaner'
 gem "factory_girl"
