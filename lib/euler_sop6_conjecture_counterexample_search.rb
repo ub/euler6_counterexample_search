@@ -379,7 +379,11 @@ module EulerSop6ConjectureCounterexampleSearch
       if_none do |parent_hypothesis|
         @refutations << Refutation.new(hypothesis: parent_hypothesis, reason: :no_subgoals_generated)
       end
+    end
 
+    def reset!
+      @refutations = []
+      @subgoals = []
     end
 
     def process(hypotheses)
