@@ -3,6 +3,8 @@
 require_relative('../config/environment')
 
 require 'benchmark'
+puts File.basename(__FILE__)
+
 
 calc_time = Benchmark::Tms.new
 save_time = Benchmark::Tms.new

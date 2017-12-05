@@ -3,6 +3,7 @@
 require_relative('../config/environment')
 
 require 'benchmark'
+puts File.basename(__FILE__)
 
 calc_time = Benchmark.measure do
   @candidates = Hypothesis.for_terms(3).unrefuted.unreduced

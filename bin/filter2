@@ -3,9 +3,14 @@
 require_relative('../config/environment')
 
 require 'benchmark'
+puts File.basename(__FILE__)
+
 
 calc_time = Benchmark::Tms.new
 save_time = Benchmark::Tms.new
+make_time = Benchmark::Tms.new
+proc_time = Benchmark::Tms.new
+
 count = Hypothesis.for_terms(2).unrefuted.unreduced.count
 puts "Candidates(2) count: #{count}"
 count = 0
@@ -13,8 +18,14 @@ count = 0
 Hypothesis.for_terms(2).unrefuted.unreduced.in_batches(of: 12_000) do |batch|
   calc_time.add! do
     candidates = batch
+    make_time.add! do
+
     @filter =  EulerSop6ConjectureCounterexampleSearch::Filter2.new
+    end
+    proc_time.add! do
+
     @filter.filter(candidates)
+    end
   end
   save_time.add! do
     ActiveRecord::Base.transaction do
@@ -25,5 +36,7 @@ Hypothesis.for_terms(2).unrefuted.unreduced.in_batches(of: 12_000) do |batch|
 end
 
 puts "\nFiltered(2) count: #{count}"
-puts "Filtering time: #{calc_time}"
+puts "Total filtering time: #{calc_time}"
+puts "Processor object creation time: #{make_time}"
+puts "Data proc. calculation time: #{proc_time}"
 puts "Writing time: #{save_time}"

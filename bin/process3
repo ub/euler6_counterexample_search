@@ -3,9 +3,15 @@
 require_relative('../config/environment')
 
 require 'benchmark'
+puts File.basename(__FILE__)
+
 
 calc_time = Benchmark::Tms.new
 save_time = Benchmark::Tms.new
+make_time = Benchmark::Tms.new
+proc_time = Benchmark::Tms.new
+
+
 count = Hypothesis.for_terms(3).unrefuted.unreduced.count
 puts "Candidates(3) count: #{count}"
 count = 0
@@ -13,8 +19,14 @@ count = 0
 Hypothesis.for_terms(3).unrefuted.unreduced.in_batches(of: 4000) do |batch|
   calc_time.add! do
     @candidates = batch
-    @processor = EulerSop6ConjectureCounterexampleSearch::Process3.new
-    @processor.process(@candidates)
+    make_time.add! do
+      @processor ||= EulerSop6ConjectureCounterexampleSearch::Process3.new
+      @processor.reset!
+    end
+    proc_time.add! do
+
+      @processor.process(@candidates)
+    end
   end
   save_time.add! do
     ActiveRecord::Base.transaction do
@@ -24,5 +36,8 @@ Hypothesis.for_terms(3).unrefuted.unreduced.in_batches(of: 4000) do |batch|
   $stdout.print('.'); $stdout.flush
 end
 puts "\nSubgoals(2) count: #{count}"
-puts "Calculation time: #{calc_time}"
+puts "Total calculation time: #{calc_time}"
+puts "     Processor object creation time: #{make_time}"
+puts "     Data proc. calculation time: #{proc_time}"
+
 puts "Writing time: #{save_time}"

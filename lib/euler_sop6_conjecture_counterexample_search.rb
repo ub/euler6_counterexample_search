@@ -237,6 +237,11 @@ module EulerSop6ConjectureCounterexampleSearch
       end
     end
 
+    def reset!
+      @refutations = []
+      @subgoals = []
+    end
+
     def if_none(&block)
       @modulo7_res1_tactic.if_none_block = block
       @modulo8_res1_tactic.if_none_block = block
