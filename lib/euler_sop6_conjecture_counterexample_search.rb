@@ -172,6 +172,12 @@ module EulerSop6ConjectureCounterexampleSearch
       @input_size = nil
     end
 
+    def reset!
+      @refutations = []
+      @modifications = []
+      @input_size = nil
+    end
+
     def filter(candidates)
       @input_size = candidates.count
       candidates.each do |h|

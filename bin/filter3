@@ -5,18 +5,36 @@ require_relative('../config/environment')
 require 'benchmark'
 puts File.basename(__FILE__)
 
-calc_time = Benchmark.measure do
-  @candidates = Hypothesis.for_terms(3).unrefuted.unreduced
-  puts "Candidates(3) count: #{@candidates.count}"
-  @filter = EulerSop6ConjectureCounterexampleSearch::Filter3.new
-  @filter.filter(@candidates)
-end
-puts "Filtering time: #{calc_time}"
+calc_time = Benchmark::Tms.new
+save_time = Benchmark::Tms.new
+make_time = Benchmark::Tms.new
+proc_time = Benchmark::Tms.new
 
-save_time = Benchmark.measure do
-  ActiveRecord::Base.transaction do
-    count = @filter.save_filter_results
-    puts "Filtered(3) count: #{count}"
+count = Hypothesis.for_terms(3).unrefuted.unreduced.count
+puts "Candidates(3) count: #{count}"
+count = 0
+
+ Hypothesis.for_terms(3).unrefuted.unreduced.in_batches(of: 12_000) do |batch|
+   candidates = batch
+  make_time.add! do
+    @filter = EulerSop6ConjectureCounterexampleSearch::Filter3.new
+    @filter.reset!
   end
+
+
+  calc_time.add! do
+    @filter.filter(candidates)
+  end
+  save_time.add! do
+    ActiveRecord::Base.transaction do
+      count += @filter.save_filter_results
+    end
+  end
+
 end
+
+puts "\nFiltered(3) count: #{count}"
+puts "Total filtering time: #{calc_time}"
+puts "     Processor object creation time: #{make_time}"
+puts "     Data proc. calculation time: #{proc_time}"
 puts "Writing time: #{save_time}"
