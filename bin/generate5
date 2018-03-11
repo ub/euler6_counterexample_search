@@ -3,9 +3,19 @@
 require_relative('../config/environment')
 
 require 'benchmark'
+
+if ARGV[1].present?
+  start,stop=ARGV[0..1].map(&:to_i)
+else
+  start, stop = 1, 117649
+end
+puts "Generating plausible 6th power goals in #{start}...#{stop}."
+
 t = Benchmark.measure do
 ActiveRecord::Base.transaction do
-  EulerSop6ConjectureCounterexampleSearch::StartHypothesesGenerator.new.generate
+  $count =
+    EulerSop6ConjectureCounterexampleSearch::StartHypothesesGenerator.new.generate(start,stop)
 end
 end
+puts "Goals count: #{$count}"
 puts t
