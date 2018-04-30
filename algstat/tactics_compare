@@ -1,0 +1,31 @@
+#!/usr/bin/env ruby
+
+require_relative('../config/environment')
+
+N_TERMS = 4
+@candidates = Hypothesis.for_terms(N_TERMS).unrefuted
+
+def compare_set(t1, t2)
+  @candidates.select {|h| t1.match?(h) && t2.match?(h)}
+end
+
+@t8 = GoalReplacement::Modulo_m_Res1_Tactic.new 8
+@t31 = GoalReplacement::NonZeroRequisiteTactic.new 31, N_TERMS
+
+
+hs = compare_set(@t8,@t31)
+puts "COMPARE SET 8/31 = #{hs.count}"
+
+
+def reduce_count(hs, t)
+  count = 0
+  hs.each do |h|
+    t.apply(h){count += 1}
+  end
+  count
+end
+
+t8c = reduce_count(hs, @t8)
+t31c = reduce_count(hs, @t31)
+
+puts "T8 count= #{t8c}; T31 count = #{t31c}"
