@@ -45,6 +45,12 @@ class N_TermsAggregatedResiduesConstraintsCalc
   end
 end
 
+if defined?(IRB) || defined?(Pry) # for console environment
+  class N_TermsAggregatedResiduesConstraintsCalc
+    attr_reader :rs, :combinations
+  end
+end
+
 if __FILE__ == $0
 
   require 'prime'
