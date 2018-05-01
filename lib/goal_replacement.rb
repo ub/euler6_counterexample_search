@@ -253,6 +253,47 @@ module GoalReplacement
     end
   end
 
+  class MajorTermTactic < AbstractTactic
+    def apply(v,  filter = PregenerationFilters::Null)
+      filter.with(v) do |fs|
+        lower_limit = v.floor_major_term
+        upper_limit = v.ceil_6th_root
+        r7 = v % 7
+        r8 = v % 8
+        r9 = v % 9
+        not7 = r7 == v.terms_count
+        oddonly = r8 == v.terms_count
+        not3 = r9 == v.terms_count
+        once = false
+        u = if lower_limit.odd? && oddonly
+              lower_limit - 2
+            else
+              lower_limit - 1
+            end
+        loop do
+          if oddonly
+            u += 2
+          else
+            u += 1
+          end
+          break if u > upper_limit
+          next if not3 && u % 3 == 0
+          next if not7 && u % 7 == 0
+          next if fs.rejects?(u)
+          u6 = u**6
+          break if v < u6
+          once = true
+          yield v - u6
+        end
+        @if_none_block.call(v) unless once
+      end
+    end
+
+    def match?(_)
+      true
+    end
+  end
+
   class BruteForceTactic < AbstractTactic
     def apply(v,  filter = PregenerationFilters::Null)
       filter.with(v) do |fs|

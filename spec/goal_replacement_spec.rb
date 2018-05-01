@@ -134,3 +134,31 @@ describe GoalReplacement::TwoTermsAllButOneTermDivisibleBy_p_Tactic do
     end
   end
 end
+
+
+describe GoalReplacement::MajorTermTactic do
+  describe '#apply' do
+    let(:four_times_11pow6) {FactoryGirl.build :hypothesis, value: 4* 11**6} # 7086244
+    let(:plus6) {FactoryGirl.build :hypothesis, value: 7086250}
+    let(:fourteenpow6){FactoryGirl.build :hypothesis, value: 14**6}
+
+    #because basic pregen filtering rejects divisible by 3 and 7 -- 12 is omitted
+    it ' 7086244 generates subgoals by selecting 11 and 13 as major term bases' do
+      expect(subject.enum_for(:apply, four_times_11pow6).entries.map(&:x)).to contain_exactly(3*11**6, four_times_11pow6.value - 13**6)
+    end
+
+    it ' 7086260 generates subgoals with major term bases 11 through 13' do
+      expected = [11,12,13].map{|x| plus6.x - x**6}
+      expect(subject.enum_for(:apply, plus6).entries.map(&:x)).to contain_exactly(*expected)
+    end
+
+    it '14**6 generates major term 14**6 also' do
+      expected = [11,12,13,14].map{|x| fourteenpow6.x - x**6}
+      expect(subject.enum_for(:apply, fourteenpow6).entries.map(&:x)).to contain_exactly(*expected)
+    end
+
+
+  end
+
+
+end

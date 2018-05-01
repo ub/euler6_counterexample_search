@@ -53,6 +53,17 @@ class Hypothesis < ActiveRecord::Base
     self
   end
 
+
+  # v = A₁⁶ + ... +  Aₙ⁶ where n == terms_count
+  # major term here is one that contributes more than
+  # 1/nth the to the sum. At least 1 and at most n-1 terms
+  # are major.
+  #
+  def floor_major_term
+    #FIXME Approximation; may introduce bugs in our algorithms for large numbers
+    Math.cbrt(Math.sqrt x / terms_count ).to_i
+  end
+
   def ceil_6th_root
     root = Math.cbrt(Math.sqrt x).to_i + 1
     raise "Bad assumption" unless root**6 > x

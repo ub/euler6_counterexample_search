@@ -28,6 +28,7 @@ class ResultPresenter
   end
 
   private
+  #FIXME Approximation!
   def sxrt(x)
     Math.cbrt(Math.sqrt x).round
   end
