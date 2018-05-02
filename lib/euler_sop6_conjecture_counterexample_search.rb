@@ -112,7 +112,7 @@ module EulerSop6ConjectureCounterexampleSearch
       @modulo7_res1_tactic = Modulo_m_Res1_Tactic.new(7)
       @modulo9_res1_tactic = Modulo_m_Res1_Tactic.new(9)
       @modulo8_res1_tactic = Modulo_m_Res1_Tactic.new(8)
-      @default_tactic = BruteForceTactic.new
+      @default_tactic = MajorTermTactic.new
       @refutations = []
       @subgoals = []
       if_none do |parent_hypothesis|
@@ -237,7 +237,7 @@ module EulerSop6ConjectureCounterexampleSearch
       @tactic19_non_zero = NonZeroRequisiteTactic.new 19, 3
       @tactic13_non_zero = NonZeroRequisiteTactic.new 13, 3
 
-      @default_tactic = BruteForceTactic.new
+      @default_tactic = MajorTermTactic.new
 
       @refutations = []
       @subgoals = []
@@ -387,7 +387,7 @@ module EulerSop6ConjectureCounterexampleSearch
         NonZeroRequisiteTactic.new p, 2
       end
 
-      @default_tactic = BruteForceTactic.new
+      @default_tactic = MajorTermTactic.new
       @refutations = []
       @subgoals = []
       if_none do |parent_hypothesis|
