@@ -49,11 +49,20 @@ def count_sums_with_maj(major, n_terms, from, to)
 end
 
 
-# puts count_sums(5, FROM, TO)
+ puts count_sums(5,  64,729)
 
+=begin
 
 (7..1000).lazy.map do |n|
   count_sums(5, n**6, (n+1)**6)
 end.each_cons(2) do |x,y|
   puts "#{y}, #{y-x}, #{Math.log(Float(y)/x)}"
 end
+=end
+(1..1000).lazy.each do |n|
+  from = n ** 6
+  to = (n + 1) ** 6
+  puts "#{n}\t#{to - from}\t#{count_sums(5, from, to)}"
+  STDOUT.flush
+end
+
